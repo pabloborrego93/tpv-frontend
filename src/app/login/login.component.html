@@ -1,0 +1,29 @@
+<!-- <form (submit)="loginUser($event)">
+  <input id="username" type="text" placeholder="Username"/>
+  <input id="password" type="password" placeholder="Password"/>
+  <input type="submit" value="Submit"/>
+</form> -->
+<div class="sigin-conainer" fxLayout="column" fxLayoutAlign="center center">
+    <div class="sigin-main mat-elevation-z12">
+      <mat-card>
+        <mat-card-title>Login
+          <a class="redirect" [routerLink]="['/sigup']">Register</a>
+        </mat-card-title>
+        <mat-card-content>
+          <form [formGroup]="userForm" (ngSubmit)="loginUser()">
+            <mat-form-field class="display-block">
+                <input id="username" type="text" placeholder="username" formControlName="username" required matInput>
+                <mat-error *ngIf="formErrors.username">{{formErrors.username}}</mat-error>
+              </mat-form-field>
+            <mat-form-field class="display-block">
+              <input id="password" type="password" placeholder="password" formControlName="password" required matInput>
+              <mat-error *ngIf="formErrors.password">{{formErrors.password}}</mat-error>
+            </mat-form-field>
+  
+            <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">Login</button>
+          </form>
+        </mat-card-content>
+  
+      </mat-card>
+    </div>
+  </div>
