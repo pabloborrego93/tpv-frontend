@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BrandComponent implements OnInit {
 
+  currentUser: String;
+
   constructor() { }
 
   ngOnInit() {
+    const everything = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = everything.username;
   }
 
 }

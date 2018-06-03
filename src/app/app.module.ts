@@ -11,13 +11,17 @@ import { AdminComponent } from './private/admin/admin.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RestorePasswordComponent } from './restore-password/restore-password.component';
+import { SignupComponent } from './signup/signup.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    RestorePasswordComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +36,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
       }, {
         path: 'home', component: HomeComponent
       }, {
+        path: 'signup', component: SignupComponent
+      }, {
         path: 'login', component: LoginComponent
+      }, {
+        path: 'restore-password', component: RestorePasswordComponent
       }, {
         path: 'admin',
         loadChildren: 'app/private/private.module#PrivateModule',

@@ -12,14 +12,12 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class LoginComponent implements OnInit {
 
   userForm: FormGroup;
+  loading: Boolean = false;
 
-  formErrors = {
-    username: '',
-    password: ''
-  };
+  formErrors;
   validationMessages = {
     username: {
-      required: 'Username is requited!'
+      required: 'Username is required!'
     },
     password: {
       required: 'Password is required!',
@@ -75,19 +73,34 @@ export class LoginComponent implements OnInit {
   }
 
   loginUser() {
-    const username = this.userForm.value['username'];
-    const password = this.userForm.value['password'];
-    this.auth.doLogin(username, password)
-      .subscribe(
-        (response: any) => {
-          this.router.navigate(['/admin']);
-        },
-        (error: any) => {
-          console.log('No se pudo hacer login');
-        }
-      );
+    if (this.isValidForm()) {
+      this.loading = true;
+      const username = this.userForm.value['username'];
+      const password = this.userForm.value['password'];
+      setTimeout(() => {
+        this.auth.doLogin(username, password)
+          .subscribe(
+            (response: any) => {
+              this.router.navigate(['/admin']);
+            },
+            (error: any) => {
+              this.formErrors = 'Username or password incorrect!';
+              setTimeout(() => {
+                this.formErrors = '';
+              }, 2000);
+              this.loading = false;
+            }
+          );
+      }, 500);
+    }
+  }
 
-    console.log(username, password);
+  isValidForm() {
+    if (this.loading) {
+      return false;
+    } else {
+      return this.userForm.valid;
+    }
   }
 
 }
