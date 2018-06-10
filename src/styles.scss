@@ -73,3 +73,13 @@ mat-sidenav-container {
     transform: rotate(359deg);
   }
 }
+
+form {
+  mat-form-field {
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
+  .submitButtonDiv {
+    margin-top: 24px;
+  }
+}

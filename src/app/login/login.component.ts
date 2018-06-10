@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { first } from 'rxjs/operators';
@@ -11,24 +11,26 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  userForm: FormGroup;
-  loading: Boolean = false;
+  private loginForm: FormGroup;
+  private loading: Boolean = false;
+  private loginError: String;
 
-  formErrors;
-  validationMessages = {
+  validationMessages: Object = {
     username: {
-      required: 'Username is required!'
+      required: 'Username is required!',
+      minlength: 'Min length is 4',
+      maxlength: 'Max length is 16'
     },
     password: {
       required: 'Password is required!',
-      minlength: '4',
-      maxlength: '16'
+      minlength: 'Minimum length is 8',
+      maxlength: 'Max length is 32'
     }
   };
 
   constructor(
     private router: Router,
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private auth: AuthService) { }
 
   ngOnInit() {
@@ -36,47 +38,17 @@ export class LoginComponent implements OnInit {
   }
 
   buildForm() {
-    this.userForm = this.fb.group({
-      username: ['', [Validators.required]],
-      password: [
-        '',
-        [
-          Validators.minLength(6),
-          Validators.maxLength(25)
-        ]
-      ]
+    this.loginForm = this.formBuilder.group({
+      username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(16)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(32)]]
     });
-
-    this.userForm.valueChanges.subscribe(data => this.onValueChanged(data));
-    this.onValueChanged();
-  }
-
-  onValueChanged(data?: any) {
-    if (!this.userForm) {
-      return;
-    }
-    const form = this.userForm;
-    for (const field in this.formErrors) {
-      if (Object.prototype.hasOwnProperty.call(this.formErrors, field)) {
-        this.formErrors[field] = '';
-        const control = form.get(field);
-        if (control && control.dirty && !control.valid) {
-          const messages = this.validationMessages[field];
-          for (const key in control.errors) {
-            if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
-              this.formErrors[field] += messages[key] + ' ';
-            }
-          }
-        }
-      }
-    }
   }
 
   loginUser() {
     if (this.isValidForm()) {
       this.loading = true;
-      const username = this.userForm.value['username'];
-      const password = this.userForm.value['password'];
+      const username = this.loginForm.value['username'];
+      const password = this.loginForm.value['password'];
       setTimeout(() => {
         this.auth.doLogin(username, password)
           .subscribe(
@@ -84,10 +56,10 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/admin']);
             },
             (error: any) => {
-              this.formErrors = 'Username or password incorrect!';
+              this.loginError = 'Username or password incorrect!';
               setTimeout(() => {
-                this.formErrors = '';
-              }, 2000);
+                this.loginError = '';
+              }, 4000);
               this.loading = false;
             }
           );
@@ -99,7 +71,7 @@ export class LoginComponent implements OnInit {
     if (this.loading) {
       return false;
     } else {
-      return this.userForm.valid;
+      return this.loginForm.valid;
     }
   }
 
