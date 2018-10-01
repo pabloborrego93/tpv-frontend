@@ -51,8 +51,13 @@ export class AuthService {
     return true;
   }
 
-  doLogOut() {
-    localStorage.removeItem('currentUser');
+  doLogOut(): Boolean {
+    if (localStorage.getItem('currentUser')) {
+      localStorage.removeItem('currentUser');
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

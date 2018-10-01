@@ -14,8 +14,12 @@
       <mat-icon>search</mat-icon>
     </button>
   
-  
-    <button mat-button class="more-btn">
+    <mat-menu #appMenu="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item (click)="navegarMiPerfil()">Mi Perfil</button>
+      <button mat-menu-item (click)="doLogOut()">Salir</button>
+    </mat-menu>
+
+    <button mat-icon-button [matMenuTriggerFor]="appMenu">
       <mat-icon>more_vert</mat-icon>
     </button>
   

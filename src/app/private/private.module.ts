@@ -7,6 +7,7 @@ import { BrandComponent } from './brand/brand.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { MyProfileComponent } from './my-profile/my-profile.component';
 
 @NgModule({
   imports: [
@@ -14,6 +15,6 @@ import { FooterComponent } from './footer/footer.component';
     PrivateRoutingModule,
     SharedModule
   ],
-  declarations: [AdminComponent, BrandComponent, NavigationComponent, HeaderComponent, FooterComponent]
+  declarations: [AdminComponent, BrandComponent, NavigationComponent, HeaderComponent, FooterComponent, MyProfileComponent]
 })
 export class PrivateModule { }

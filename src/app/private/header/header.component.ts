@@ -1,6 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import * as screenfull from 'screenfull';
-import { NavigationStart, NavigationEnd, Router } from '@angular/router';
+import { AuthService } from '../../auth.service';
+import { ERR_LOGOUT } from '../../app.constants';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +18,10 @@ export class HeaderComponent implements OnInit {
   isFullscreen = false;
   showLoading: boolean;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    public snackBar: MatSnackBar) {
     router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.showLoading = true;
@@ -32,6 +38,24 @@ export class HeaderComponent implements OnInit {
     if (screenfull.enabled) {
       screenfull.toggle();
       this.isFullscreen = !this.isFullscreen;
+    }
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+    });
+  }
+
+  navegarMiPerfil() {
+    this.router.navigate(['/admin/miperfil']);
+  }
+
+  doLogOut(): void {
+    if (this.authService.doLogOut()) {
+      this.router.navigate(['/home']);
+    } else {
+      this.openSnackBar(ERR_LOGOUT, 'Cerrar');
     }
   }
 
