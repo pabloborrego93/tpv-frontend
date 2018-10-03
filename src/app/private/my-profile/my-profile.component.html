@@ -1,3 +1,14 @@
-<p>
-  my-profile works!
-</p>
+<mat-card>
+  <mat-card-title>Mi Perfil</mat-card-title>
+  <mat-card-content>
+    <table>
+      <tr><th>Nombre Usuario:</th><td>{{myInfo?.username}}</td></tr>
+      <tr><th>Email:</th><td>{{myInfo?.email}}</td></tr>
+      <tr><th>Roles:</th><td>
+        <p *ngFor="let role of myInfo?.roles">
+          {{role.name}}
+        </p>
+      </td></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

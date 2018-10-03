@@ -8,6 +8,13 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { MyProfileComponent } from './my-profile/my-profile.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
+/*
+* Providers
+*/
+import { AuthInterceptor } from '../auth.interceptor';
+import { MyProfileService } from './my-profile/my-profile.service';
 
 @NgModule({
   imports: [
@@ -15,6 +22,16 @@ import { MyProfileComponent } from './my-profile/my-profile.component';
     PrivateRoutingModule,
     SharedModule
   ],
-  declarations: [AdminComponent, BrandComponent, NavigationComponent, HeaderComponent, FooterComponent, MyProfileComponent]
+  declarations: [
+    AdminComponent,
+    BrandComponent,
+    NavigationComponent,
+    HeaderComponent,
+    FooterComponent,
+    MyProfileComponent
+  ],
+  providers: [
+    MyProfileService
+  ]
 })
 export class PrivateModule { }

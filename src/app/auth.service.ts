@@ -13,7 +13,7 @@ export class AuthService {
       'password': password
     };
     return this.http
-      .post('/api/login', userAndPass)
+      .post('login', userAndPass)
       .pipe(map(
         (response: any) => {
           if (response && response.access_token) {
@@ -34,7 +34,7 @@ export class AuthService {
       'passwordRepeated': passwordRepeated
     };
     return this.http
-      .post('/api/register', registerDto)
+      .post('register', registerDto)
       .pipe(map(
         (response: any) => {
           // if (response && response.access_token) {
@@ -58,6 +58,11 @@ export class AuthService {
     } else {
       return false;
     }
+  }
+
+  getAuthorizationToken() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    return currentUser.token;
   }
 
 }

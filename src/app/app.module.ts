@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { AuthService } from './auth.service';
@@ -13,7 +13,7 @@ import { SharedModule } from './shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RestorePasswordComponent } from './restore-password/restore-password.component';
 import { SignupComponent } from './signup/signup.component';
-
+import { AuthInterceptor } from './auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -45,10 +45,16 @@ import { SignupComponent } from './signup/signup.component';
         path: 'admin',
         loadChildren: 'app/private/private.module#PrivateModule',
         canLoad: [AuthGuard]
+      }, {
+        path: '**', redirectTo: '/home', pathMatch: 'full'
       }
     ])
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [
+    AuthService,
+    AuthGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
