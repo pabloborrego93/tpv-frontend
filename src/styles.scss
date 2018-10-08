@@ -87,3 +87,27 @@ form {
 mat-card {
   margin: 20px;
 }
+
+.display-block {
+  display: block;
+}
+
+.mt-2 {
+  margin-top: 2em !important;
+}
+
+.mb-2 {
+  margin-bottom: 2em !important;
+}
+
+.mt-1 {
+  margin-top: 1em !important;
+}
+
+.mb-1 {
+  margin-bottom: 1em !important;
+}
+
+*:focus {
+  outline:0;
+}

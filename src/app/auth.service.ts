@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { OK_LOGOUT, ERR_LOGOUT } from './app.constants';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class AuthService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router, public snackBar: MatSnackBar) { }
 
   doLogin(username: string, password: string) {
     const userAndPass: object = {
@@ -51,18 +54,25 @@ export class AuthService {
     return true;
   }
 
-  doLogOut(): Boolean {
+  doLogOut(mensaje) {
     if (localStorage.getItem('currentUser')) {
       localStorage.removeItem('currentUser');
-      return true;
+      this.openSnackBar(mensaje, 'Cerrar');
+      this.router.navigate(['/home']);
     } else {
-      return false;
+      this.openSnackBar(ERR_LOGOUT, 'Cerrar');
+      this.router.navigate(['/home']);
     }
   }
-
   getAuthorizationToken() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     return currentUser.token;
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000
+    });
   }
 
 }

@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import * as screenfull from 'screenfull';
 import { AuthService } from '../../auth.service';
-import { ERR_LOGOUT } from '../../app.constants';
+import { OK_LOGOUT } from '../../app.constants';
 
 @Component({
   selector: 'app-header',
@@ -20,8 +19,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthService,
-    public snackBar: MatSnackBar) {
+    private authService: AuthService) {
     router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.showLoading = true;
@@ -41,22 +39,12 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 3000,
-    });
-  }
-
   navegarMiPerfil() {
     this.router.navigate(['/admin/miperfil']);
   }
 
   doLogOut(): void {
-    if (this.authService.doLogOut()) {
-      this.router.navigate(['/home']);
-    } else {
-      this.openSnackBar(ERR_LOGOUT, 'Cerrar');
-    }
+    this.authService.doLogOut(OK_LOGOUT);
   }
 
 }
