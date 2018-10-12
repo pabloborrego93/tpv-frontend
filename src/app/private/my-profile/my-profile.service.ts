@@ -11,9 +11,20 @@ export class MyProfileService {
     return this.http
       .get('/api/user')
       .pipe(map(
-        (response: any) =>  response,
+        (response: any) => response,
         (error) => {
           console.log('No se pudo hacer login');
+        }
+      ));
+  }
+
+  updateUserInfo(updateUserDto: Object) {
+    return this.http
+      .put('/api/user', updateUserDto)
+      .pipe(map(
+        (response: any) => response,
+        (error) => {
+          console.log('No se pudo hacer el post');
         }
       ));
   }

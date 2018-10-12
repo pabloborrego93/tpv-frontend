@@ -16,7 +16,7 @@ export class AuthService {
       'password': password
     };
     return this.http
-      .post('login', userAndPass)
+      .post('/auth/login', userAndPass)
       .pipe(map(
         (response: any) => {
           if (response && response.access_token) {
@@ -37,12 +37,10 @@ export class AuthService {
       'passwordRepeated': passwordRepeated
     };
     return this.http
-      .post('register', registerDto)
+      .post('/api/user', registerDto)
       .pipe(map(
         (response: any) => {
-          // if (response && response.access_token) {
-            // localStorage.setItem('currentUser', JSON.stringify({ username, token: response.access_token }));
-          // }
+          this.doLogin(username.toString(), password.toString());
         },
         (error) => {
           console.log('No se pudo hacer login');

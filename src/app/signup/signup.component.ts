@@ -70,6 +70,7 @@ export class SignupComponent implements OnInit {
                 this.router.navigate(['/admin']);
               },
               (error: any) => {
+                console.log(error);
                 this.registerErrors = 'Couldnt complete the sign up!';
                 setTimeout(() => {
                   this.registerErrors = '';

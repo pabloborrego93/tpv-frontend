@@ -33,11 +33,12 @@ mat-sidenav-container {
 
 .mat-sidenav-content::-webkit-scrollbar, body::-webkit-scrollbar, mat-sidenav.sidenav::-webkit-scrollbar, .main-container::-webkit-scrollbar {
   height: 6px;
-  width: 6px
+  width: 6px;
 }
 
 .mat-sidenav-content::-webkit-scrollbar-trac, body::-webkit-scrollbar-track, mat-sidenav.sidenav::-webkit-scrollbar-trac, .main-container::-webkit-scrollbar-trac {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3)
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
 }
 
 .mat-sidenav-content::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb, mat-sidenav.sidenav::-webkit-scrollbar-thumb, .main-container::-webkit-scrollbar-thumb {

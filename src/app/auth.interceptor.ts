@@ -20,6 +20,8 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
 
     if (req instanceof HttpRequest && !this.isEndpointWithOutJWTAuth(req)) {
+      console.log(this.auth.getAuthorizationToken());
+      console.log(req);
       req = req.clone({ setHeaders: { Authorization: `Bearer ${this.auth.getAuthorizationToken()}`} });
     }
 
@@ -33,7 +35,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   isEndpointWithOutJWTAuth(req: HttpRequest<any>) {
-    return endpointsSinJWT.find((eP) => eP === req.url);
+    return endpointsSinJWT.find((eP) => (eP.path === req.url) && (eP.method === req.method));
   }
 
 }

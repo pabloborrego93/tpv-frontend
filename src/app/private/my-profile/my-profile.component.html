@@ -2,14 +2,32 @@
     <mat-card>
       <mat-card-title>Actualizar informaci&oacute;n personal</mat-card-title>
       <mat-card-content>
-        <!-- <form [formGroup]="updateUserForm" (ngSubmit)="updateUser()"> -->
-        <form>
+        <form *ngIf="updateUserForm" [formGroup]="updateUserForm" (ngSubmit)="updateUser()">
+        <!-- <form> -->
           <mat-form-field class="display-block">
-            <input matInput placeholder="Nombre de usuario:" value="{{myInfo?.username}}">
+            <input matInput placeholder="Nombre de usuario:" value="{{myInfo?.username}}" readonly disabled>
           </mat-form-field>
           <mat-form-field class="display-block">
-            <input matInput placeholder="E-mail:" value="{{myInfo?.email}}">
+            <input matInput placeholder="E-mail:" formControlName="email" value="{{myInfo?.email}}" required>
+            <mat-error *ngIf="updateUserForm?.get('email')?.errors?.required">{{validationMessages.email.required}}</mat-error>
+            <mat-error *ngIf="updateUserForm?.get('email')?.errors?.minlength">{{validationMessages.email.minlength}}</mat-error>
+            <mat-error *ngIf="updateUserForm?.get('email')?.errors?.maxlength">{{validationMessages.email.maxlength}}</mat-error>
           </mat-form-field>
+          <mat-form-field class="display-block">
+            <input matInput placeholder="Nombre:" formControlName="firstname" value="{{myInfo?.firstname}}" required>
+            <mat-error *ngIf="updateUserForm?.get('firstname')?.errors?.required">{{validationMessages.firstname.required}}</mat-error>
+            <mat-error *ngIf="updateUserForm?.get('firstname')?.errors?.minlength">{{validationMessages.firstname.minlength}}</mat-error>
+            <mat-error *ngIf="updateUserForm?.get('firstname')?.errors?.maxlength">{{validationMessages.firstname.maxlength}}</mat-error>
+          </mat-form-field>
+          <mat-form-field class="display-block">
+            <input matInput placeholder="Apellidos:" formControlName="lastname" value="{{myInfo?.lastname}}" required>
+            <mat-error *ngIf="updateUserForm?.get('lastname')?.errors?.required">{{validationMessages.lastname.required}}</mat-error>
+            <mat-error *ngIf="updateUserForm?.get('lastname')?.errors?.minlength">{{validationMessages.lastname.minlength}}</mat-error>
+            <mat-error *ngIf="updateUserForm?.get('lastname')?.errors?.maxlength">{{validationMessages.lastname.maxlength}}</mat-error>
+          </mat-form-field>
+          <div class="mb-2" fxLayout="row" fxLayoutAlign="space-between center center">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm()">Actualizar <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
+          </div>
         </form>
         <mat-divider></mat-divider>
         <mat-card-title class="mt-2">Roles</mat-card-title>

@@ -1,7 +1,14 @@
 {
-    "*": {
-        "target": "http://localhost:8080/tpvBackend",
+    "/api/**": {
+        "target": "http://[::1]:8080/tpvBackend",
         "secure": false,
-        "changeOrigin": true
+        "changeOrigin": true,
+        "pathRewrite": {"^/api" : "api"}
+    },
+    "/auth/**": {
+        "target": "http://[::1]:8080/tpvBackend",
+        "secure": false,
+        "changeOrigin": true,
+        "pathRewrite": {"^/auth" : "auth"}
     }
 }
