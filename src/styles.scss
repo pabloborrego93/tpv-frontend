@@ -1,23 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import '~@angular/material/_theming';
+@import "~@angular/material/_theming.scss";
 
-@include mat-core();
-$primary: mat-palette($mat-indigo);
-$accent: mat-palette($mat-pink, A200, A100, A400);
-$warn: mat-palette($mat-red);
+@font-face {
+  font-family: 'Charlie-sans-display-black';
+  src: url('../src/assets/fonts/charlie-sans/charlie-display/Charlie_Display-Black.woff') format('woff');
+}
+@font-face {
+  font-family: 'Charlie-sans-display-regular';
+  src: url('../src/assets/fonts/charlie-sans/charlie-display/Charlie_Display-Regular.woff') format('woff');
+}
+@font-face {
+  font-family: 'Charlie-sans-display-semibold';
+  src: url('../src/assets/fonts/charlie-sans/charlie-display/Charlie_Display-Semibold.woff') format('woff');
+}
+@font-face {
+  font-family: 'Charlie-sans-text-italic';
+  src: url('../src/assets/fonts/charlie-sans/charlie-text/Charlie_Text-Italic.woff') format('woff');
+}
+@font-face {
+  font-family: 'Charlie-sans-text-regular';
+  src: url('../src/assets/fonts/charlie-sans/charlie-text/Charlie_Text-Regular.woff') format('woff');
+}
+@font-face {
+  font-family: 'Charlie-sans-text-semibold';
+  src: url('../src/assets/fonts/charlie-sans/charlie-text/Charlie_Text-Semibold.woff') format('woff');
+}
+
+$custom-typography: mat-typography-config(
+  $font-family: 'Charlie-sans-text-regular, Roboto, monospace',
+  $headline: mat-typography-level(32px, 48px, 700),
+  $body-1: mat-typography-level(16px, 24px, 500)
+);
+
+@include mat-core($custom-typography);
+$primary: mat-palette($mat-blue-grey);
+$accent: mat-palette($mat-amber);
+$warn: mat-palette($mat-pink);
 $theme: mat-light-theme($primary, $accent, $warn);
 
-// @import "scss/index";
-// @import "scss/app-theme";
 @include angular-material-theme($theme);
 
+$light-primary: mat-color($primary, 200, 0.1);
 
 html, body {
   min-height: 100%;
   height: 100%;
-  line-height: normal;
-  font-family: Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Charlie-sans-text-regular', 'Helvetica Neue', Arial, sans-serif !important;
+  font-size: 16px;
   margin: 0;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
@@ -29,6 +58,27 @@ html, body {
 
 mat-sidenav-container {
   height: 100%;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+@mixin background-color {
+  background-color: mat-color($primary, 400, 0.4);
+}
+
+.background-light-primary {
+  background-color: $light-primary;
+}
+
+.background-primary {
+  @include background-color;
+}
+
+.background-landpage {
+  @include background-color;
+
 }
 
 .mat-sidenav-content::-webkit-scrollbar, body::-webkit-scrollbar, mat-sidenav.sidenav::-webkit-scrollbar, .main-container::-webkit-scrollbar {
@@ -111,4 +161,65 @@ mat-card {
 
 *:focus {
   outline:0;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.svg-landing-page {
+  stroke: none; 
+  fill: $light-primary;
+}
+
+.h-em-2 {
+  min-height: 2em;
+}
+
+.h-em-4 {
+  min-height: 4em;
+}
+
+.h-em-6 {
+  min-height: 6em;
+}
+
+.h-em-8 {
+  min-height: 8em;
+}
+
+.h-em-10 {
+  min-height: 10em;
+}
+
+.h-em-12 {
+  min-height: 12em;
+}
+
+.h-em-14 {
+  min-height: 14em;
+}
+
+.h-em-16 {
+  min-height: 16em;
+}
+
+.m-em-2 {
+  margin: 2em;
+}
+
+.p-em-1 {
+  padding: 1em;
+}
+
+.p-em-2 {
+  padding: 2em;
+}
+
+.toolbar-landing-page {
+  font-family: 'Charlie-sans-display-black';
 }

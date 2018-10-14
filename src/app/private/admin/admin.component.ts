@@ -20,8 +20,6 @@ export class AdminComponent implements OnInit {
   sidenavAlign = 'start';
   customizerSidenavAlign = 'end';
 
-  title = '中后台前端应用框架 - Power by stbui';
-
   get media$(): Observable<MediaChange> {
     return this._media$.asObservable();
   }

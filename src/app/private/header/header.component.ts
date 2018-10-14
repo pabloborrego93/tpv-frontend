@@ -26,6 +26,9 @@ export class HeaderComponent implements OnInit {
       } else if (event instanceof NavigationEnd) {
         this.showLoading = false;
       }
+      if (this.sidenav && this.sidenav.opened) {
+        this.toggleMenu();
+      }
     });
   }
 
@@ -37,6 +40,10 @@ export class HeaderComponent implements OnInit {
       screenfull.toggle();
       this.isFullscreen = !this.isFullscreen;
     }
+  }
+
+  toggleMenu() {
+    this.sidenav.opened = !this.sidenav.opened;
   }
 
   navegarMiPerfil() {

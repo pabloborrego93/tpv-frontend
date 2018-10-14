@@ -27,12 +27,22 @@ export class SignupComponent implements OnInit {
       minlength: 'Min length is 8',
       maxlength: 'Max length is 32'
     },
+    firstname: {
+      required: 'Firstname is required!',
+      minlength: 'Min length is 8',
+      maxlength: 'Max length is 32'
+    },
+    lastname: {
+      required: 'Lastname is required!',
+      minlength: 'Min length is 8',
+      maxlength: 'Max length is 32'
+    },
     password: {
       required: 'Password is required!',
       minlength: 'Min length is 8',
       maxlength: 'Max length is 32'
     },
-    passwordRepeated: {
+    confirmPassword: {
       required: 'Re-writing password is required!',
       minlength: 'Min length is 8',
       maxlength: 'Max length is 32'
@@ -52,8 +62,10 @@ export class SignupComponent implements OnInit {
       this.registerForm = this.formBuilder.group({
         username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(16)]],
         email: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(32), Validators.email]],
+        firstname: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(16)]],
+        lastname: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(16)]],
         password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(32)]],
-        passwordRepeated: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(32)]]
+        confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(32)]]
       });
     }
     registerUser() {
@@ -61,13 +73,23 @@ export class SignupComponent implements OnInit {
         this.loading = true;
         const username = this.registerForm.value['username'];
         const email = this.registerForm.value['email'];
+        const firstname = this.registerForm.value['firstname'];
+        const lastname = this.registerForm.value['lastname'];
         const password = this.registerForm.value['password'];
-        const passwordRepeated = this.registerForm.value['passwordRepeated'];
+        const confirmPassword = this.registerForm.value['confirmPassword'];
         setTimeout(() => {
-          this.auth.doRegister(username, email, password, passwordRepeated)
+          const registerDto: object = {
+            'username': username,
+            'email': email,
+            'firstname': firstname,
+            'lastname': lastname,
+            'password': password,
+            'confirmPassword': confirmPassword
+          };
+          this.auth.doRegister(registerDto)
             .subscribe(
               (response: any) => {
-                this.router.navigate(['/admin']);
+                this.router.navigate(['/login']);
               },
               (error: any) => {
                 console.log(error);

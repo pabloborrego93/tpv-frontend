@@ -29,19 +29,11 @@ export class AuthService {
       ));
   }
 
-  doRegister(username: String, email: String, password: String, passwordRepeated: String) {
-    const registerDto: object = {
-      'username': username,
-      'email': email,
-      'password': password,
-      'passwordRepeated': passwordRepeated
-    };
+  doRegister(registerDto) {
     return this.http
       .post('/api/user', registerDto)
       .pipe(map(
-        (response: any) => {
-          this.doLogin(username.toString(), password.toString());
-        },
+        (response: any) => response,
         (error) => {
           console.log('No se pudo hacer login');
         }

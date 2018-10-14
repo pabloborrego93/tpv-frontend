@@ -1,11 +1,11 @@
 <div class="main-toolbar mat-elevation-z2" fxLayout="row" fxLayoutAlign="start center">
-    <button mat-icon-button (click)="sidenav.opened = !sidenav.opened">
+    <button mat-icon-button (click)="toggleMenu()">
       <mat-icon>menu</mat-icon>
     </button>
   
     <span fxFlex></span>
   
-    <button mat-icon-button [fxHide]="true" [fxHide.gt-sm]="false" (click)="toggleFullscreen()">
+    <button mat-icon-button (click)="toggleFullscreen()">
       <mat-icon *ngIf="!isFullscreen">fullscreen</mat-icon>
       <mat-icon *ngIf="isFullscreen">fullscreen_exit</mat-icon>
     </button>

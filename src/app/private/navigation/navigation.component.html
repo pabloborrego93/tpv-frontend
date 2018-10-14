@@ -1,3 +1,16 @@
-<p>
-  navigation works!
-</p>
+<div class="navigation-container">
+  <div class="navigation-scrollbar-container">
+    <perfect-scrollbar>
+      <div *ngIf="navigationModel && navigationModel.length > 0">
+        <ng-container *ngFor="let navigation of navigationModel">
+          <app-nav-collapse *ngIf="navigation.type == 'collapse'" [item]="navigation"></app-nav-collapse>
+          <app-nav-item *ngIf="navigation.type=='item'" [item]="navigation"></app-nav-item>
+        </ng-container>
+      </div>
+    </perfect-scrollbar>
+  </div>
+
+  <div class="navigation-footer p-em-1">
+    <mat-icon>help</mat-icon>&nbsp;v1.0.0
+  </div>
+</div>
