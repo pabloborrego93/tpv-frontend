@@ -3,7 +3,6 @@
       <mat-card-title>Actualizar informaci&oacute;n personal</mat-card-title>
       <mat-card-content>
         <form *ngIf="updateUserForm" [formGroup]="updateUserForm" (ngSubmit)="updateUser()">
-        <!-- <form> -->
           <mat-form-field class="display-block">
             <input matInput placeholder="Nombre de usuario:" value="{{myInfo?.username}}" readonly disabled>
           </mat-form-field>

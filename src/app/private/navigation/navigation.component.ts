@@ -32,14 +32,4 @@ export class NavigationComponent implements OnInit, OnDestroy {
     extendNavItem.badge.title = 6;
   }
 
-  addSubitemToNavigation() {
-    const newNavItem = {
-      id: 'sub-item',
-      title: '动态添加菜单',
-      type: 'item',
-      url: '/apps/navigation'
-    };
-
-    this.service.addNavigationItem('extend', newNavItem);
-  }
 }

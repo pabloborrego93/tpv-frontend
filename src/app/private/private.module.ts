@@ -16,6 +16,9 @@ import { NavigationModule } from './navigation/navigation.module';
 */
 import { AuthInterceptor } from '../auth.interceptor';
 import { MyProfileService } from './my-profile/my-profile.service';
+import { ChainService } from './restaurant-chain/chain.service';
+import { RestaurantChainComponent } from './restaurant-chain/restaurant-chain.component';
+import { RestaurantComponent } from './restaurant/restaurant.component';
 
 @NgModule({
   imports: [
@@ -31,10 +34,13 @@ import { MyProfileService } from './my-profile/my-profile.service';
     BrandComponent,
     HeaderComponent,
     FooterComponent,
-    MyProfileComponent
+    MyProfileComponent,
+    RestaurantChainComponent,
+    RestaurantComponent
   ],
   providers: [
-    MyProfileService
+    MyProfileService,
+    ChainService
   ]
 })
 export class PrivateModule { }

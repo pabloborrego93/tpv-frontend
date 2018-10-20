@@ -30,7 +30,7 @@ export class AuthInterceptor implements HttpInterceptor {
         if (error.status === 401) {
           this.auth.doLogOut(ERR_TOKEN_EXPIRED);
         }
-        return throwError(req);
+        return throwError(error);
       });
   }
 

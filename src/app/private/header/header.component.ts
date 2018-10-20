@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
       } else if (event instanceof NavigationEnd) {
         this.showLoading = false;
       }
-      if (this.sidenav && this.sidenav.opened) {
+      if (this.sidenav && this.sidenav.opened && this.isFullscreen) {
         this.toggleMenu();
       }
     });
@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit {
   }
 
   navegarMiPerfil() {
-    this.router.navigate(['/admin/miperfil']);
+    this.router.navigate(['/admin/myprofile']);
   }
 
   doLogOut(): void {

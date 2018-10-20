@@ -11,11 +11,7 @@ export class NavigationService {
   onNavigationModelChange: BehaviorSubject<any> = new BehaviorSubject({});
   navigationModel: NavigationModel;
   constructor(private http: HttpClient) {
-     this.getNavigation()
-    .then((res) => {
-        this.navigationModel = new NavigationModel(res);
-        this.onNavigationModelChange.next(this.navigationModel.model);
-    });
+    this.updateNavigation();
   }
 
   getNavigation() {
@@ -28,6 +24,14 @@ export class NavigationService {
 
   getNavigationModel() {
     return this.navigationModel.model;
+  }
+
+  updateNavigation() {
+    this.getNavigation()
+    .then((res) => {
+        this.navigationModel = new NavigationModel(res);
+        this.onNavigationModelChange.next(this.navigationModel.model);
+    });
   }
 
   setNavigationModel(model) {
