@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialComponentsModule } from './material.module';
+import { ToastService } from './toast.service';
 
 @NgModule({
   imports: [
@@ -16,6 +17,9 @@ import { MaterialComponentsModule } from './material.module';
     FormsModule,
     FlexLayoutModule,
     MaterialComponentsModule
+  ],
+  providers: [
+    ToastService
   ]
 })
 export class SharedModule {}

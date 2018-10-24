@@ -10,6 +10,8 @@ import { MyProfileComponent } from './my-profile/my-profile.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavigationModule } from './navigation/navigation.module';
+import { RestaurantChainComponent } from './restaurant-chain/restaurant-chain.component';
+import { RestaurantComponent } from './restaurant/restaurant.component';
 
 /*
 * Providers
@@ -17,8 +19,7 @@ import { NavigationModule } from './navigation/navigation.module';
 import { AuthInterceptor } from '../auth.interceptor';
 import { MyProfileService } from './my-profile/my-profile.service';
 import { ChainService } from './restaurant-chain/chain.service';
-import { RestaurantChainComponent } from './restaurant-chain/restaurant-chain.component';
-import { RestaurantComponent } from './restaurant/restaurant.component';
+import { RestaurantService } from './restaurant/restaurant.service';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { RestaurantComponent } from './restaurant/restaurant.component';
   ],
   providers: [
     MyProfileService,
-    ChainService
+    ChainService,
+    RestaurantService
   ]
 })
 export class PrivateModule { }
