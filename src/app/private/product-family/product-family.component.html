@@ -1,0 +1,50 @@
+<div class="product-family-container" fxLayout="column">
+  <mat-card>
+    <mat-card-title>Familias de Productos</mat-card-title>
+    <mat-card-subtitle *ngIf="dataSource && dataSource?.data?.length == 0">A&uacute;n no has creado ninguna familia de
+      productos,
+      ¡Rellena el siguiente
+      formulario para empezar la configuraci&oacute;n!
+    </mat-card-subtitle>
+
+    <!-- Tabla Familia Productos -->
+    <mat-card-content *ngIf="dataSource && dataSource?.data?.length > 0">
+      <div class="loading-indicator">
+        <mat-spinner *ngIf="isLoadingResults" class></mat-spinner>
+      </div>
+      <div *ngIf="!isLoadingResults">
+        <mat-table #table [dataSource]="dataSource">
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns; let i = index"></mat-row>
+        </mat-table>
+        <mat-paginator #paginator [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+          [showFirstLastButtons]="true" [length]="listLength" (page)="changePage($event)">
+        </mat-paginator>
+      </div>
+    </mat-card-content>
+    <!-- Fin Tabla Familia Productos -->
+
+    <!-- Formulario de creacion de cadena -->
+    <mat-card-content *ngIf="createProductFamilyForm">
+      <form  [formGroup]="createProductFamilyForm" (ngSubmit)="createProductFamily()">
+        <mat-form-field class="display-block">
+          <input matInput placeholder="Nombre:" formControlName="name">
+          <mat-error *ngIf="createProductFamilyForm?.get('name')?.errors?.required">{{ProductFamilyValidationMessages.name.required}}</mat-error>
+          <mat-error *ngIf="createProductFamilyForm?.get('name')?.errors?.minlength">{{ProductFamilyValidationMessages.name.minlength}}</mat-error>
+          <mat-error *ngIf="createProductFamilyForm?.get('name')?.errors?.maxlength">{{ProductFamilyValidationMessages.name.maxlength}}</mat-error>
+        </mat-form-field>
+        <mat-error *ngIf="formNameRepeated">{{ProductFamilyValidationMessages.name.nameInUse}}</mat-error>
+        <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="space-between center center">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(createProductFamilyForm)">Crear
+            <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
+        </div>
+      </form>
+    </mat-card-content>
+    <!-- Fin Formulario de creacion de cadena -->
+
+  </mat-card>
+</div>

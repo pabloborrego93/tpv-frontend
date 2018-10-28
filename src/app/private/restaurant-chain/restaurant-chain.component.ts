@@ -54,8 +54,9 @@ export class RestaurantChainComponent implements OnInit {
         this.chain = res;
         this.chainLoaded = true;
         if (this.chain) {
-          this.buildCreateChainForm();
           this.buildCreateRestaurantForm();
+        } else {
+          this.buildCreateChainForm();
         }
       }, (err) => console.log(err)
     );

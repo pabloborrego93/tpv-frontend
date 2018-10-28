@@ -1,25 +1,21 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PrivateRoutingModule } from './private-routing.module';
-import { AdminComponent } from './admin/admin.component';
-import { SharedModule } from '../shared/shared.module';
-import { BrandComponent } from './brand/brand.component';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
-import { MyProfileComponent } from './my-profile/my-profile.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
+import { AdminComponent } from './admin/admin.component';
+import { BrandComponent } from './brand/brand.component';
+import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './header/header.component';
+import { MyProfileComponent } from './my-profile/my-profile.component';
+import { MyProfileService } from './my-profile/my-profile.service';
 import { NavigationModule } from './navigation/navigation.module';
+import { PrivateRoutingModule } from './private-routing.module';
+import { ChainService } from './restaurant-chain/chain.service';
 import { RestaurantChainComponent } from './restaurant-chain/restaurant-chain.component';
 import { RestaurantComponent } from './restaurant/restaurant.component';
-
-/*
-* Providers
-*/
-import { AuthInterceptor } from '../auth.interceptor';
-import { MyProfileService } from './my-profile/my-profile.service';
-import { ChainService } from './restaurant-chain/chain.service';
 import { RestaurantService } from './restaurant/restaurant.service';
+import { ProductFamilyComponent } from './product-family/product-family.component';
+import { ProductFamilyService } from './product-family/product-family.service';
 
 @NgModule({
   imports: [
@@ -37,12 +33,14 @@ import { RestaurantService } from './restaurant/restaurant.service';
     FooterComponent,
     MyProfileComponent,
     RestaurantChainComponent,
-    RestaurantComponent
+    RestaurantComponent,
+    ProductFamilyComponent
   ],
   providers: [
     MyProfileService,
     ChainService,
-    RestaurantService
+    RestaurantService,
+    ProductFamilyService
   ]
 })
 export class PrivateModule { }
