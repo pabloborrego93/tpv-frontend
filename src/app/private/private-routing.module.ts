@@ -6,6 +6,7 @@ import { MyProfileComponent } from './my-profile/my-profile.component';
 import { ProductFamilyComponent } from './product-family/product-family.component';
 import { RestaurantChainComponent } from './restaurant-chain/restaurant-chain.component';
 import { RestaurantComponent } from './restaurant/restaurant.component';
+import { ProductComponent } from './product/product.component';
 
 const routes: Routes = [
   {
@@ -14,7 +15,8 @@ const routes: Routes = [
       { path: 'myprofile', component: MyProfileComponent },
       { path: 'chain', component: RestaurantChainComponent },
       { path: 'restaurant/:name', component: RestaurantComponent },
-      { path: 'product-families', component: ProductFamilyComponent }
+      { path: 'product-families', component: ProductFamilyComponent },
+      { path: 'products', component: ProductComponent }
     ]
   }
 ];

@@ -16,6 +16,9 @@ import { RestaurantComponent } from './restaurant/restaurant.component';
 import { RestaurantService } from './restaurant/restaurant.service';
 import { ProductFamilyComponent } from './product-family/product-family.component';
 import { ProductFamilyService } from './product-family/product-family.service';
+import { ProductComponent } from './product/product.component';
+import { ProductService } from './product/product.service';
+import { FormHeaderComponent } from './form-header/form-header.component';
 
 @NgModule({
   imports: [
@@ -34,13 +37,16 @@ import { ProductFamilyService } from './product-family/product-family.service';
     MyProfileComponent,
     RestaurantChainComponent,
     RestaurantComponent,
-    ProductFamilyComponent
+    ProductFamilyComponent,
+    ProductComponent,
+    FormHeaderComponent
   ],
   providers: [
     MyProfileService,
     ChainService,
     RestaurantService,
-    ProductFamilyService
+    ProductFamilyService,
+    ProductService
   ]
 })
 export class PrivateModule { }

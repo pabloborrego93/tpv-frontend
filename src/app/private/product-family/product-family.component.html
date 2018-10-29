@@ -15,8 +15,8 @@
       <div *ngIf="!isLoadingResults">
         <mat-table #table [dataSource]="dataSource">
           <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef class="noPadding"> Name </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="noPadding"> {{element.name}} </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns; let i = index"></mat-row>
@@ -29,6 +29,7 @@
     <!-- Fin Tabla Familia Productos -->
 
     <!-- Formulario de creacion de cadena -->
+    <mat-card-title>Crear nueva familia de productos</mat-card-title>
     <mat-card-content *ngIf="createProductFamilyForm">
       <form  [formGroup]="createProductFamilyForm" (ngSubmit)="createProductFamily()">
         <mat-form-field class="display-block">

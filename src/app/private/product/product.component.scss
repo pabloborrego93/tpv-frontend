@@ -1,0 +1,12 @@
+.display-block {
+    display: block;
+  }
+
+  .product {
+    &-container {
+      min-height: 100%;
+    }
+    &-main {
+      width: 100%;
+    }
+  }

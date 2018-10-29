@@ -1,0 +1,48 @@
+<div class="product-container" fxLayout="column">
+  <mat-card>
+    <mat-card-title>Productos</mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <form fxLayout="column">
+        <!-- Product Name -->
+        <app-form-header [icon]="'arrow_right_alt'" [text]="'Nombre del nuevo producto'"></app-form-header>
+        <mat-form-field class="display-block">
+          <input matInput placeholder="Name:" required>
+        </mat-form-field>
+        <!-- End Product Name -->
+        <!-- Catalogable product -->
+        <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto que se pueda vender?'"></app-form-header>
+        <mat-slide-toggle>Producto para el cat&aacute;logo</mat-slide-toggle>
+        <!-- End Catalogable product -->
+        <!-- Product Families -->
+        <app-form-header [icon]="'arrow_right_alt'" [text]="'¿A qu&eacute; familias pertenece?'"></app-form-header>
+        <div fxLayout="row">
+          <div>
+            <app-form-header [icon]="'arrow_right_alt'" [text]="'No seleccionadas'"></app-form-header>
+            <mat-list *ngFor="let notSelected of notSelectedFamilies">
+              <mat-list-item><button mat-button color="warn" (click)="addToSelected(notSelected)">{{notSelected}}</button></mat-list-item>
+            </mat-list>
+          </div>
+          <div>
+            <app-form-header [icon]="'arrow_right_alt'" [text]="'Seleccionadas'"></app-form-header>
+            <mat-list *ngFor="let selected of selectedFamilies">
+                <mat-list-item><button mat-button color="primary" (click)="removeFromSelected(selected)">{{selected}}</button></mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+        <!-- End Product Families -->
+        <!-- Product Type Selector -->
+        <app-form-header [icon]="'arrow_right_alt'" [text]="'Es un producto b&aacute;sico o se compone de otros productos'"></app-form-header>
+        <mat-form-field>
+          <mat-select [(value)]="selected" placeholder="Tipo de producto">
+            <mat-option *ngFor="let type of productTypes" [value]="type.value">{{type.viewValue}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- End Product Type Selector -->
+        <div *ngIf="showCompositeForm()">
+          formulario compuesto
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

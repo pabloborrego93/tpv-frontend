@@ -227,3 +227,14 @@ mat-card {
 .font-red {
   color:red;
 }
+
+mat-cell, mat-header-cell {
+  &.noPadding {
+    &:first-of-type {
+      padding-left: 0px;
+    }
+    &:last-of-type {
+      padding-right: 0px;
+    }
+  }
+}
