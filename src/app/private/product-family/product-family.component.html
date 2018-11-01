@@ -16,7 +16,8 @@
         <mat-table #table [dataSource]="dataSource">
           <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef class="noPadding"> Name </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="noPadding"> {{element.name}} </mat-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{'selected': selected == element.name}" class="noPadding pointer"
+              (click)="toggleSelected(element.name)"> {{element.name}} </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns; let i = index"></mat-row>
@@ -28,10 +29,10 @@
     </mat-card-content>
     <!-- Fin Tabla Familia Productos -->
 
-    <!-- Formulario de creacion de cadena -->
-    <mat-card-title>Crear nueva familia de productos</mat-card-title>
-    <mat-card-content *ngIf="createProductFamilyForm">
-      <form  [formGroup]="createProductFamilyForm" (ngSubmit)="createProductFamily()">
+    <!-- Formulario de creacion de familia de productos -->
+    <mat-card-title *ngIf="!selected">Crear nueva familia de productos</mat-card-title>
+    <mat-card-content *ngIf="createProductFamilyForm && !selected">
+      <form [formGroup]="createProductFamilyForm" (ngSubmit)="createProductFamily()">
         <mat-form-field class="display-block">
           <input matInput placeholder="Nombre:" formControlName="name">
           <mat-error *ngIf="createProductFamilyForm?.get('name')?.errors?.required">{{ProductFamilyValidationMessages.name.required}}</mat-error>
@@ -45,7 +46,27 @@
         </div>
       </form>
     </mat-card-content>
-    <!-- Fin Formulario de creacion de cadena -->
+    <!-- Fin Formulario de creacion de familia de productos -->
+    <!-- Formulario de actualizacion de familia de productos -->
+    <mat-card-title *ngIf="selected">Editar familia de productos</mat-card-title>
+    <mat-card-content *ngIf="updateProductFamilyForm && selected">
+      <form [formGroup]="updateProductFamilyForm" (ngSubmit)="updateProductFamily()">
+        <mat-form-field class="display-block">
+          <input matInput placeholder="Nombre:" formControlName="name" value="{{selected}}">
+          <mat-error *ngIf="updateProductFamilyForm?.get('name')?.errors?.required">{{ProductFamilyValidationMessages.name.required}}</mat-error>
+          <mat-error *ngIf="updateProductFamilyForm?.get('name')?.errors?.minlength">{{ProductFamilyValidationMessages.name.minlength}}</mat-error>
+          <mat-error *ngIf="updateProductFamilyForm?.get('name')?.errors?.maxlength">{{ProductFamilyValidationMessages.name.maxlength}}</mat-error>
+        </mat-form-field>
+        <mat-error *ngIf="formNameRepeated">{{ProductFamilyValidationMessages.name.nameInUse}}</mat-error>
+        <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8px">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(updateProductFamilyForm)">Actualizar
+            <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
+          <button mat-raised-button color="primary" [disabled]="!selected" (click)="deleteProductFamily()">Borrar
+            <mat-icon class="spin" *ngIf="loadingBorrar">autorenew</mat-icon></button>
+        </div>
+      </form>
+    </mat-card-content>
+    <!-- Fin Formulario de actualizacion de familia de productos -->
 
   </mat-card>
 </div>

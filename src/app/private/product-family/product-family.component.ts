@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator, MatTableDataSource, PageEvent } from '@angular/material';
 import { ProductFamilyService } from './product-family.service';
 import { NavigationService } from '../navigation/navigation.service';
+import { ToastService } from '../../shared/toast.service';
 
 @Component({
   selector: 'app-product-family',
@@ -21,9 +22,13 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
   pageNumber = 0;
   @ViewChild('paginator') paginator: MatPaginator;
 
+  public selected;
+
   public formNameRepeated: Boolean = false;
   public loading: Boolean = false;
+  public loadingBorrar: Boolean = false;
   private createProductFamilyForm: FormGroup;
+  private updateProductFamilyForm: FormGroup;
 
   ProductFamilyValidationMessages: Object = {
     name: {
@@ -37,17 +42,27 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
   constructor(
     private productFamilyService: ProductFamilyService,
     private formBuilder: FormBuilder,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    private toastService: ToastService
   ) {
     this.loadData(this.pageNumber, this.pageSize);
   }
 
   ngOnInit() {
     this.buildCreateProductFamilyForm();
+    this.buildUpdateProductFamilyForm();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  toggleSelected(element) {
+    if (this.selected && this.selected === element) {
+      this.selected = null;
+    } else {
+      this.selected = element;
+    }
   }
 
   loadData(page, max_per_page) {
@@ -73,11 +88,43 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
     });
   }
 
+  buildUpdateProductFamilyForm() {
+    this.updateProductFamilyForm = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
+    });
+  }
+
   changePage($event) {
     this.isLoadingResults = true;
     const page = $event.pageIndex || 0;
     const max_per_page = $event.pageSize || 5;
     this.loadData(page, max_per_page);
+  }
+
+  updateProductFamily() {
+    if (this.isValidForm(this.updateProductFamilyForm)) {
+      this.loading = true;
+      const name = this.updateProductFamilyForm.value['name'];
+      setTimeout(() => {
+        const productFamilyUpdateDto = {
+          'oldName' : this.selected,
+          'newName' : name
+        };
+        this.productFamilyService
+          .update(productFamilyUpdateDto)
+          .then((res) => {
+            this.navigationService.updateNavigation();
+            this.loadData(this.pageNumber, this.pageSize);
+            this.formNameRepeated = false;
+            this.selected = null;
+          }).catch((err) => {
+            if (err.code === 409) {
+              this.formNameRepeated = true;
+            }
+          });
+        this.loading = false;
+      }, 500);
+    }
   }
 
   createProductFamily() {
@@ -99,7 +146,33 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
               this.formNameRepeated = true;
             }
           });
-        this.loading = false;
+          this.loading = false;
+        }, 500);
+      }
+  }
+
+  deleteProductFamily() {
+    if (this.selected) {
+      const name = this.selected;
+      this.selected = null;
+      this.loadingBorrar = true;
+      setTimeout(() => {
+        this.productFamilyService
+          .delete(name)
+          .then((res) => {
+            this.navigationService.updateNavigation();
+            this.loadData(this.pageNumber, this.pageSize);
+            this.formNameRepeated = false;
+            const mensaje = `${name} eliminado correctamente`;
+            this.toastService.openSnackBar(mensaje, 3000, 'Cerrar');
+          }).catch((err) => {
+            if (err.code === 409) {
+              this.formNameRepeated = true;
+            }
+            const mensaje = `${name} no se pudo eliminar correctamente`;
+            this.toastService.openSnackBar(mensaje, 3000, 'Cerrar');
+          });
+        this.loadingBorrar = false;
       }, 500);
     }
   }

@@ -19,6 +19,7 @@ import { ProductFamilyService } from './product-family/product-family.service';
 import { ProductComponent } from './product/product.component';
 import { ProductService } from './product/product.service';
 import { FormHeaderComponent } from './form-header/form-header.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { FormHeaderComponent } from './form-header/form-header.component';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    NavigationModule
+    NavigationModule,
+    ImageCropperModule
   ],
   declarations: [
     AdminComponent,

@@ -17,16 +17,16 @@
         <!-- Product Families -->
         <app-form-header [icon]="'arrow_right_alt'" [text]="'¿A qu&eacute; familias pertenece?'"></app-form-header>
         <div fxLayout="row">
-          <div>
-            <app-form-header [icon]="'arrow_right_alt'" [text]="'No seleccionadas'"></app-form-header>
-            <mat-list *ngFor="let notSelected of notSelectedFamilies">
-              <mat-list-item><button mat-button color="warn" (click)="addToSelected(notSelected)">{{notSelected}}</button></mat-list-item>
+          <div class="twin-column-list left">
+            <!-- <app-form-header [icon]="'arrow_right_alt'" [text]="'No seleccionadas'"></app-form-header> -->
+            <mat-list class="notSelected" *ngFor="let notSelected of notSelectedFamilies">
+              <mat-list-item class="pointer" (click)="addToSelected(notSelected)"><span>{{notSelected}}</span></mat-list-item>
             </mat-list>
           </div>
-          <div>
-            <app-form-header [icon]="'arrow_right_alt'" [text]="'Seleccionadas'"></app-form-header>
-            <mat-list *ngFor="let selected of selectedFamilies">
-                <mat-list-item><button mat-button color="primary" (click)="removeFromSelected(selected)">{{selected}}</button></mat-list-item>
+          <div class="twin-column-list right">
+            <!-- <app-form-header [icon]="'arrow_right_alt'" [text]="'Seleccionadas'"></app-form-header> -->
+            <mat-list class="selected" *ngFor="let selected of selectedFamilies">
+              <mat-list-item class="pointer" (click)="removeFromSelected(selected)"><span>{{selected}}</span></mat-list-item>
             </mat-list>
           </div>
         </div>
@@ -43,6 +43,14 @@
           formulario compuesto
         </div>
       </form>
+
+      <input type="file" (change)="fileChangeEvent($event)" />
+
+      <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="4 / 3"
+        [resizeToWidth]="128" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+        (loadImageFailed)="loadImageFailed()"></image-cropper>
+
+      <img [src]="croppedImage" />
     </mat-card-content>
   </mat-card>
 </div>

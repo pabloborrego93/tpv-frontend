@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ImageCroppedEvent } from 'ngx-image-cropper/src/image-cropper.component';
 
 @Component({
   selector: 'app-product',
@@ -7,14 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductComponent implements OnInit {
 
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
   public products: any[] = [];
 
   public productTypes: any[] = [{
-    'value' : 'PRODUCT_SIMPLE',
-    'viewValue' : 'Producto Simple'
+    'value': 'PRODUCT_SIMPLE',
+    'viewValue': 'Producto Simple'
   }, {
-    'value' : 'PRODUCT_COMPOSITE',
-    'viewValue' : 'Producto Compuesto'
+    'value': 'PRODUCT_COMPOSITE',
+    'viewValue': 'Producto Compuesto'
   }];
 
   public notSelectedFamilies: string[] = [
@@ -52,6 +55,19 @@ export class ProductComponent implements OnInit {
     if (!this.selectedFamilies.find((item) => item.toLowerCase() === selected.toLowerCase())) {
       this.notSelectedFamilies.push(selected);
     }
+  }
+
+  fileChangeEvent(event: any): void {
+    this.imageChangedEvent = event;
+  }
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+  imageLoaded() {
+    // show cropper
+  }
+  loadImageFailed() {
+    // show message
   }
 
 }
