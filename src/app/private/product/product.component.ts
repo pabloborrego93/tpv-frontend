@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { ImageCroppedEvent } from 'ngx-image-cropper/src/image-cropper.component';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { ProductImageCropperComponent } from './product-image-cropper/product-image-cropper.component';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, AfterViewInit {
 
+  @ViewChild('imgFileInput')
+  fileInput: ElementRef;
   imageChangedEvent: any = '';
   croppedImage: any = '';
+
   public products: any[] = [];
 
   public productTypes: any[] = [{
@@ -34,9 +38,32 @@ export class ProductComponent implements OnInit {
 
   public selected: any;
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
+    this.setEmptyCroppedImage();
+  }
+
+  ngAfterViewInit() {
+  }
+
+  openDialog(event) {
+    const dialogRef = this.dialog.open(ProductImageCropperComponent, { data: event });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.croppedImage = result;
+      }
+      this.imageChangedEvent = null;
+      this.fileInput.nativeElement.value = '';
+    });
+  }
+
+  fileChangeEvent(event) {
+    this.openDialog(event);
+  }
+
+  setEmptyCroppedImage() {
+    this.croppedImage = 'assets/images/product-without-image.jpeg';
   }
 
   showCompositeForm() {
@@ -55,19 +82,6 @@ export class ProductComponent implements OnInit {
     if (!this.selectedFamilies.find((item) => item.toLowerCase() === selected.toLowerCase())) {
       this.notSelectedFamilies.push(selected);
     }
-  }
-
-  fileChangeEvent(event: any): void {
-    this.imageChangedEvent = event;
-  }
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
-  imageLoaded() {
-    // show cropper
-  }
-  loadImageFailed() {
-    // show message
   }
 
 }

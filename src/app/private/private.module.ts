@@ -20,6 +20,7 @@ import { ProductComponent } from './product/product.component';
 import { ProductService } from './product/product.service';
 import { FormHeaderComponent } from './form-header/form-header.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { ProductImageCropperComponent } from './product/product-image-cropper/product-image-cropper.component';
 
 @NgModule({
   imports: [
@@ -41,7 +42,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     RestaurantComponent,
     ProductFamilyComponent,
     ProductComponent,
-    FormHeaderComponent
+    FormHeaderComponent,
+    ProductImageCropperComponent
   ],
   providers: [
     MyProfileService,
@@ -49,6 +51,9 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     RestaurantService,
     ProductFamilyService,
     ProductService
+  ],
+  entryComponents: [
+    ProductImageCropperComponent
   ]
 })
 export class PrivateModule { }

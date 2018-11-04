@@ -292,3 +292,27 @@ mat-cell {
 .pointer {
   cursor: pointer;
 }
+
+div.img-with-button {
+  position: relative;
+  flex-direction: column;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  button.remove-photo {
+    position: absolute;
+    left: 4px;
+    bottom: 4px;
+    span.mat-button-wrapper {
+      line-height: 22px !important;
+    }
+  }
+  button.add-photo {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    span.mat-button-wrapper {
+      line-height: 20px !important;
+    }
+  }
+}

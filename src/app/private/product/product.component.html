@@ -4,16 +4,32 @@
     <mat-divider></mat-divider>
     <mat-card-content>
       <form fxLayout="column">
-        <!-- Product Name -->
-        <app-form-header [icon]="'arrow_right_alt'" [text]="'Nombre del nuevo producto'"></app-form-header>
-        <mat-form-field class="display-block">
-          <input matInput placeholder="Name:" required>
-        </mat-form-field>
-        <!-- End Product Name -->
-        <!-- Catalogable product -->
-        <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto que se pueda vender?'"></app-form-header>
-        <mat-slide-toggle>Producto para el cat&aacute;logo</mat-slide-toggle>
-        <!-- End Catalogable product -->
+        <div fxLayout="row" fxLayoutGap="16px">
+          <div fxLayout="column" fxLayoutAlign="center center">
+            <div class="img-with-button mat-elevation-z2">
+              <img width="200" height="150" [src]="croppedImage" />
+              <button class="remove-photo" mat-mini-fab color="warn" (click)="setEmptyCroppedImage()"><mat-icon>remove</mat-icon></button>
+              <button class="add-photo" mat-mini-fab color="accent" (click)="imgFileInput.click()"><mat-icon>add_a_photo</mat-icon></button>
+              <input hidden type="file" #imgFileInput (change)="fileChangeEvent($event);" />
+            </div>
+          </div>
+          <div fxLayout="column" fxLayoutGap="16px">
+            <!-- Product Name -->
+            <div fxLayout="column">
+              <app-form-header [icon]="'arrow_right_alt'" [text]="'Nombre del nuevo producto'"></app-form-header>
+              <mat-form-field class="display-block">
+                <input matInput placeholder="Name:" required>
+              </mat-form-field>
+            </div>
+            <!-- End Product Name -->
+            <!-- Catalogable product -->
+            <div fxLayout="column">
+              <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto que se pueda vender?'"></app-form-header>
+              <mat-slide-toggle>Producto para el cat&aacute;logo</mat-slide-toggle>
+            </div>
+            <!-- End Catalogable product -->
+          </div>
+        </div>
         <!-- Product Families -->
         <app-form-header [icon]="'arrow_right_alt'" [text]="'¿A qu&eacute; familias pertenece?'"></app-form-header>
         <div fxLayout="row">
@@ -43,14 +59,7 @@
           formulario compuesto
         </div>
       </form>
-
-      <input type="file" (change)="fileChangeEvent($event)" />
-
-      <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="4 / 3"
-        [resizeToWidth]="128" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
-        (loadImageFailed)="loadImageFailed()"></image-cropper>
-
-      <img [src]="croppedImage" />
+      
     </mat-card-content>
   </mat-card>
 </div>
