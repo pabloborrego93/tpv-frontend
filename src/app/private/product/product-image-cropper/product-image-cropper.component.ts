@@ -1,7 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { ImageCroppedEvent } from 'ngx-image-cropper/src/image-cropper.component';
 import { MAT_DIALOG_DATA } from '@angular/material';
+import { ImageCropperComponent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-product-image-cropper',
@@ -24,7 +25,7 @@ export class ProductImageCropperComponent implements OnInit {
     this.croppedImage = event.base64;
   }
   imageLoaded() {
-    // show cropper
+
   }
   loadImageFailed() {
     // show message

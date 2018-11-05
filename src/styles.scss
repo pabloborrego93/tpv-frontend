@@ -250,6 +250,16 @@ mat-cell, mat-header-cell {
   }
 }
 
+.border {
+  border: 1px solid #f4f4f4;
+}
+
+.cropper {
+  // margin: 0px !important;
+  // width: 100%;
+  // position: absolute;
+}
+
 div.twin-column-list {
   overflow-y: scroll;
   border: 1px solid #f4f4f4;
@@ -315,4 +325,8 @@ div.img-with-button {
       line-height: 20px !important;
     }
   }
+}
+
+.mat-dialog-content {
+  margin: 0px !important;
 }
