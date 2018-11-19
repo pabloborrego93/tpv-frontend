@@ -1,3 +1,12 @@
+<div class="product-container" #productsGrid fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="16px">
+  <mat-card class="200W with-margin">
+    <mat-card-header>
+      <mat-card-title>Lata Coca Cola</mat-card-title>
+      <mat-card-subtitle><small>Bebidas</small></mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="croppedImage" />
+  </mat-card>
+</div>
 <div class="product-container" fxLayout="column">
   <mat-card>
     <mat-card-title>Productos</mat-card-title>
@@ -8,8 +17,12 @@
           <div fxLayout="column" fxLayoutAlign="center center">
             <div class="img-with-button mat-elevation-z2">
               <img width="200" height="150" [src]="croppedImage" />
-              <button class="remove-photo" mat-mini-fab color="warn" (click)="setEmptyCroppedImage()"><mat-icon>remove</mat-icon></button>
-              <button class="add-photo" mat-mini-fab color="accent" (click)="imgFileInput.click()"><mat-icon>add_a_photo</mat-icon></button>
+              <button class="remove-photo" mat-mini-fab color="warn" (click)="setEmptyCroppedImage()">
+                <mat-icon>remove</mat-icon>
+              </button>
+              <button class="add-photo" mat-mini-fab color="accent" (click)="imgFileInput.click()">
+                <mat-icon>add_a_photo</mat-icon>
+              </button>
               <input hidden type="file" #imgFileInput (change)="fileChangeEvent($event);" />
             </div>
           </div>
@@ -59,7 +72,7 @@
           formulario compuesto
         </div>
       </form>
-      
+
     </mat-card-content>
   </mat-card>
 </div>

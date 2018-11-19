@@ -147,7 +147,18 @@ form {
 }
 
 mat-card {
-  margin: 20px;
+  &.with-margin {
+    margin: 16px;
+  }
+  &.200W {
+    width: 200px;
+    max-width: 200px;
+    .img {
+      object-fit: cover;
+      width: 200px;
+      height: 150px;
+    }
+  }
 }
 
 .display-block {
