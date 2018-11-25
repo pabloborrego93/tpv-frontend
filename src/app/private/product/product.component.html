@@ -1,22 +1,48 @@
-<div class="product-container" #productsGrid fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="16px">
-  <mat-card class="200W with-margin">
-    <mat-card-header>
-      <mat-card-title>Lata Coca Cola</mat-card-title>
-      <mat-card-subtitle><small>Bebidas</small></mat-card-subtitle>
-    </mat-card-header>
-    <img mat-card-image [src]="croppedImage" />
-  </mat-card>
-</div>
-<div class="product-container" fxLayout="column">
+<div class="product-container" #productsGrid fxLayout="column">
   <mat-card>
     <mat-card-title>Productos</mat-card-title>
-    <mat-divider></mat-divider>
-    <mat-card-content>
+    <mat-card-subtitle *ngIf="dataSource && dataSource?.data?.length == 0">A&uacute;n no has creado ning&uacute;n
+      producto,
+      ¡Rellena el siguiente formulario para empezar la configuraci&oacute;n!</mat-card-subtitle>
+
+
+    <!-- Tabla Productos -->
+    <mat-card-content *ngIf="dataSource && dataSource?.data?.length > 0">
+      <div class="loading-indicator">
+        <mat-spinner *ngIf="isLoadingResults" class></mat-spinner>
+      </div>
+      <div *ngIf="!isLoadingResults">
+        <mat-table #table [dataSource]="dataSource">
+          <ng-container matColumnDef="image">
+            <mat-header-cell *matHeaderCellDef class="noPadding"> Imagen </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{'selected': selected == element}" class="noPadding pointer"
+              (click)="toggleSelected(element)"> <img width="64" height="48" [src]="element.image"/> </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef class="noPadding"> Nombre </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{'selected': selected == element}" class="noPadding pointer"
+              (click)="toggleSelected(element)"> {{element.name}} </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns; let i = index"></mat-row>
+        </mat-table>
+        <mat-paginator #paginator [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+          [showFirstLastButtons]="true" [length]="listLength" (page)="changePage($event)">
+        </mat-paginator>
+      </div>
+    </mat-card-content>
+    <!-- Fin Tabla Productos -->
+
+    <!-- Formulario de creacion de productos -->
+    <mat-card-title *ngIf="!selected">Crear nuevo producto</mat-card-title>
+    <mat-card-content *ngIf="createProductForm && !selected">
       <form fxLayout="column">
-        <div fxLayout="row" fxLayoutGap="16px">
-          <div fxLayout="column" fxLayoutAlign="center center">
+        <!-- Imagen, nombre y catalogable -->
+        <div fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center center">
+          <div fxFlex.xs="100%" fxFlex="50%" fxLayout.xs="row" fxLayout="column" fxLayoutAlign.xs="center center"
+            fxLayoutAlign="start start">
             <div class="img-with-button mat-elevation-z2">
-              <img width="200" height="150" [src]="croppedImage" />
+              <img width="300" height="225" [src]="croppedImage" />
               <button class="remove-photo" mat-mini-fab color="warn" (click)="setEmptyCroppedImage()">
                 <mat-icon>remove</mat-icon>
               </button>
@@ -26,53 +52,126 @@
               <input hidden type="file" #imgFileInput (change)="fileChangeEvent($event);" />
             </div>
           </div>
-          <div fxLayout="column" fxLayoutGap="16px">
-            <!-- Product Name -->
-            <div fxLayout="column">
-              <app-form-header [icon]="'arrow_right_alt'" [text]="'Nombre del nuevo producto'"></app-form-header>
-              <mat-form-field class="display-block">
-                <input matInput placeholder="Name:" required>
-              </mat-form-field>
+          <div class="w-100" fxFlex.xs="100%" fxFlex="50%" fxLayout="column" fxLayoutAlign="center center">
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
+              <!-- Product Name -->
+              <div fxLayout="column" fxFlexFill>
+                <app-form-header [icon]="'arrow_right_alt'" [text]="'Nombre del nuevo producto'"></app-form-header>
+                <mat-form-field class="display-block">
+                  <input matInput placeholder="Name:" required>
+                </mat-form-field>
+              </div>
+              <!-- End Product Name -->
             </div>
-            <!-- End Product Name -->
-            <!-- Catalogable product -->
-            <div fxLayout="column">
-              <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto que se pueda vender?'"></app-form-header>
-              <mat-slide-toggle>Producto para el cat&aacute;logo</mat-slide-toggle>
+            <div fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
+              <!-- Catalogable product -->
+              <div fxLayout="column" fxFlexFill>
+                <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto que se pueda vender?'"></app-form-header>
+                <mat-slide-toggle>Producto para el cat&aacute;logo</mat-slide-toggle>
+              </div>
+              <!-- End Catalogable product -->
             </div>
-            <!-- End Catalogable product -->
           </div>
         </div>
+        <!-- Fin Imagen, nombre y catalogable -->
         <!-- Product Families -->
         <app-form-header [icon]="'arrow_right_alt'" [text]="'¿A qu&eacute; familias pertenece?'"></app-form-header>
         <div fxLayout="row">
           <div class="twin-column-list left">
             <!-- <app-form-header [icon]="'arrow_right_alt'" [text]="'No seleccionadas'"></app-form-header> -->
             <mat-list class="notSelected" *ngFor="let notSelected of notSelectedFamilies">
-              <mat-list-item class="pointer" (click)="addToSelected(notSelected)"><span>{{notSelected}}</span></mat-list-item>
+              <mat-list-item class="pointer" (click)="addToSelected(notSelected)"><span>{{notSelected.name}}</span></mat-list-item>
             </mat-list>
           </div>
           <div class="twin-column-list right">
             <!-- <app-form-header [icon]="'arrow_right_alt'" [text]="'Seleccionadas'"></app-form-header> -->
             <mat-list class="selected" *ngFor="let selected of selectedFamilies">
-              <mat-list-item class="pointer" (click)="removeFromSelected(selected)"><span>{{selected}}</span></mat-list-item>
+              <mat-list-item class="pointer" (click)="removeFromSelected(selected)"><span>{{selected.name}}</span></mat-list-item>
             </mat-list>
           </div>
         </div>
         <!-- End Product Families -->
         <!-- Product Type Selector -->
-        <app-form-header [icon]="'arrow_right_alt'" [text]="'Es un producto b&aacute;sico o se compone de otros productos'"></app-form-header>
+        <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto b&aacute;sico o compuesto?'"></app-form-header>
         <mat-form-field>
           <mat-select [(value)]="selected" placeholder="Tipo de producto">
             <mat-option *ngFor="let type of productTypes" [value]="type.value">{{type.viewValue}}</mat-option>
           </mat-select>
         </mat-form-field>
         <!-- End Product Type Selector -->
-        <div *ngIf="showCompositeForm()">
-          formulario compuesto
-        </div>
       </form>
-
     </mat-card-content>
+    <!-- Fin Formulario de creacion de productos -->
+
+    <!-- Formulario de actualizacion de productos -->
+    <mat-card-title *ngIf="selected">Actualizar producto</mat-card-title>
+    <mat-card-content *ngIf="updateProductForm && selected">
+      <form fxLayout="column">
+        <!-- Imagen, nombre y catalogable -->
+        <div fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center center">
+          <div fxFlex.xs="100%" fxFlex="50%" fxLayout.xs="row" fxLayout="column" fxLayoutAlign.xs="center center"
+            fxLayoutAlign="start start">
+            <div class="img-with-button mat-elevation-z2">
+              <img width="300" height="225" [src]="selected.image" />
+              <button class="remove-photo" mat-mini-fab color="warn" (click)="setEmptyCroppedImage()">
+                <mat-icon>remove</mat-icon>
+              </button>
+              <button class="add-photo" mat-mini-fab color="accent" (click)="imgFileInput.click()">
+                <mat-icon>add_a_photo</mat-icon>
+              </button>
+              <input hidden type="file" #imgFileInput (change)="fileChangeEvent($event);" />
+            </div>
+          </div>
+          <div class="w-100" fxFlex.xs="100%" fxFlex="50%" fxLayout="column" fxLayoutAlign="center center">
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
+              <!-- Product Name -->
+              <div fxLayout="column" fxFlexFill>
+                <app-form-header [icon]="'arrow_right_alt'" [text]="'Nombre del nuevo producto'"></app-form-header>
+                <mat-form-field class="display-block">
+                  <input matInput placeholder="Name:" value="{{selected.name}}" required>
+                </mat-form-field>
+              </div>
+              <!-- End Product Name -->
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
+              <!-- Catalogable product -->
+              <div fxLayout="column" fxFlexFill>
+                <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto que se pueda vender?'"></app-form-header>
+                <mat-slide-toggle [checked]="selected.catalogable">Producto para el cat&aacute;logo</mat-slide-toggle>
+              </div>
+              <!-- End Catalogable product -->
+            </div>
+          </div>
+        </div>
+        <!-- Fin Imagen, nombre y catalogable -->
+        <!-- Product Families -->
+        <app-form-header [icon]="'arrow_right_alt'" [text]="'¿A qu&eacute; familias pertenece?'"></app-form-header>
+        <div fxLayout="row">
+          <div class="twin-column-list left">
+            <!-- <app-form-header [icon]="'arrow_right_alt'" [text]="'No seleccionadas'"></app-form-header> -->
+            <mat-list class="notSelected" *ngFor="let notSelected of notSelectedFamilies">
+              <mat-list-item class="pointer" (click)="addToSelected(notSelected)"><span>{{notSelected.name}}</span></mat-list-item>
+            </mat-list>
+          </div>
+          <div class="twin-column-list right">
+            <!-- <app-form-header [icon]="'arrow_right_alt'" [text]="'Seleccionadas'"></app-form-header> -->
+            <mat-list class="selected" *ngFor="let selected of selectedFamilies">
+              <mat-list-item class="pointer" (click)="removeFromSelected(selected)"><span>{{selected.name}}</span></mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+        <!-- End Product Families -->
+        <!-- Product Type Selector -->
+        <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto b&aacute;sico o compuesto?'"></app-form-header>
+        <mat-form-field>
+          <mat-select [(value)]="selected.productType" placeholder="Tipo de producto">
+            <mat-option *ngFor="let type of productTypes" [value]="type.value">{{type.viewValue}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- End Product Type Selector -->
+      </form>
+    </mat-card-content>
+    <!-- Fin Formulario de actualizacion de productos -->
+
   </mat-card>
 </div>

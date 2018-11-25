@@ -252,6 +252,8 @@ mat-card {
 
 mat-cell, mat-header-cell {
   &.noPadding {
+    padding-right: 8px;
+    padding-left: 8px;
     &:first-of-type {
       padding-left: 0px;
     }
@@ -340,4 +342,19 @@ div.img-with-button {
 
 .mat-dialog-content {
   margin: 0px !important;
+}
+
+.h225 {
+  height: 225px;
+}
+
+.mat-column-image {
+  flex: 0 0 48px;
+  min-width: 64px;
+}
+
+mat-header-cell.mat-column-image {
+  display: flex;
+  align-items: center;
+  place-content: center;
 }

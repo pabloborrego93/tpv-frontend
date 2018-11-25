@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import 'rxjs/add/observable/fromPromise';
 
 @Injectable()
 export class ProductFamilyService {
@@ -40,6 +42,12 @@ export class ProductFamilyService {
       .toPromise()
       .then((res) => res)
       .catch((err) => Promise.reject(err.error));
+  }
+
+  findAll(): Observable<any> {
+    return Observable.fromPromise(
+      this.list(0, 100).then((res) => res)
+    );
   }
 
 }

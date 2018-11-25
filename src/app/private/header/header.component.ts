@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Inject } from '@angular/core';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import * as screenfull from 'screenfull';
 import { AuthService } from '../../auth.service';
@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
       } else if (event instanceof NavigationEnd) {
         this.showLoading = false;
       }
-      if (this.sidenav && this.sidenav.opened && this.isFullscreen) {
+      if (this.sidenav && this.sidenav.opened && screenfull.isFullscreen) {
         this.toggleMenu();
       }
     });
