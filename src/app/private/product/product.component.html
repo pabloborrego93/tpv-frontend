@@ -16,7 +16,7 @@
           <ng-container matColumnDef="image">
             <mat-header-cell *matHeaderCellDef class="noPadding"> Imagen </mat-header-cell>
             <mat-cell *matCellDef="let element" [ngClass]="{'selected': selected == element}" class="noPadding pointer"
-              (click)="toggleSelected(element)"> <img width="64" height="48" [src]="element.image"/> </mat-cell>
+              (click)="toggleSelected(element)"> <img width="64" height="48" [src]="element.image" /> </mat-cell>
           </ng-container>
           <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef class="noPadding"> Nombre </mat-header-cell>
@@ -36,7 +36,7 @@
     <!-- Formulario de creacion de productos -->
     <mat-card-title *ngIf="!selected">Crear nuevo producto</mat-card-title>
     <mat-card-content *ngIf="createProductForm && !selected">
-      <form fxLayout="column">
+      <form [formGroup]="createProductForm" (ngSubmit)="createProduct()" fxLayout="column">
         <!-- Imagen, nombre y catalogable -->
         <div fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center center">
           <div fxFlex.xs="100%" fxFlex="50%" fxLayout.xs="row" fxLayout="column" fxLayoutAlign.xs="center center"
@@ -58,7 +58,7 @@
               <div fxLayout="column" fxFlexFill>
                 <app-form-header [icon]="'arrow_right_alt'" [text]="'Nombre del nuevo producto'"></app-form-header>
                 <mat-form-field class="display-block">
-                  <input matInput placeholder="Name:" required>
+                  <input formControlName="name" matInput placeholder="Name:" required>
                 </mat-form-field>
               </div>
               <!-- End Product Name -->
@@ -67,7 +67,7 @@
               <!-- Catalogable product -->
               <div fxLayout="column" fxFlexFill>
                 <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto que se pueda vender?'"></app-form-header>
-                <mat-slide-toggle>Producto para el cat&aacute;logo</mat-slide-toggle>
+                <mat-slide-toggle formControlName="catalogable">Producto para el cat&aacute;logo</mat-slide-toggle>
               </div>
               <!-- End Catalogable product -->
             </div>
@@ -94,11 +94,17 @@
         <!-- Product Type Selector -->
         <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto b&aacute;sico o compuesto?'"></app-form-header>
         <mat-form-field>
-          <mat-select [(value)]="selected" placeholder="Tipo de producto">
+          <mat-select formControlName="productType" placeholder="Tipo de producto">
             <mat-option *ngFor="let type of productTypes" [value]="type.value">{{type.viewValue}}</mat-option>
           </mat-select>
         </mat-form-field>
         <!-- End Product Type Selector -->
+        <mat-error *ngIf="formNameRepeated">{{ProductValidationMessages?.name?.nameInUse}}</mat-error>
+        <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="space-between center center">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(createProductForm)">Crear
+            <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
+        </div>
+        <p>Form Group Status: {{createProductForm?.status}}</p>
       </form>
     </mat-card-content>
     <!-- Fin Formulario de creacion de productos -->

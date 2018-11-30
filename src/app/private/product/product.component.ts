@@ -4,6 +4,7 @@ import { ProductFamilyService } from '../product-family/product-family.service';
 import { ProductImageCropperComponent } from './product-image-cropper/product-image-cropper.component';
 import { ProductService } from './product.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NavigationService } from '../navigation/navigation.service';
 
 @Component({
   selector: 'app-product',
@@ -24,6 +25,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   private createProductForm: FormGroup;
   private updateProductForm: FormGroup;
   public selected: any;
+  public formNameRepeated: Boolean = false;
+  public loading: Boolean = false;
+  public loadingBorrar: Boolean = false;
 
   @ViewChild('imgFileInput')
   fileInput: ElementRef;
@@ -46,7 +50,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     public productService: ProductService,
     public productFamilyService: ProductFamilyService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private navigationService: NavigationService
   ) {
     this.loadData(this.pageNumber, this.pageSize);
     this.productFamilyService.findAll()
@@ -66,8 +71,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   buildCreateProductForm() {
     this.createProductForm = this.formBuilder.group({
-      image: ['', [Validators.required]],
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(16)]],
+      catalogable: [false, [Validators.required]],
+      productType: ['SIMPLE', [Validators.required]]
     });
   }
 
@@ -103,6 +109,44 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.selectedFamilies = this.selected.families;
       this.notSelectedFamilies = this.difference(this.selectedFamilies);
     }
+  }
+
+  createProduct() {
+    if (this.isValidForm(this.createProductForm)) {
+      this.loading = true;
+      const name = this.createProductForm.value['name'];
+      const catalogable = this.createProductForm.value['catalogable'];
+      const productType = this.createProductForm.value['productType'];
+      setTimeout(() => {
+        const productPostDto = {
+          'name' : name,
+          'catalogable': catalogable,
+          'image': this.croppedImage,
+          'productType': productType,
+          'productFamilies': this.selectedFamilies
+        };
+        this.productService
+          .create(productPostDto)
+          .then((res) => {
+            this.navigationService.updateNavigation();
+            this.loadData(this.pageNumber, this.pageSize);
+            this.formNameRepeated = false;
+          }).catch((err) => {
+            if (err.code === 409) {
+              this.formNameRepeated = true;
+            }
+          });
+          this.loading = false;
+        }, 500);
+      }
+      this.createProductForm.reset();
+  }
+
+  changePage($event) {
+    this.isLoadingResults = true;
+    const page = $event.pageIndex || 0;
+    const max_per_page = $event.pageSize || 5;
+    this.loadData(page, max_per_page);
   }
 
   loadData(page, max_per_page) {
@@ -152,19 +196,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
+  isValidForm(form) {
+    if (this.loading) {
+      return false;
+    } else {
+      return form.valid;
+    }
+  }
+
   difference(selectedProductFamilies: any[]) {
     return this.totalProductFamilies.filter((item) =>
       selectedProductFamilies.filter((it) => it.name.toLowerCase() === item.name.toLowerCase()).length === 0
     );
   }
-
-  // difference(selectedProductFamilies: any[]) {
-  //   const set = new Set([...selectedProductFamilies, ...this.totalProductFamilies]);
-  //   // set.add(selectedProductFamilies.values);
-  //   console.log(set);
-  //   // set.add(this.totalProductFamilies.values);
-  //   // console.log(set);
-  //   return Array.from(set);
-  // }
 
 }

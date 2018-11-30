@@ -19,4 +19,13 @@ export class ProductService {
       .catch((err) => Promise.reject(err.error));
   }
 
+  create(productPostDto) {
+    const url = `/api/product`;
+    return this.http
+      .post(url, productPostDto)
+      .toPromise()
+      .then((res) => res)
+      .catch((err) => Promise.reject(err.error));
+  }
+
 }
