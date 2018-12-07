@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ProductService {
@@ -26,6 +26,24 @@ export class ProductService {
       .toPromise()
       .then((res) => res)
       .catch((err) => Promise.reject(err.error));
+  }
+
+  update(productUpdateDto) {
+    const url = `/api/product`;
+    return this.http
+      .put(url, productUpdateDto)
+      .toPromise()
+      .then((res) => res)
+      .catch((err) => Promise.reject(err.error));
+  }
+
+  names() {
+    const url = `/api/product/names`;
+    return this.http
+    .get(url)
+    .toPromise()
+    .then((res) => res)
+    .catch((err) => Promise.reject(err.error));
   }
 
 }

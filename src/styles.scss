@@ -34,8 +34,8 @@ $custom-typography: mat-typography-config(
 
 @include mat-core($custom-typography);
 $primary: mat-palette($mat-blue-grey);
-$accent: mat-palette($mat-amber);
-$warn: mat-palette($mat-pink);
+$accent: mat-palette($mat-amber, A200, A100, A400);
+$warn: mat-palette($mat-red);
 $theme: mat-light-theme($primary, $accent, $warn);
 
 @include angular-material-theme($theme);
@@ -59,6 +59,34 @@ html, body {
 mat-sidenav-container {
   height: 100%;
 }
+
+@media (min-width: 0px) { 
+  mat-card-title {
+    font-size: 1.4em !important;
+  }
+}
+@media (min-width: 576px) { 
+  mat-card-title {
+    font-size: 1.6em !important;
+  }
+}
+@media (min-width: 768px) {
+  mat-card-title {
+    font-size: 1.8em !important;
+  }
+}
+@media (min-width: 992px) {
+  mat-card-title {
+    font-size: 1.8em !important;
+  }
+}
+@media (min-width: 1200px) {
+  mat-card-title {
+    font-size: 1.8em !important;
+  }
+}
+
+
 
 .spacer {
   flex: 1 1 auto;
@@ -357,4 +385,8 @@ mat-header-cell.mat-column-image {
   display: flex;
   align-items: center;
   place-content: center;
+}
+
+h4.formHeader {
+  font-weight: bold !important;
 }

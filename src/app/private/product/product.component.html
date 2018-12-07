@@ -43,10 +43,10 @@
             fxLayoutAlign="start start">
             <div class="img-with-button mat-elevation-z2">
               <img width="300" height="225" [src]="croppedImage" />
-              <button class="remove-photo" mat-mini-fab color="warn" (click)="setEmptyCroppedImage()">
+              <button mat-raised-button type="button" class="remove-photo" color="warn" (click)="setEmptyCroppedImage()">
                 <mat-icon>remove</mat-icon>
               </button>
-              <button class="add-photo" mat-mini-fab color="accent" (click)="imgFileInput.click()">
+              <button mat-raised-button type="button" class="add-photo" color="accent" (click)="imgFileInput.click()">
                 <mat-icon>add_a_photo</mat-icon>
               </button>
               <input hidden type="file" #imgFileInput (change)="fileChangeEvent($event);" />
@@ -99,6 +99,23 @@
           </mat-select>
         </mat-form-field>
         <!-- End Product Type Selector -->
+        <!-- Composite Product Extra -->
+        <div *ngIf="showCompositeForm()">
+          <app-form-header [icon]="'arrow_right_alt'" [text]="'¿De qu&eacute; productos se compone?'"></app-form-header>
+          <div fxLayout="row">
+            <div class="twin-column-list left">
+              <mat-list class="notSelected" *ngFor="let notSelected of notSelectedProducts">
+                <mat-list-item class="pointer" (click)="addToSelectedProduct(notSelected)"><span>{{notSelected.name}}</span></mat-list-item>
+              </mat-list>
+            </div>
+            <div class="twin-column-list right">
+              <mat-list class="selected" *ngFor="let selected of selectedProducts">
+                <mat-list-item class="pointer" (click)="removeFromSelectedProduct(selected)"><span>{{selected.name}}</span></mat-list-item>
+              </mat-list>
+            </div>
+          </div>
+        </div>
+        <!-- End Composite Product Extra -->
         <mat-error *ngIf="formNameRepeated">{{ProductValidationMessages?.name?.nameInUse}}</mat-error>
         <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="space-between center center">
           <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(createProductForm)">Crear
@@ -112,17 +129,18 @@
     <!-- Formulario de actualizacion de productos -->
     <mat-card-title *ngIf="selected">Actualizar producto</mat-card-title>
     <mat-card-content *ngIf="updateProductForm && selected">
-      <form fxLayout="column">
+      <form [formGroup]="updateProductForm" (ngSubmit)="updateProduct()" fxLayout="column">
+        <input hidden formControlName="id" required />
         <!-- Imagen, nombre y catalogable -->
         <div fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center center">
           <div fxFlex.xs="100%" fxFlex="50%" fxLayout.xs="row" fxLayout="column" fxLayoutAlign.xs="center center"
             fxLayoutAlign="start start">
-            <div class="img-with-button mat-elevation-z2">
+            <div class="img-with-button mat-elevation-z1">
               <img width="300" height="225" [src]="selected.image" />
-              <button class="remove-photo" mat-mini-fab color="warn" (click)="setEmptyCroppedImage()">
+              <button mat-raised-button type="button" class="remove-photo" color="warn" (click)="setEmptyCroppedImage()">
                 <mat-icon>remove</mat-icon>
               </button>
-              <button class="add-photo" mat-mini-fab color="accent" (click)="imgFileInput.click()">
+              <button mat-raised-button type="button" class="add-photo" color="accent" (click)="imgFileInput.click()">
                 <mat-icon>add_a_photo</mat-icon>
               </button>
               <input hidden type="file" #imgFileInput (change)="fileChangeEvent($event);" />
@@ -134,7 +152,7 @@
               <div fxLayout="column" fxFlexFill>
                 <app-form-header [icon]="'arrow_right_alt'" [text]="'Nombre del nuevo producto'"></app-form-header>
                 <mat-form-field class="display-block">
-                  <input matInput placeholder="Name:" value="{{selected.name}}" required>
+                  <input formControlName="name" matInput placeholder="Nombre:" form required>
                 </mat-form-field>
               </div>
               <!-- End Product Name -->
@@ -143,7 +161,7 @@
               <!-- Catalogable product -->
               <div fxLayout="column" fxFlexFill>
                 <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto que se pueda vender?'"></app-form-header>
-                <mat-slide-toggle [checked]="selected.catalogable">Producto para el cat&aacute;logo</mat-slide-toggle>
+                <mat-slide-toggle formControlName="catalogable" [checked]="selected.catalogable">Producto para el cat&aacute;logo</mat-slide-toggle>
               </div>
               <!-- End Catalogable product -->
             </div>
@@ -175,6 +193,28 @@
           </mat-select>
         </mat-form-field>
         <!-- End Product Type Selector -->
+        <!-- Composite Product Extra -->
+        <div *ngIf="showCompositeUpdateForm()">
+          <app-form-header [icon]="'arrow_right_alt'" [text]="'¿De qu&eacute; productos se compone?'"></app-form-header>
+          <div fxLayout="row">
+            <div class="twin-column-list left">
+              <mat-list class="notSelected" *ngFor="let notSelected of notSelectedProducts">
+                <mat-list-item class="pointer" (click)="addToSelectedProduct(notSelected)"><span>{{notSelected.name}}</span></mat-list-item>
+              </mat-list>
+            </div>
+            <div class="twin-column-list right">
+              <mat-list class="selected" *ngFor="let selected of selectedProducts">
+                <mat-list-item class="pointer" (click)="removeFromSelectedProduct(selected)"><span>{{selected.name}}</span></mat-list-item>
+              </mat-list>
+            </div>
+          </div>
+        </div>
+        <!-- End Composite Product Extra -->
+        <mat-error *ngIf="formNameRepeated">{{ProductValidationMessages?.name?.nameInUse}}</mat-error>
+        <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="space-between center center">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(updateProductForm)">Actualizar
+            <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
+        </div>
       </form>
     </mat-card-content>
     <!-- Fin Formulario de actualizacion de productos -->

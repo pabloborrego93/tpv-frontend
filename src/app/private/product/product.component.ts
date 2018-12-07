@@ -46,6 +46,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
   public selectedFamilies: any[] = [];
   public totalProductFamilies: any[] = [];
 
+  public notSelectedProducts: any[] = [];
+  public selectedProducts: any[] = [];
+  public totalProducts: any[] = [];
+
   constructor(
     public dialog: MatDialog,
     public productService: ProductService,
@@ -59,14 +63,21 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.totalProductFamilies = res.content;
         this.notSelectedFamilies = this.totalProductFamilies;
       });
+    this.loadProductNames();
   }
   ngOnInit() {
     this.setEmptyCroppedImage();
     this.buildCreateProductForm();
-    this.buildUpdateProductForm();
   }
 
   ngAfterViewInit() {
+  }
+
+  loadProductNames() {
+    this.productService.names().then((res: any) => {
+      this.totalProducts = res;
+      this.notSelectedProducts = this.totalProducts;
+    });
   }
 
   buildCreateProductForm() {
@@ -77,10 +88,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
   }
 
-  buildUpdateProductForm() {
+  buildUpdateProductForm(element) {
     this.updateProductForm = this.formBuilder.group({
-      image: ['', [Validators.required]],
-      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(16)]],
+      id: [element.id, [Validators.required]],
+      name: [element.name, [Validators.required, Validators.minLength(2), Validators.maxLength(16)]],
+      catalogable: [element.catalogable, [Validators.required]]
     });
   }
 
@@ -104,10 +116,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.selected = null;
       this.selectedFamilies = [];
       this.notSelectedFamilies = this.totalProductFamilies;
+      this.selectedProducts = [];
+      this.notSelectedProducts = this.totalProducts;
+      this.croppedImage = 'assets/images/product-without-image.jpeg';
     } else {
       this.selected = element;
       this.selectedFamilies = this.selected.families;
+      this.selectedProducts = this.selected.products;
       this.notSelectedFamilies = this.difference(this.selectedFamilies);
+      if (this.selected.productType === 'COMPOSITE') {
+        this.notSelectedProducts = this.differenceProduct(this.selectedProducts);
+      }
+      this.buildUpdateProductForm(element);
     }
   }
 
@@ -119,11 +139,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
       const productType = this.createProductForm.value['productType'];
       setTimeout(() => {
         const productPostDto = {
-          'name' : name,
+          'name': name,
           'catalogable': catalogable,
           'image': this.croppedImage,
           'productType': productType,
-          'productFamilies': this.selectedFamilies
+          'productFamilies': this.selectedFamilies,
+          'products': this.selectedProducts
         };
         this.productService
           .create(productPostDto)
@@ -131,15 +152,60 @@ export class ProductComponent implements OnInit, AfterViewInit {
             this.navigationService.updateNavigation();
             this.loadData(this.pageNumber, this.pageSize);
             this.formNameRepeated = false;
+            this.resetForm(this.createProductForm);
           }).catch((err) => {
             if (err.code === 409) {
               this.formNameRepeated = true;
             }
           });
-          this.loading = false;
-        }, 500);
-      }
-      this.createProductForm.reset();
+        this.loading = false;
+      }, 500);
+    }
+  }
+
+  resetForm(form: FormGroup) {
+    form.reset();
+    this.selected = null;
+    this.selected = null;
+    this.selectedFamilies = [];
+    this.notSelectedFamilies = this.totalProductFamilies;
+    this.selectedProducts = [];
+    this.notSelectedProducts = this.totalProducts;
+    this.croppedImage = 'assets/images/product-without-image.jpeg';
+  }
+
+  updateProduct() {
+    if (this.isValidForm(this.updateProductForm)) {
+      this.loading = true;
+      const name = this.updateProductForm.value['name'];
+      const catalogable = this.updateProductForm.value['catalogable'];
+      const productType = this.selected.productType;
+      const id = this.updateProductForm.value['id'];
+      setTimeout(() => {
+        const productUpdateDto = {
+          'id': id,
+          'name': name,
+          'catalogable': catalogable,
+          'image': this.selected.image,
+          'productType': productType,
+          'productFamilies': this.selectedFamilies,
+          'products': this.selectedProducts
+        };
+        this.productService
+          .update(productUpdateDto)
+          .then((res) => {
+            this.navigationService.updateNavigation();
+            this.loadData(this.pageNumber, this.pageSize);
+            this.formNameRepeated = false;
+            this.resetForm(this.updateProductForm);
+          }).catch((err) => {
+            if (err.code === 409) {
+              this.formNameRepeated = true;
+            }
+          });
+        this.loading = false;
+      }, 500);
+    }
   }
 
   changePage($event) {
@@ -179,7 +245,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   showCompositeForm() {
-    return this.selected && this.selected === 'PRODUCT_COMPOSITE';
+    return this.createProductForm && this.createProductForm.get(['productType']).value === 'COMPOSITE';
+  }
+
+  showCompositeUpdateForm() {
+    return this.updateProductForm && this.selected.productType === 'COMPOSITE';
   }
 
   addToSelected(selected: any) {
@@ -196,6 +266,20 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
+  addToSelectedProduct(selected: any) {
+    if (!this.selectedProducts.find((item) => item.id === selected.id)) {
+      this.selectedProducts.push(selected);
+      this.notSelectedProducts = this.notSelectedProducts.filter((item) => item.id !== selected.id);
+    }
+  }
+
+  removeFromSelectedProduct(selected: any) {
+    this.selectedProducts = this.selectedProducts.filter((item) => item.id !== selected.id);
+    if (!this.selectedProducts.find((item) => item.id === selected.id)) {
+      this.notSelectedProducts.push(selected);
+    }
+  }
+
   isValidForm(form) {
     if (this.loading) {
       return false;
@@ -207,6 +291,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
   difference(selectedProductFamilies: any[]) {
     return this.totalProductFamilies.filter((item) =>
       selectedProductFamilies.filter((it) => it.name.toLowerCase() === item.name.toLowerCase()).length === 0
+    );
+  }
+
+  differenceProduct(selectedProduct: any[]) {
+    return this.totalProducts.filter((item) =>
+      selectedProduct.filter((it) => it.id === item.id).length === 0
     );
   }
 
