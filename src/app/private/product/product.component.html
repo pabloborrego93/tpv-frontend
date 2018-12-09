@@ -58,7 +58,7 @@
               <div fxLayout="column" fxFlexFill>
                 <app-form-header [icon]="'arrow_right_alt'" [text]="'Nombre del nuevo producto'"></app-form-header>
                 <mat-form-field class="display-block">
-                  <input formControlName="name" matInput placeholder="Name:" required>
+                  <input formControlName="name" matInput placeholder="Nombre:" required>
                 </mat-form-field>
               </div>
               <!-- End Product Name -->
@@ -122,6 +122,7 @@
             <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
         </div>
         <p>Form Group Status: {{createProductForm?.status}}</p>
+        <p>Form Group Status: {{createProductForm.getRawValue()}}</p>
       </form>
     </mat-card-content>
     <!-- Fin Formulario de creacion de productos -->
@@ -161,7 +162,7 @@
               <!-- Catalogable product -->
               <div fxLayout="column" fxFlexFill>
                 <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto que se pueda vender?'"></app-form-header>
-                <mat-slide-toggle formControlName="catalogable" [checked]="selected.catalogable">Producto para el cat&aacute;logo</mat-slide-toggle>
+                <mat-slide-toggle formControlName="catalogable">Producto para el cat&aacute;logo</mat-slide-toggle>
               </div>
               <!-- End Catalogable product -->
             </div>
@@ -198,7 +199,7 @@
           <app-form-header [icon]="'arrow_right_alt'" [text]="'¿De qu&eacute; productos se compone?'"></app-form-header>
           <div fxLayout="row">
             <div class="twin-column-list left">
-              <mat-list class="notSelected" *ngFor="let notSelected of notSelectedProducts">
+              <mat-list class="notSelected" *ngFor="let notSelected of notSelectedProductsUpdateFilter()">
                 <mat-list-item class="pointer" (click)="addToSelectedProduct(notSelected)"><span>{{notSelected.name}}</span></mat-list-item>
               </mat-list>
             </div>

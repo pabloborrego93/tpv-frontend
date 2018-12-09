@@ -89,6 +89,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   buildUpdateProductForm(element) {
+    this.selected.catalogable = element.catalogable;
+    console.log(element);
     this.updateProductForm = this.formBuilder.group({
       id: [element.id, [Validators.required]],
       name: [element.name, [Validators.required, Validators.minLength(2), Validators.maxLength(16)]],
@@ -153,6 +155,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
             this.loadData(this.pageNumber, this.pageSize);
             this.formNameRepeated = false;
             this.resetForm(this.createProductForm);
+            this.buildCreateProductForm();
           }).catch((err) => {
             if (err.code === 409) {
               this.formNameRepeated = true;
@@ -164,9 +167,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   resetForm(form: FormGroup) {
-    form.reset();
     this.selected = null;
-    this.selected = null;
+    // form['catalogable'].setValue(false);
+    // form.markAsTouched();
+    // form.markAsDirty();
     this.selectedFamilies = [];
     this.notSelectedFamilies = this.totalProductFamilies;
     this.selectedProducts = [];
@@ -206,6 +210,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.loading = false;
       }, 500);
     }
+  }
+
+  notSelectedProductsUpdateFilter() {
+    return this.notSelectedProducts.filter((product) => product.id !== this.selected.id);
   }
 
   changePage($event) {
