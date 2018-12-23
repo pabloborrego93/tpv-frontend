@@ -53,20 +53,39 @@
             </div>
           </div>
           <div class="w-100" fxFlex.xs="100%" fxFlex="50%" fxLayout="column" fxLayoutAlign="center center">
+            <!-- Product Name -->
             <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
-              <!-- Product Name -->
               <div fxLayout="column" fxFlexFill>
-                <app-form-header [icon]="'arrow_right_alt'" [text]="'Nombre del nuevo producto'"></app-form-header>
                 <mat-form-field class="display-block">
                   <input formControlName="name" matInput placeholder="Nombre:" required>
                 </mat-form-field>
               </div>
-              <!-- End Product Name -->
             </div>
+            <!-- End Product Name -->
+            <!-- Product Price -->
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
+              <div fxLayout="column" fxFlexFill>
+                <mat-form-field class="display-block">
+                  <input type="number" formControlName="price" matInput placeholder="Precio:" required>
+                </mat-form-field>
+              </div>
+            </div>
+            <!-- End Product Price -->
+            <!-- Product IVA -->
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
+              <div fxLayout="column" fxFlexFill>
+                <mat-form-field>
+                  <mat-select formControlName="iva" placeholder="IVA">
+                    <mat-option *ngFor="let type of ivaType" [value]="type.value">{{type.viewValue}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <!-- End Product IVA -->
             <div fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
               <!-- Catalogable product -->
               <div fxLayout="column" fxFlexFill>
-                <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto que se pueda vender?'"></app-form-header>
+                <!-- <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto que se pueda vender?'"></app-form-header> -->
                 <mat-slide-toggle formControlName="catalogable">Producto para el cat&aacute;logo</mat-slide-toggle>
               </div>
               <!-- End Catalogable product -->
@@ -121,8 +140,6 @@
           <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(createProductForm)">Crear
             <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
         </div>
-        <p>Form Group Status: {{createProductForm?.status}}</p>
-        <p>Form Group Status: {{createProductForm.getRawValue()}}</p>
       </form>
     </mat-card-content>
     <!-- Fin Formulario de creacion de productos -->
@@ -148,16 +165,36 @@
             </div>
           </div>
           <div class="w-100" fxFlex.xs="100%" fxFlex="50%" fxLayout="column" fxLayoutAlign="center center">
+            <!-- Product Name -->
             <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
-              <!-- Product Name -->
               <div fxLayout="column" fxFlexFill>
                 <app-form-header [icon]="'arrow_right_alt'" [text]="'Nombre del nuevo producto'"></app-form-header>
                 <mat-form-field class="display-block">
                   <input formControlName="name" matInput placeholder="Nombre:" form required>
                 </mat-form-field>
               </div>
-              <!-- End Product Name -->
             </div>
+            <!-- End Product Name -->
+            <!-- Product Price -->
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
+                <div fxLayout="column" fxFlexFill>
+                  <mat-form-field class="display-block">
+                    <input type="number" formControlName="price" matInput placeholder="Precio:" required>
+                  </mat-form-field>
+                </div>
+              </div>
+              <!-- End Product Price -->
+              <!-- Product IVA -->
+              <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
+                <div fxLayout="column" fxFlexFill>
+                  <mat-form-field>
+                    <mat-select [(value)]="selected.iva" formControlName="iva" placeholder="IVA">
+                      <mat-option *ngFor="let type of ivaType" [value]="type.value">{{type.viewValue}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <!-- End Product IVA -->
             <div fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
               <!-- Catalogable product -->
               <div fxLayout="column" fxFlexFill>

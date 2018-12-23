@@ -1,7 +1,7 @@
 <mat-toolbar color="primary" fxLayout="row" class="toolbar-landing-page">
   <mat-toolbar-row>
     <div fxFlexOffset.xs="0%" fxFlexOffset="10%"></div>
-    <span>TPV-Online</span>
+    <span>Open TPV</span>
     <span class="spacer"></span>
     <button mat-raised-button [routerLink]="['/login']" color="accent">Acceder</button>
     <button mat-button [routerLink]="['/signup']" color="accent">Registrarse</button>
@@ -27,9 +27,8 @@
     <path d="M0.00,49.98 C60.12,92.27 350.88,-49.98 519.31,69.56 L500.00,0.00 L0.00,0.00 Z" class="svg-landing-page"></path>
   </svg></div>
 
-<div fxLayout="row" fxLayout.xs="column" fxLayoutWrap>
-  <div fxFlexOffset.xs="0%" fxFlexOffset.md="0%" fxFlexOffset="10%"></div>
-  <mat-card fxFlex="33%">
+<div fxLayout.xs="column" fxLayout.sm="row" fxLayoutAlign="center center" fxLayoutGap="16px">
+  <mat-card>
     <mat-card-header>
       <mat-card-title>M&oacute;vil</mat-card-title>
     </mat-card-header>
@@ -43,7 +42,7 @@
       </p>
     </mat-card-content>
   </mat-card>
-  <mat-card fxFlex="33%">
+  <mat-card>
     <mat-card-header>
       <mat-card-title>Tablet</mat-card-title>
     </mat-card-header>
@@ -57,7 +56,7 @@
       </p>
     </mat-card-content>
   </mat-card>
-  <mat-card fxFlex="33%">
+  <mat-card>
     <mat-card-header>
       <mat-card-title>Pc</mat-card-title>
     </mat-card-header>
@@ -71,7 +70,6 @@
       </p>
     </mat-card-content>
   </mat-card>
-  <div fxFlexOffset.xs="0%" fxFlexOffset.md="0%" fxFlexOffset="10%"></div>
 </div>
 
 <div fxLayout="row" fxLayout.xs="column" class="h-em-8">

@@ -18,7 +18,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<Element>();
   displayedColumns: string[] = ['image', 'name'];
   isLoadingResults = false;
-  pageSize = 5;
+  pageSize = 10;
   listLength = 0;
   pageNumber = 0;
   @ViewChild('paginator') paginator: MatPaginator;
@@ -40,6 +40,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }, {
     'value': 'COMPOSITE',
     'viewValue': 'Producto Compuesto'
+  }];
+
+  public ivaType: any[] = [{
+    'value': 'TYPE1',
+    'viewValue': '10 %'
+  }, {
+    'value': 'TYPE2',
+    'viewValue': '21 %'
   }];
 
   public notSelectedFamilies: any[] = [];
@@ -83,6 +91,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
   buildCreateProductForm() {
     this.createProductForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(16)]],
+      price: ['', [Validators.required]],
+      iva: ['', [Validators.required]],
       catalogable: [false, [Validators.required]],
       productType: ['SIMPLE', [Validators.required]]
     });
@@ -94,6 +104,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.updateProductForm = this.formBuilder.group({
       id: [element.id, [Validators.required]],
       name: [element.name, [Validators.required, Validators.minLength(2), Validators.maxLength(16)]],
+      price: [element.price, [Validators.required]],
+      iva: [element.iva, [Validators.required]],
       catalogable: [element.catalogable, [Validators.required]]
     });
   }
@@ -139,10 +151,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
       const name = this.createProductForm.value['name'];
       const catalogable = this.createProductForm.value['catalogable'];
       const productType = this.createProductForm.value['productType'];
+      const price = this.createProductForm.value['price'];
+      const iva = this.createProductForm.value['iva'];
       setTimeout(() => {
         const productPostDto = {
           'name': name,
           'catalogable': catalogable,
+          'price': price,
+          'iva': iva,
           'image': this.croppedImage,
           'productType': productType,
           'productFamilies': this.selectedFamilies,
@@ -185,11 +201,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
       const catalogable = this.updateProductForm.value['catalogable'];
       const productType = this.selected.productType;
       const id = this.updateProductForm.value['id'];
+      const price = this.updateProductForm.value['price'];
+      const iva = this.updateProductForm.value['iva'];
       setTimeout(() => {
         const productUpdateDto = {
           'id': id,
           'name': name,
           'catalogable': catalogable,
+          'price': price,
+          'iva': iva,
           'image': this.selected.image,
           'productType': productType,
           'productFamilies': this.selectedFamilies,

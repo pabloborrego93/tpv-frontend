@@ -17,14 +17,14 @@ export class LoginComponent implements OnInit {
 
   validationMessages: Object = {
     username: {
-      required: 'Username is required!',
-      minlength: 'Min length is 4',
-      maxlength: 'Max length is 16'
+      required: 'El nombre de usuario es obligatorio',
+      minlength: 'La longuitud mínima son 4 caracteres',
+      maxlength: 'La longuitud máxima son 16 caracteres'
     },
     password: {
-      required: 'Password is required!',
-      minlength: 'Minimum length is 8',
-      maxlength: 'Max length is 32'
+      required: 'La contraseña es obligatoria',
+      minlength: 'La longuitud mínima son 8 caracteres',
+      maxlength: 'La longuitud máxima son 32 caracteres'
     }
   };
 
