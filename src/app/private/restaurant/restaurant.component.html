@@ -1,5 +1,29 @@
 <div class="restaurant-container" fxLayout="column">
   <mat-card>
-      <mat-card-title>{{restaurant?.name}}</mat-card-title>
+    <mat-card-title>{{restaurant?.name}}</mat-card-title>
+    <mat-card-subtitle>{{restaurant?.address}}</mat-card-subtitle>
+    <mat-card-content>
+      <!-- Tabla Usuarios -->
+      <mat-card-content *ngIf="dataSource && dataSource?.data?.length > 0">
+        <div class="loading-indicator">
+          <mat-spinner *ngIf="isLoadingResults" class></mat-spinner>
+        </div>
+        <div *ngIf="!isLoadingResults">
+          <mat-table #table [dataSource]="dataSource">
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef class="noPadding"> Nombre </mat-header-cell>
+              <mat-cell *matCellDef="let element" [ngClass]="{'selected': selected == element}" class="noPadding pointer"
+                (click)="toggleSelected(element)"> {{element.name}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns; let i = index"></mat-row>
+          </mat-table>
+          <mat-paginator #paginator [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+            [showFirstLastButtons]="true" [length]="listLength" (page)="changePage($event)">
+          </mat-paginator>
+        </div>
+      </mat-card-content>
+      <!-- Fin Tabla Usuarios -->
+    </mat-card-content>
   </mat-card>
 </div>

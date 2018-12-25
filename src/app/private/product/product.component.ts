@@ -172,6 +172,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
             this.formNameRepeated = false;
             this.resetForm(this.createProductForm);
             this.buildCreateProductForm();
+            this.loadProductNames();
           }).catch((err) => {
             if (err.code === 409) {
               this.formNameRepeated = true;
@@ -222,6 +223,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
             this.loadData(this.pageNumber, this.pageSize);
             this.formNameRepeated = false;
             this.resetForm(this.updateProductForm);
+            this.loadProductNames();
           }).catch((err) => {
             if (err.code === 409) {
               this.formNameRepeated = true;
