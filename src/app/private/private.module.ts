@@ -21,6 +21,8 @@ import { ProductService } from './product/product.service';
 import { FormHeaderComponent } from './form-header/form-header.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ProductImageCropperComponent } from './product/product-image-cropper/product-image-cropper.component';
+import { UserComponent } from './user/user.component';
+import { UserService } from './user/user.service';
 
 @NgModule({
   imports: [
@@ -43,14 +45,16 @@ import { ProductImageCropperComponent } from './product/product-image-cropper/pr
     ProductFamilyComponent,
     ProductComponent,
     FormHeaderComponent,
-    ProductImageCropperComponent
+    ProductImageCropperComponent,
+    UserComponent
   ],
   providers: [
     MyProfileService,
     ChainService,
     RestaurantService,
     ProductFamilyService,
-    ProductService
+    ProductService,
+    UserService
   ],
   entryComponents: [
     ProductImageCropperComponent

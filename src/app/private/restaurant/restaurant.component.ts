@@ -15,18 +15,6 @@ export class RestaurantComponent implements OnInit {
 
   public restaurant: any;
 
-  pageSizeOptions: number[] = [5, 10, 25, 100];
-  pageEvent: PageEvent;
-  dataSource = new MatTableDataSource<Element>();
-  displayedColumns: string[] = ['name'];
-  isLoadingResults = false;
-  pageSize = 10;
-  listLength = 0;
-  pageNumber = 0;
-  public selected: any;
-  @ViewChild('paginator') paginator: MatPaginator;
-  private createProductForm: FormGroup;
-
   constructor(
     private router: Router,
     private activateRoute: ActivatedRoute,
@@ -52,30 +40,6 @@ export class RestaurantComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  changePage($event) {
-    this.isLoadingResults = true;
-    const page = $event.pageIndex || 0;
-    const max_per_page = $event.pageSize || 5;
-    this.loadData(page, max_per_page);
-  }
-
-  loadData(page, max_per_page) {
-    this.isLoadingResults = true;
-    // this.productService
-    //   .list(page, max_per_page)
-    //   .then((res: any) => {
-    //     const ELEMENT_DATA = res.content;
-    //     this.dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
-    //     this.pageSize = res.size;
-    //     this.listLength = res.totalElements;
-    //     this.pageNumber = res.number;
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    this.isLoadingResults = false;
   }
 
 }

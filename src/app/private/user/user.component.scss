@@ -1,0 +1,12 @@
+.display-block {
+    display: block;
+}
+
+.user {
+    &-container {
+        min-height: 100%;
+    }
+    &-main {
+        width: 100%;
+    }
+}
