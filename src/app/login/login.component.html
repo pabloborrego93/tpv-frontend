@@ -4,6 +4,9 @@
       <mat-card-title>
         Autenticaci&oacute;n
       </mat-card-title>
+      <mat-card-subtitle *ngIf="chainName">
+        {{chainName}}
+      </mat-card-subtitle>
       <mat-card-content>
         <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
           <mat-form-field class="display-block">

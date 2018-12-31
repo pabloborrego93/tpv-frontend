@@ -168,7 +168,6 @@
             <!-- Product Name -->
             <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
               <div fxLayout="column" fxFlexFill>
-                <app-form-header [icon]="'arrow_right_alt'" [text]="'Nombre del nuevo producto'"></app-form-header>
                 <mat-form-field class="display-block">
                   <input formControlName="name" matInput placeholder="Nombre:" form required>
                 </mat-form-field>
@@ -198,7 +197,6 @@
             <div fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
               <!-- Catalogable product -->
               <div fxLayout="column" fxFlexFill>
-                <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto que se pueda vender?'"></app-form-header>
                 <mat-slide-toggle formControlName="catalogable">Producto para el cat&aacute;logo</mat-slide-toggle>
               </div>
               <!-- End Catalogable product -->

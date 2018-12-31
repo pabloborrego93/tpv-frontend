@@ -422,3 +422,20 @@ h4.formHeader {
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
+
+.mat-dialog-content {
+    padding: 0 !important;
+}
+
+table.info-table {
+    width: 100%;
+    tr {
+        th {
+            text-align: left;
+            font-size: 13px;
+        }
+        td {
+            text-align: left;
+        }
+    }
+}

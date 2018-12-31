@@ -1,0 +1,44 @@
+<h3 mat-dialog-title>Confirmar eliminado</h3>
+<mat-dialog-content class="mat-typography" fxLayout="column" fxLayoutAlign="start center">
+  ¿Est&aacute; seguro que desea eliminar el siguiente usuario?
+  <table class="info-table">
+    <tr>
+      <th>Usuario</th>
+    </tr>
+    <tr>
+      <td>{{userData?.username}}</td>
+    </tr>
+    <tr>
+      <th>Email</th>
+    </tr>
+    <tr>
+      <td>{{userData?.email}}</td>
+    </tr>
+    <tr>
+      <th>Nombre</th>
+    </tr>
+    <tr>
+      <td>{{userData?.firstname}}</td>
+    </tr>
+    <tr>
+      <th>Apellidos</th>
+    </tr>
+    <tr>
+      <td>{{userData?.lastname}}</td>
+    </tr>
+    <tr>
+      <th>Roles</th>
+    </tr>
+    <tr>
+      <td>
+        <p *ngFor="let rol of userData?.roles">
+          {{rol.name | slice:5:rol.name.length}}
+        </p>
+      </td>
+    </tr>
+  </table>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="space-between center">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button [mat-dialog-close]="true">Confirmar</button>
+</mat-dialog-actions>

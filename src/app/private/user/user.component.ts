@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
-import { MatPaginator, MatTableDataSource, PageEvent } from '@angular/material';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { MatDialog, MatPaginator, MatTableDataSource, PageEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../shared/toast.service';
 import { NavigationService } from '../navigation/navigation.service';
 import { UserService } from './user.service';
+import { ConfirmDeleteComponent } from './confirm-delete/confirm-delete.component';
 
 @Component({
   selector: 'app-user',
@@ -36,6 +37,12 @@ export class UserComponent implements OnInit, AfterViewInit {
   }, {
     'value': 'ROLE_ORDER_SCREEN',
     'viewValue': 'ORDER_SCREEN'
+  }];
+
+  public roleUpdateType: any[] = [{
+    'name': 'ROLE_WAITER'
+  }, {
+    'name': 'ROLE_ORDER_SCREEN'
   }];
 
   validationMessages: Object = {
@@ -80,7 +87,8 @@ export class UserComponent implements OnInit, AfterViewInit {
     private userService: UserService,
     private toastService: ToastService,
     private formBuilder: FormBuilder,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    public dialog: MatDialog
   ) {
     this.loadData(this.pageNumber, this.pageSize);
   }
@@ -95,7 +103,8 @@ export class UserComponent implements OnInit, AfterViewInit {
   buildUserForm() {
     if (this.selected) {
       this.userForm = this.formBuilder.group({
-        username: [this.selected.username, [Validators.required, Validators.minLength(4), Validators.maxLength(16)]],
+        username: new FormControl({ value: this.selected.username, disabled: true },
+          [Validators.required, Validators.minLength(4), Validators.maxLength(16)]),
         email: [this.selected.email, [Validators.required, Validators.minLength(6), Validators.maxLength(32), Validators.email]],
         firstname: [this.selected.firstname, [Validators.required, Validators.minLength(2), Validators.maxLength(16)]],
         lastname: [this.selected.lastname, [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
@@ -124,11 +133,11 @@ export class UserComponent implements OnInit, AfterViewInit {
   toggleSelected(element) {
     if (this.selected && this.selected === element) {
       this.selected = null;
+      this.buildUserForm();
     } else {
       this.selected = element;
+      this.buildUserForm();
     }
-    console.log(this.selected);
-    this.buildUserForm();
   }
 
   loadData(page, max_per_page) {
@@ -167,12 +176,41 @@ export class UserComponent implements OnInit, AfterViewInit {
   }
 
   compareFn(a, b) {
-    return a && b && a === b.name;
+    return a && b && a.name === b.name;
   }
 
   submitUser(userFormRef: NgForm) {
     if (this.selected) {
       // updating
+      if (this.isValidForm(this.userForm)) {
+        this.loading = true;
+        const roles = this.userForm.value['roles'];
+        const username = this.userForm.getRawValue().username;
+        const email = this.userForm.value['email'];
+        const firstname = this.userForm.value['firstname'];
+        const lastname = this.userForm.value['lastname'];
+        setTimeout(() => {
+          const userUpdateDto = {
+            'username': username,
+            'email': email,
+            'firstname': firstname,
+            'lastname': lastname,
+            'roles': roles
+          };
+          this.userService
+            .update(userUpdateDto)
+            .then((res) => {
+              this.navigationService.updateNavigation();
+              this.loadData(this.pageNumber, this.pageSize);
+              this.formNameRepeated = false;
+            }).catch((err) => {
+              if (err.code === 409) {
+                this.formNameRepeated = true;
+              }
+            });
+          this.loading = false;
+        }, 500);
+      }
     } else {
       // creating
       if (this.isValidForm(this.userForm)) {
@@ -200,7 +238,6 @@ export class UserComponent implements OnInit, AfterViewInit {
               this.navigationService.updateNavigation();
               this.loadData(this.pageNumber, this.pageSize);
               this.formNameRepeated = false;
-              console.log(this.formValues);
               this.reset(userFormRef);
             }).catch((err) => {
               if (err.code === 409) {
@@ -214,7 +251,7 @@ export class UserComponent implements OnInit, AfterViewInit {
   }
 
   reset(userFormRef: NgForm) {
-    this.selected = null;
+    this.toggleSelected(null);
     userFormRef.reset({
       'username': '',
       'email': '',
@@ -223,6 +260,19 @@ export class UserComponent implements OnInit, AfterViewInit {
       'password': '',
       'confirmPassword': '',
       'roles': []
+    });
+  }
+
+  openDialog(event, userForm) {
+    const dialogRef = this.dialog.open(ConfirmDeleteComponent, { data: event });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.userService.delete(this.selected.id).then((res) => {
+          this.reset(userForm);
+          this.navigationService.updateNavigation();
+          this.loadData(this.pageNumber, this.pageSize);
+        });
+      }
     });
   }
 

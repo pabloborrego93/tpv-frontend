@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { OK_LOGOUT, ERR_LOGOUT } from './app.constants';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
@@ -10,10 +10,11 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router, public snackBar: MatSnackBar) { }
 
-  doLogin(username: string, password: string) {
+  doLogin(username: string, password: string, loginId?: string) {
     const userAndPass: object = {
       'username': username,
-      'password': password
+      'password': password,
+      'chainId': loginId
     };
     return this.http
       .post('/auth/login', userAndPass)
@@ -57,6 +58,16 @@ export class AuthService {
   getAuthorizationToken() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     return currentUser.token;
+  }
+
+  getRestaurantChainName(id) {
+    const url = `/api/restaurantChain/getById`;
+    const params: HttpParams = new HttpParams().set('id', id);
+    return this.http
+      .get(url, { params })
+      .pipe(
+        map((res) => res, (err) => err)
+      );
   }
 
   openSnackBar(message: string, action: string) {

@@ -1,8 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { first } from 'rxjs/operators';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +9,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+
+  public loginId;
+  public chainName;
 
   private loginForm: FormGroup;
   private loading: Boolean = false;
@@ -31,9 +33,17 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
     private auth: AuthService) { }
 
   ngOnInit() {
+    this.route.queryParams.subscribe((res) => {
+      this.loginId = res['id'];
+      if (this.loginId) {
+        this.auth.getRestaurantChainName(this.loginId)
+        .subscribe((result: any) => this.chainName = result.name, (err) => this.loginId = null);
+      }
+    });
     this.buildForm();
   }
 
@@ -67,7 +77,7 @@ export class LoginComponent implements OnInit {
       const username = this.loginForm.value['username'];
       const password = this.loginForm.value['password'];
       setTimeout(() => {
-        this.auth.doLogin(username, password)
+        this.auth.doLogin(username, password, this.loginId)
           .subscribe(
             (response: any) => {
               this.router.navigate(['/admin']);

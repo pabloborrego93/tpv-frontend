@@ -88,16 +88,17 @@
         </mat-form-field>
         <mat-form-field *ngIf="selected" class="display-block">
           <mat-select formControlName="roles" placeholder="Roles" [compareWith]="compareFn" multiple>
-            <mat-option *ngFor="let role of roleType" [(value)]="role.value">{{role.value}}</mat-option>
+            <mat-option *ngFor="let role of roleUpdateType" [(value)]="role">{{role.name}}</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-error *ngIf="formNameRepeated">{{validationMessages.username.nameInUse}}</mat-error>
         <div *ngIf="!selected" class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="16px">
+          <button mat-raised-button color="primary" type="button" (click)="reset(userFormRef)">Limpiar</button>
           <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(userForm)">Crear
             <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
-            <button mat-raised-button color="primary" type="button" (click)="reset(userFormRef)">Limpiar</button>
         </div>
-        <div *ngIf="selected" class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center">
+        <div *ngIf="selected" class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="16px">
+          <button mat-raised-button color="primary" type="button" (click)="openDialog(selected, userForm)">Eliminar</button>
           <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(userForm)">Actualizar
             <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
         </div>
