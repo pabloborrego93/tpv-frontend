@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
       this.auth.doLogin(username, password)
         .subscribe(
           (response: any) => {
-            this.router.navigate(['/admin']);
+            this.router.navigate(['/admin/chain']);
           },
           (error: any) => {
             this.loading = false;

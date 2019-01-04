@@ -2,8 +2,80 @@
   <mat-card>
     <mat-card-title>{{restaurant?.name}}</mat-card-title>
     <mat-card-subtitle>{{restaurant?.address}}</mat-card-subtitle>
-    <mat-card-content>
-      Content
+    <mat-card-title>Trabajadores</mat-card-title>
+    <mat-card-content *ngIf="workersForm">
+      <form [formGroup]="workersForm" (ngSubmit)="submitWorkers(workersForm.value)">
+        <mat-form-field class="display-block">
+          <mat-select formControlName="workers" placeholder="Trabajadores" [compareWith]="compareFn" multiple>
+            <mat-option *ngFor="let user of users" [(value)]="user">{{user.username}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="16px">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(workersForm)">Actualizar
+            <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
+        </div>
+      </form>
     </mat-card-content>
+    <mat-card-title>Zonas</mat-card-title>
+    <!-- Tabla Zonas -->
+    <mat-card-content *ngIf="dataSource && dataSource?.data?.length > 0">
+        <div class="loading-indicator">
+          <mat-spinner *ngIf="isLoadingResults" class></mat-spinner>
+        </div>
+        <div *ngIf="!isLoadingResults">
+          <mat-table #table [dataSource]="dataSource">
+            <ng-container matColumnDef="zoneType">
+              <mat-header-cell *matHeaderCellDef class="noPadding">Zona: </mat-header-cell>
+              <mat-cell *matCellDef="let element" [ngClass]="{'selected': selected == element}" class="noPadding pointer"
+                (click)="toggleSelected(element)"> {{getViewValue(element.zoneType)}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="description">
+              <mat-header-cell *matHeaderCellDef class="noPadding">Descripci&oacute;n: </mat-header-cell>
+              <mat-cell *matCellDef="let element" [ngClass]="{'selected': selected == element}" class="flexMultiLine noPadding pointer"
+                (click)="toggleSelected(element)"> {{element.description}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns; let i = index"></mat-row>
+          </mat-table>
+          <mat-paginator #paginator [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+            [showFirstLastButtons]="true" [length]="listLength" (page)="changePage($event)">
+          </mat-paginator>
+        </div>
+      </mat-card-content>
+      <!-- Fin Tabla Zonas -->
+      <!-- Formulario de creacion de zonas -->
+    <mat-card-title *ngIf="!selected">Crear nueva zona</mat-card-title>
+    <mat-card-title *ngIf="selected">Actualizar zona</mat-card-title>
+    <mat-card-content *ngIf="zoneForm">
+      <form ngForm #zoneFormRef [formGroup]="zoneForm" (ngSubmit)="submitZone(zoneFormRef)">
+        <mat-form-field *ngIf="!selected" class="display-block">
+          <mat-select formControlName="zoneType" placeholder="Zona">
+            <mat-option *ngFor="let zone of zoneType" [value]="zone.value">{{zone.viewValue}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngIf="selected" class="display-block">
+          <mat-select formControlName="zoneType" placeholder="Zona" [compareWith]="compareZoneFn">
+            <mat-option *ngFor="let zone of zoneType" [(value)]="zone">{{zone.viewValue}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="display-block">
+            <input id="description" type="text" placeholder="Descripcion" formControlName="description" required matInput>
+            <!-- <mat-error *ngIf="zoneForm.get('username').errors?.required">{{validationMessages.username.required}}</mat-error> -->
+            <!-- <mat-error *ngIf="zoneForm.get('username').errors?.minlength">{{validationMessages.username.minlength}}</mat-error> -->
+            <!-- <mat-error *ngIf="zoneForm.get('username').errors?.maxlength">{{validationMessages.username.maxlength}}</mat-error> -->
+          </mat-form-field>
+        <div *ngIf="!selected" class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="16px">
+          <button mat-raised-button color="primary" type="button" (click)="reset(zoneFormRef)">Limpiar</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(zoneForm)">Crear
+            <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
+        </div>
+        <div *ngIf="selected" class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="16px">
+          <button mat-raised-button color="primary" type="button" (click)="openDialog(selected, zoneForm)">Eliminar</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(zoneForm)">Actualizar
+            <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
+        </div>
+      </form>
+    </mat-card-content>
+    <!-- Fin Formulario de creacion de zonas -->
   </mat-card>
 </div>

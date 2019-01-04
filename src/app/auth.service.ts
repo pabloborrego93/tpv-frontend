@@ -4,9 +4,13 @@ import { map } from 'rxjs/operators';
 import { OK_LOGOUT, ERR_LOGOUT } from './app.constants';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
+import { UserComponent } from './private/user/user.component';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthService {
+
+  currentUser: any;
 
   constructor(private http: HttpClient, private router: Router, public snackBar: MatSnackBar) { }
 
@@ -22,12 +26,34 @@ export class AuthService {
         (response: any) => {
           if (response && response.access_token) {
             localStorage.setItem('currentUser', JSON.stringify({ username, token: response.access_token }));
+            this.getCurrentUserInfo();
           }
         },
         (error) => {
           console.log('No se pudo hacer login');
         }
       ));
+  }
+
+  getCurrentUserInfo() {
+    return this.http
+      .get('/api/user')
+      .pipe(map(
+        (response: any) => this.currentUser = response,
+        (error) => {
+          console.log('No se pudo hacer login');
+        }
+      ));
+  }
+
+  getCurrentUser() {
+    return this.currentUser;
+  }
+
+  getUserInfo() {
+    return this.http
+    .get('/api/user')
+    .map((res) => res);
   }
 
   doRegister(registerDto) {

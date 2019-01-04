@@ -44,7 +44,10 @@ import { AuthInterceptor } from './auth.interceptor';
       }, {
         path: 'admin',
         loadChildren: 'app/private/private.module#PrivateModule',
-        canLoad: [AuthGuard]
+        canLoad: [AuthGuard],
+        data: {
+          roles: []
+        }
       }, {
         path: '**', redirectTo: '/home', pathMatch: 'full'
       }

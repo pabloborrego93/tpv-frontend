@@ -11,14 +11,51 @@ import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
   {
-    path: '', component: AdminComponent, canActivate: [AuthGuard], canActivateChild: [AuthGuard],
+    path: '',
+    component: AdminComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    data: {
+      roles: []
+    },
     children: [
-      { path: 'myprofile', component: MyProfileComponent },
-      { path: 'chain', component: RestaurantChainComponent },
-      { path: 'restaurant/:name', component: RestaurantComponent },
-      { path: 'product-families', component: ProductFamilyComponent },
-      { path: 'products', component: ProductComponent },
-      { path: 'users', component: UserComponent }
+      {
+        path: 'myprofile',
+        component: MyProfileComponent,
+        data: {
+          roles: []
+        }
+      }, {
+        path: 'chain',
+        component: RestaurantChainComponent,
+        data: {
+          roles: ['ROLE_RESTAURANT_CHAIN_ADMIN']
+        }
+      }, {
+        path: 'restaurant/:name',
+        component: RestaurantComponent,
+        data: {
+          roles: ['ROLE_RESTAURANT_CHAIN_ADMIN']
+        }
+      }, {
+        path: 'product-families',
+        component: ProductFamilyComponent,
+        data: {
+          roles: ['ROLE_RESTAURANT_CHAIN_ADMIN']
+        }
+      }, {
+        path: 'products',
+        component: ProductComponent,
+        data: {
+          roles: ['ROLE_RESTAURANT_CHAIN_ADMIN']
+        }
+      }, {
+        path: 'users',
+        component: UserComponent,
+        data: {
+          roles: ['ROLE_RESTAURANT_CHAIN_ADMIN']
+        }
+      }
     ]
   }
 ];

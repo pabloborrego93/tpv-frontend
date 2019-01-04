@@ -1,0 +1,22 @@
+<h3 mat-dialog-title>Confirmar eliminado</h3>
+<mat-dialog-content class="mat-typography" fxLayout="column" fxLayoutAlign="start center">
+  ¿Est&aacute; seguro que desea eliminar la siguiente zona?
+  <table class="info-table">
+    <tr>
+      <th>Zona</th>
+    </tr>
+    <tr>
+      <td>{{getViewValue(zoneData?.zoneType)}}</td>
+    </tr>
+    <tr>
+      <th>Descripci&oacute;n</th>
+    </tr>
+    <tr>
+      <td>{{zoneData?.description}}</td>
+    </tr>
+  </table>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="space-between center">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button [mat-dialog-close]="true">Confirmar</button>
+</mat-dialog-actions>

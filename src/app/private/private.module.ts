@@ -24,6 +24,7 @@ import { ProductImageCropperComponent } from './product/product-image-cropper/pr
 import { UserComponent } from './user/user.component';
 import { UserService } from './user/user.service';
 import { ConfirmDeleteComponent } from './user/confirm-delete/confirm-delete.component';
+import { ConfirmDeleteZoneComponent } from './restaurant/confirm-delete-zone/confirm-delete-zone.component';
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ import { ConfirmDeleteComponent } from './user/confirm-delete/confirm-delete.com
     FormHeaderComponent,
     ProductImageCropperComponent,
     UserComponent,
-    ConfirmDeleteComponent
+    ConfirmDeleteComponent,
+    ConfirmDeleteZoneComponent
   ],
   providers: [
     MyProfileService,
@@ -60,7 +62,8 @@ import { ConfirmDeleteComponent } from './user/confirm-delete/confirm-delete.com
   ],
   entryComponents: [
     ProductImageCropperComponent,
-    ConfirmDeleteComponent
+    ConfirmDeleteComponent,
+    ConfirmDeleteZoneComponent
   ]
 })
 export class PrivateModule { }

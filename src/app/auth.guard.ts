@@ -2,39 +2,125 @@ import { Injectable } from '@angular/core';
 import { Route, Router, CanActivate, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot, CanLoad } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from './auth.service';
+import { catchError, map } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   canActivate(
-    next: ActivatedRouteSnapshot,
+    route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (localStorage.getItem('currentUser')) {
-      return true;
-    }
 
-    this.router.navigate(['/login']);
-    return false;
+    return this.authService.getUserInfo().pipe(
+      map((getUserInfo: any) => {
+        const expectedRolesArray = route.data.roles;
+        const token = localStorage.getItem('currentUser');
+        const roles = getUserInfo.roles;
+        let hasPermission = false;
+
+        console.log('Hace falta para entrar: ');
+        console.log(expectedRolesArray);
+        console.log('Y tengo: ');
+        console.log(roles);
+
+        expectedRolesArray.forEach((eR) => {
+          roles.forEach((r) => {
+            if (eR === r.name) {
+              hasPermission = true;
+            }
+          });
+        });
+
+        if ((token && hasPermission) || (token && expectedRolesArray.length === 0)) {
+          return true;
+        } else {
+          this.router.navigate(['login']);
+          return false;
+        }
+
+      }),
+      catchError((err) => {
+        this.router.navigate(['login']);
+        return of(false);
+      })
+    );
   }
 
-  canLoad(route: Route): boolean {
-    if (localStorage.getItem('currentUser')) {
-      return true;
-    }
+  canLoad(route: Route): Observable<boolean> | boolean {
+    return this.authService.getUserInfo().pipe(
+      map((getUserInfo: any) => {
+        const expectedRolesArray = route.data.roles;
+        const token = localStorage.getItem('currentUser');
+        const roles = getUserInfo.roles;
+        let hasPermission = false;
 
-    this.router.navigate(['/login']);
-    return false;
+        console.log('Hace falta para entrar: ');
+        console.log(expectedRolesArray);
+        console.log('Y tengo: ');
+        console.log(roles);
+
+        expectedRolesArray.forEach((eR) => {
+          roles.forEach((r) => {
+            if (eR === r.name) {
+              hasPermission = true;
+            }
+          });
+        });
+
+        if ((token && hasPermission) || (token && expectedRolesArray.length === 0)) {
+          return true;
+        } else {
+          this.router.navigate(['login']);
+          return false;
+        }
+
+      }),
+      catchError((err) => {
+        this.router.navigate(['login']);
+        return of(false);
+      })
+    );
   }
 
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):  boolean {
-    if (localStorage.getItem('currentUser')) {
-      return true;
-    }
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+    return this.authService.getUserInfo().pipe(
+      map((getUserInfo: any) => {
+        const expectedRolesArray = route.data.roles;
+        const token = localStorage.getItem('currentUser');
+        const roles = getUserInfo.roles;
+        let hasPermission = false;
 
-    this.router.navigate(['/login']);
-    return false;
+        console.log('Hace falta para entrar: ');
+        console.log(expectedRolesArray);
+        console.log('Y tengo: ');
+        console.log(roles);
+
+        expectedRolesArray.forEach((eR) => {
+          roles.forEach((r) => {
+            if (eR === r.name) {
+              hasPermission = true;
+            }
+          });
+        });
+
+        if ((token && hasPermission) || (token && expectedRolesArray.length === 0)) {
+          return true;
+        } else {
+          this.router.navigate(['login']);
+          return false;
+        }
+
+      }),
+      catchError((err) => {
+        this.router.navigate(['login']);
+        return of(false);
+      })
+    );
   }
-
 }
