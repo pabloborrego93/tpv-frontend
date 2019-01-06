@@ -1,0 +1,30 @@
+<div 
+  infiniteScroll 
+  [scrollWindow]="false" 
+  [infiniteScrollDistance]="0" 
+  [infiniteScrollThrottle]="100" 
+  (scrolled)="onScroll()" 
+  class="order-container"
+  fxLayout="column" 
+  fxLayoutGap="16px">
+
+  <h2>Pedidos</h2>
+
+
+  <mat-card *ngFor="let order of orders | async">
+    <mat-card-header>{{ order?.id }}</mat-card-header>
+    <mat-card-content>
+      <p>{{ order?.createdAt }}</p>
+      <p>{{ order?.status }}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngIf="!finished">
+    Cargando pedidos...
+  </div>
+
+  <div *ngIf="finished">
+    No hay m&aacute;s pedidos.
+  </div>
+
+</div>

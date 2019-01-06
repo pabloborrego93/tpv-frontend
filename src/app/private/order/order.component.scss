@@ -1,0 +1,15 @@
+.display-block {
+    display: block;
+  }
+
+  .order {
+    &-container {
+        min-height: 100%;
+        height: 100%;
+        overflow-y: auto;
+        // overflow-x: hidden;
+    }
+    &-main {
+      width: 100%;
+    }
+  }

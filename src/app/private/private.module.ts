@@ -1,30 +1,33 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ImageCropperModule } from 'ngx-image-cropper';
 import { SharedModule } from '../shared/shared.module';
 import { AdminComponent } from './admin/admin.component';
 import { BrandComponent } from './brand/brand.component';
 import { FooterComponent } from './footer/footer.component';
+import { FormHeaderComponent } from './form-header/form-header.component';
 import { HeaderComponent } from './header/header.component';
 import { MyProfileComponent } from './my-profile/my-profile.component';
 import { MyProfileService } from './my-profile/my-profile.service';
 import { NavigationModule } from './navigation/navigation.module';
+import { OrderComponent } from './order/order.component';
 import { PrivateRoutingModule } from './private-routing.module';
-import { ChainService } from './restaurant-chain/chain.service';
-import { RestaurantChainComponent } from './restaurant-chain/restaurant-chain.component';
-import { RestaurantComponent } from './restaurant/restaurant.component';
-import { RestaurantService } from './restaurant/restaurant.service';
 import { ProductFamilyComponent } from './product-family/product-family.component';
 import { ProductFamilyService } from './product-family/product-family.service';
+import { ProductImageCropperComponent } from './product/product-image-cropper/product-image-cropper.component';
 import { ProductComponent } from './product/product.component';
 import { ProductService } from './product/product.service';
-import { FormHeaderComponent } from './form-header/form-header.component';
-import { ImageCropperModule } from 'ngx-image-cropper';
-import { ProductImageCropperComponent } from './product/product-image-cropper/product-image-cropper.component';
+import { ChainService } from './restaurant-chain/chain.service';
+import { RestaurantChainComponent } from './restaurant-chain/restaurant-chain.component';
+import { ConfirmDeleteZoneComponent } from './restaurant/confirm-delete-zone/confirm-delete-zone.component';
+import { RestaurantComponent } from './restaurant/restaurant.component';
+import { RestaurantService } from './restaurant/restaurant.service';
+import { ConfirmDeleteComponent } from './user/confirm-delete/confirm-delete.component';
 import { UserComponent } from './user/user.component';
 import { UserService } from './user/user.service';
-import { ConfirmDeleteComponent } from './user/confirm-delete/confirm-delete.component';
-import { ConfirmDeleteZoneComponent } from './restaurant/confirm-delete-zone/confirm-delete-zone.component';
+import { OrderService } from './order/order.service';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   imports: [
@@ -34,7 +37,8 @@ import { ConfirmDeleteZoneComponent } from './restaurant/confirm-delete-zone/con
     FormsModule,
     ReactiveFormsModule,
     NavigationModule,
-    ImageCropperModule
+    ImageCropperModule,
+    InfiniteScrollModule
   ],
   declarations: [
     AdminComponent,
@@ -50,7 +54,8 @@ import { ConfirmDeleteZoneComponent } from './restaurant/confirm-delete-zone/con
     ProductImageCropperComponent,
     UserComponent,
     ConfirmDeleteComponent,
-    ConfirmDeleteZoneComponent
+    ConfirmDeleteZoneComponent,
+    OrderComponent
   ],
   providers: [
     MyProfileService,
@@ -58,7 +63,8 @@ import { ConfirmDeleteZoneComponent } from './restaurant/confirm-delete-zone/con
     RestaurantService,
     ProductFamilyService,
     ProductService,
-    UserService
+    UserService,
+    OrderService
   ],
   entryComponents: [
     ProductImageCropperComponent,

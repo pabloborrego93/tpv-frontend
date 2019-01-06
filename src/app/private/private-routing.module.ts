@@ -8,6 +8,7 @@ import { ProductComponent } from './product/product.component';
 import { RestaurantChainComponent } from './restaurant-chain/restaurant-chain.component';
 import { RestaurantComponent } from './restaurant/restaurant.component';
 import { UserComponent } from './user/user.component';
+import { OrderComponent } from './order/order.component';
 
 const routes: Routes = [
   {
@@ -54,6 +55,12 @@ const routes: Routes = [
         component: UserComponent,
         data: {
           roles: ['ROLE_RESTAURANT_CHAIN_ADMIN']
+        }
+      }, {
+        path: 'orders/:id',
+        component: OrderComponent,
+        data: {
+          roles: ['ROLE_WAITER']
         }
       }
     ]
