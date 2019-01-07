@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../shared/toast.service';
 import { RestaurantService } from './restaurant.service';
 import { ConfirmDeleteZoneComponent } from './confirm-delete-zone/confirm-delete-zone.component';
+import { NavigationService } from '../navigation/navigation.service';
 
 @Component({
   selector: 'app-restaurant',
@@ -47,6 +48,7 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
     private router: Router,
     private activateRoute: ActivatedRoute,
     private restaurantService: RestaurantService,
+    private navigationService: NavigationService,
     private toastService: ToastService,
     private formBuilder: FormBuilder,
     public dialog: MatDialog
@@ -201,7 +203,7 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.restaurantService.setAllWorkers(this.restaurant.id, value.workers)
         .then((res) => {
-
+          this.navigationService.updateNavigation();
           this.loading = false;
         }).catch((err) => {
 

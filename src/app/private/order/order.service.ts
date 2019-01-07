@@ -10,7 +10,7 @@ export class OrderService {
     const url = `/api/order/${idRestaurant}?page=${pageIndex}&max_per_page=${pageSize}`;
     return this.http
       .get(url)
-      .map((res) => res);
+      .map((res) => res, (err) => err);
   }
 
 }

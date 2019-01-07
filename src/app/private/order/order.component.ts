@@ -16,6 +16,8 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   orders;
   finished: Boolean = false;
+  errorLoadingOrders: Boolean = false;
+  errorMessage;
 
   page = 0;
   pageSize = 10;
@@ -52,15 +54,31 @@ export class OrderComponent implements OnInit, OnDestroy {
     if (!this.finished) {
       this.orderService.list(this.idRestaurant, this.page, this.pageSize)
       .do((orders: any) => {
+        if (this.errorLoadingOrders) {
+          this.errorLoadingOrders = false;
+        }
         if (orders.last) {
           this.finished = true;
         }
         const currentOrders = this.orders.getValue();
         this.orders.next(_.concat(currentOrders, orders.content));
+      }, (error: any) => {
+        if (error.status === 403) {
+          this.errorLoadingOrders = true;
+          this.errorMessage = 'No tiene permisos para acceder a los pedidos del restaurante';
+        }
+        if (error.status === 404) {
+          this.errorLoadingOrders = true;
+          this.errorMessage = 'No encontrado';
+        }
       })
       .take(1)
       .subscribe();
     }
+  }
+
+  getErrorMsg() {
+    return this.errorMessage;
   }
 
 }
