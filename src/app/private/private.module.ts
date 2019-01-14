@@ -28,6 +28,7 @@ import { UserComponent } from './user/user.component';
 import { UserService } from './user/user.service';
 import { OrderService } from './order/order.service';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     ReactiveFormsModule,
     NavigationModule,
     ImageCropperModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    PerfectScrollbarModule
   ],
   declarations: [
     AdminComponent,

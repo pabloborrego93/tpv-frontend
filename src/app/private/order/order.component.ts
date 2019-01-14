@@ -20,7 +20,11 @@ export class OrderComponent implements OnInit, OnDestroy {
   errorMessage;
 
   page = 0;
-  pageSize = 10;
+  pageSize = 8;
+
+  config = {
+    suppressScrollX: true
+  };
 
   constructor(
     private router: Router,
