@@ -85,19 +85,19 @@ mat-sidenav-container {
 
 @media (min-width: 768px) {
     mat-card-title {
-        font-size: 1.8em !important;
+        font-size: 1.6em !important;
     }
 }
 
 @media (min-width: 992px) {
     mat-card-title {
-        font-size: 1.8em !important;
+        font-size: 1.6em !important;
     }
 }
 
 @media (min-width: 1200px) {
     mat-card-title {
-        font-size: 1.8em !important;
+        font-size: 1.6em !important;
     }
 }
 
@@ -441,4 +441,17 @@ table.info-table {
             text-align: left;
         }
     }
+}
+
+.card-hover {
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+  
+.card-hover:hover {
+    cursor: pointer;
+    box-shadow: 0 10px 14px rgba(0, 0, 0, 0.1), 0 4px 4px rgba(0, 0, 0, 0.1)
+}
+
+.mat-expansion-panel-header-description, .mat-expansion-panel-header-title {
+    justify-content: flex-end;
 }

@@ -5,17 +5,20 @@
   [infiniteScrollThrottle]="100" 
   (scrolled)="onScroll()"
   class="order-container" fxLayout="column" fxLayoutGap="16px">
-  <mat-card>
+  <mat-card *ngIf="!creatingOrEditing()">
     <mat-card-title>Pedidos</mat-card-title>
     <mat-card-content *ngIf="!errorLoadingOrders">
       <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="space-between center">
         <button mat-raised-button color="primary">Actualizar</button>
-        <button mat-raised-button color="primary">Nuevo Pedido</button>
+        <button mat-raised-button color="primary" (click)="create()">Nuevo Pedido</button>
       </div>
-      <mat-card class="mt-2" *ngFor="let order of orders | async">
-        <mat-card-header>{{ order?.id }}</mat-card-header>
+      <mat-card (click)="edit(order)" class="mt-2 card-hover" *ngFor="let order of orders | async">
+        <mat-card-title fxLayout="row" fxLayoutAlign="space-between center">
+          <span>{{ getViewValue(order?.zone?.zoneType) }} - {{ order?.zone?.description }}</span>
+          <small>{{ order?.createdAt | timeAgo }}</small>
+        </mat-card-title>
+        <mat-card-subtitle>{{ order?.id }} - {{ order?.status }}</mat-card-subtitle>
         <mat-card-content>
-          <p>{{ order?.createdAt }}</p>
           <p>{{ order?.status }}</p>
         </mat-card-content>
       </mat-card>
@@ -32,4 +35,48 @@
       {{getErrorMsg()}}
     </mat-card-content>
   </mat-card>
+  <!-- Editar Pedido -->
+  <mat-card *ngIf="creatingOrEditing() && editing">
+    <mat-card-title fxLayout="row" fxLayoutAlign="space-between center">
+      <span>Editar pedido</span>
+      <button mat-raised-button color="primary" (click)="back()">Volver</button>
+    </mat-card-title>
+    <mat-card-content>
+      {{selected.id}}
+    </mat-card-content>
+  </mat-card>
+  <!-- Fin Editar Pedido -->
+  <!-- Nuevo Pedido -->
+  <mat-card *ngIf="creatingOrEditing() && creating">
+    <mat-card-title fxLayout="row" fxLayoutAlign="space-between center">
+      <span>Nuevo pedido</span>
+      <button mat-raised-button color="primary" (click)="back()">Volver</button>
+    </mat-card-title>
+    <mat-card-content>
+      <mat-card-title>Zona</mat-card-title>
+      <mat-accordion *ngIf="zonesGrouped && zonesGrouped.length > 0">
+        <mat-expansion-panel *ngFor="let zone of zonesGrouped">
+          <mat-expansion-panel-header *ngIf="zone.zones && zone.zones.length > 0">
+            <mat-panel-title>
+              {{ getViewValue(zone.zoneType) }}
+            </mat-panel-title>
+            <mat-panel-description >
+              {{zone.zones.length}} elemento/s encontrados
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div *ngFor="let z of zone.zones">
+            {{ z.description }}
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <mat-card-title class="mt-2">Productos</mat-card-title>
+      <div *ngFor="let group of productsGrouped">
+        <h3>{{ group.name }}</h3>
+        <div *ngFor="let product of group.productList">
+          {{ product.name }}
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <!-- Fin Nuevo Pedido -->
 </div>

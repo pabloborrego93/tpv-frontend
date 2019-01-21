@@ -29,6 +29,7 @@ import { UserService } from './user/user.service';
 import { OrderService } from './order/order.service';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { TimeAgoPipe } from '../pipes/TimeAgoPipe.pipe';
 
 @NgModule({
   imports: [
@@ -57,7 +58,8 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     UserComponent,
     ConfirmDeleteComponent,
     ConfirmDeleteZoneComponent,
-    OrderComponent
+    OrderComponent,
+    TimeAgoPipe
   ],
   providers: [
     MyProfileService,
