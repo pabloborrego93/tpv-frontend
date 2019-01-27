@@ -46,4 +46,13 @@ export class ProductService {
     .catch((err) => Promise.reject(err.error));
   }
 
+  catalogablesProductFamilies() {
+    const url = `/api/product/catalogablesProductFamilies`;
+    return this.http
+    .get(url)
+    .toPromise()
+    .then((res) => res)
+    .catch((err) => Promise.reject(err.error));
+  }
+
 }

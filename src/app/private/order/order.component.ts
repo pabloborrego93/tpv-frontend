@@ -77,12 +77,12 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
   getAllProducts() {
-    this.productService.list(0, 1000).then((res: any) => {
+    this.productService.catalogablesProductFamilies().then((res: any) => {
       // this.productsGrouped = this.groupBy(res.content, 'families.name', 'families', 'products');
       // this.productsGrouped = _u.groupBy(_u.flatten(_u.pluck(res.content, 'families')), function (item) {
       //   return item;
       // });
-      const products = res.content;
+      const products = res;
       const byFamilies = products.reduce(function(families, product) {
         product.families.forEach(function(family) {
           const name = family.name;
