@@ -1,8 +1,8 @@
 .display-block {
     display: block;
-  }
+}
 
-  .order {
+.order {
     &-container {
         min-height: 100%;
         height: 100%;
@@ -10,6 +10,74 @@
         overscroll-behavior-y: contain;
     }
     &-main {
-      width: 100%;
+        width: 100%;
     }
-  }
+}
+
+.order-card {
+    &:hover {
+        cursor: pointer;
+        background-color: lightgrey;
+    }
+}
+
+.mat-column-id {
+    flex: 0 0 24px;
+    justify-content: center;
+}
+
+.mat-column-amount {
+    flex: 0 0 36px;
+    justify-content: center;
+}
+
+.mat-column-total {
+    flex: 0 0 54px;
+    justify-content: flex-end;
+}
+
+table.detail-table {
+    td,
+    th.-no {
+        flex: 0 0 36px !important;
+        text-align: center;
+        font-size: 0.85em !important;
+    }
+    td,
+    th.-product-name {
+        flex: 0 0 64px !important;
+        font-size: 0.85em !important;
+    }
+}
+
+.mh-240 {
+    min-height: 240px;
+}
+
+.example-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+    min-width: 300px;
+}
+
+.mat-table {
+    overflow: auto;
+    max-height: 500px;
+}
+
+.element-row {
+    position: relative;
+}
+
+.element-row:not(.expanded) {
+    cursor: pointer;
+}
+
+.element-row:not(.expanded):hover {
+    background: #f5f5f5;
+}
+
+.element-row.expanded {
+    border-bottom-color: transparent;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { OrderService } from './order.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,20 +8,36 @@ import { RestaurantService } from '../restaurant/restaurant.service';
 import { zip } from 'rxjs';
 import { ProductService } from '../product/product.service';
 import * as _u from 'underscore';
+import { MatAccordion } from '@angular/material';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
-  styleUrls: ['./order.component.scss']
+  styleUrls: ['./order.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),
+      state('expanded', style({ height: '*', visibility: 'visible' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ]
 })
 export class OrderComponent implements OnInit, OnDestroy {
 
+  @ViewChild(MatAccordion) accordion: MatAccordion;
   idRestaurant;
 
   orders;
   finished: Boolean = false;
   errorLoadingOrders: Boolean = false;
   errorMessage;
+  zoneSelected: any;
+
+  productLines: any[] = [];
+  datasource;
+
+  expandedElement: any;
 
   page = 0;
   pageSize = 8;
@@ -29,6 +45,8 @@ export class OrderComponent implements OnInit, OnDestroy {
   config = {
     suppressScrollX: true
   };
+
+  displayedColumns: string[] = ['id', 'product', 'amount', 'total'];
 
   public selected: any;
   public editing: Boolean = false;
@@ -53,7 +71,8 @@ export class OrderComponent implements OnInit, OnDestroy {
     private orderService: OrderService,
     private activateRoute: ActivatedRoute,
     private restaurantService: RestaurantService,
-    private productService: ProductService
+    private productService: ProductService,
+    private changeDetectorRefs: ChangeDetectorRef
   ) {
     this.activateRoute.params.
       subscribe((params) => {
@@ -64,11 +83,14 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.datasource = new BehaviorSubject([]);
   }
 
   ngOnDestroy() {
     this.orders.unsubscribe();
   }
+
+  isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
 
   getAllZones() {
     this.restaurantService.getAllZones(this.idRestaurant, 0, 1000).then((res: any) => {
@@ -78,10 +100,6 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   getAllProducts() {
     this.productService.catalogablesProductFamilies().then((res: any) => {
-      // this.productsGrouped = this.groupBy(res.content, 'families.name', 'families', 'products');
-      // this.productsGrouped = _u.groupBy(_u.flatten(_u.pluck(res.content, 'families')), function (item) {
-      //   return item;
-      // });
       const products = res;
       const byFamilies = products.reduce(function(families, product) {
         product.families.forEach(function(family) {
@@ -93,6 +111,7 @@ export class OrderComponent implements OnInit, OnDestroy {
       }, {});
       this.productsGrouped = byFamilies;
       this.productsGrouped = _.map(this.productsGrouped, (productList, name) => ({ name, productList }));
+      this.productsGrouped = _.orderBy(this.productsGrouped, ['name']);
       console.log(this.productsGrouped);
     });
   }
@@ -139,14 +158,18 @@ export class OrderComponent implements OnInit, OnDestroy {
   back() {
     this.creating = false;
     this.editing = false;
+    this.zoneSelected = null;
     this.restartScroll();
     this.getNextOrders();
+    this.productLines = [];
   }
 
   onScroll() {
-    console.log('scrolled!!');
-    this.page += 1;
-    this.getNextOrders();
+    if (!this.creatingOrEditing()) {
+      console.log('scrolled!!');
+      this.page += 1;
+      this.getNextOrders();
+    }
   }
 
   getNextOrders() {
@@ -176,8 +199,56 @@ export class OrderComponent implements OnInit, OnDestroy {
     }
   }
 
+  getTotal() {
+    let total = 0;
+    _.map(this.productLines, (pl) => {
+      total += pl.products[0].price * pl.amount;
+    });
+    return total;
+  }
+
+  selectZone(z) {
+    this.accordion.closeAll();
+    this.zoneSelected = z;
+  }
+
   getErrorMsg() {
     return this.errorMessage;
+  }
+
+  addProduct(product) {
+    const alreadyExists = _.find(this.productLines, { 'productId': product.id});
+    if (!alreadyExists) {
+      const productsArray = [];
+      productsArray.push(product);
+      const pl = {
+        'products': productsArray,
+        'amount': 1,
+        productId: product.id,
+      };
+      this.productLines.push(pl);
+      const rows = [];
+      this.productLines.forEach(element => rows.push(element, { detailRow: true, element }));
+      this.datasource.next(rows);
+    } else {
+      alreadyExists.amount += 1;
+      alreadyExists.products.push(product);
+      const rows = [];
+      this.productLines.forEach(element => rows.push(element, { detailRow: true, element }));
+      this.datasource.next(rows);
+    }
+  }
+
+  removeProduct(row) {
+    const product = _.find(this.productLines, { 'productId': row.productId});
+    if (product.amount === 1) {
+      _.remove(this.productLines, { 'productId': row.productId});
+      this.datasource.next(this.productLines);
+    } else {
+      const alreadyExists = _.find(this.productLines, { 'productId': row.productId});
+      alreadyExists.amount -= 1;
+      this.datasource.next(this.productLines);
+    }
   }
 
 }

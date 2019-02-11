@@ -15,9 +15,9 @@
       <div *ngIf="!isLoadingResults">
         <mat-table #table [dataSource]="dataSource">
           <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef class="noPadding"> Name </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{'selected': selected == element.name}" class="noPadding pointer"
-              (click)="toggleSelected(element.name)"> {{element.name}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef class="noPadding"> Nombre </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{'selected': selected == element}" class="noPadding pointer"
+              (click)="toggleSelected(element)"> {{element.name}} </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns; let i = index"></mat-row>
@@ -39,6 +39,9 @@
           <mat-error *ngIf="createProductFamilyForm?.get('name')?.errors?.minlength">{{ProductFamilyValidationMessages.name.minlength}}</mat-error>
           <mat-error *ngIf="createProductFamilyForm?.get('name')?.errors?.maxlength">{{ProductFamilyValidationMessages.name.maxlength}}</mat-error>
         </mat-form-field>
+        <div fxLayout="column" fxFlexFill>
+          <mat-slide-toggle formControlName="catalogable">Familia para el catalogo</mat-slide-toggle>
+        </div>
         <mat-error *ngIf="formNameRepeated">{{ProductFamilyValidationMessages.name.nameInUse}}</mat-error>
         <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="space-between center center">
           <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(createProductFamilyForm)">Crear
@@ -52,11 +55,14 @@
     <mat-card-content *ngIf="updateProductFamilyForm && selected">
       <form [formGroup]="updateProductFamilyForm" (ngSubmit)="updateProductFamily()">
         <mat-form-field class="display-block">
-          <input matInput placeholder="Nombre:" formControlName="name" value="{{selected}}">
+          <input matInput placeholder="Nombre:" formControlName="name">
           <mat-error *ngIf="updateProductFamilyForm?.get('name')?.errors?.required">{{ProductFamilyValidationMessages.name.required}}</mat-error>
           <mat-error *ngIf="updateProductFamilyForm?.get('name')?.errors?.minlength">{{ProductFamilyValidationMessages.name.minlength}}</mat-error>
           <mat-error *ngIf="updateProductFamilyForm?.get('name')?.errors?.maxlength">{{ProductFamilyValidationMessages.name.maxlength}}</mat-error>
         </mat-form-field>
+        <div fxLayout="column" fxFlexFill>
+          <mat-slide-toggle formControlName="catalogable">Familia para el catalogo</mat-slide-toggle>
+        </div>
         <mat-error *ngIf="formNameRepeated">{{ProductFamilyValidationMessages.name.nameInUse}}</mat-error>
         <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8px">
           <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(updateProductFamilyForm)">Actualizar

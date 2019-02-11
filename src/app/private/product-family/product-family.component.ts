@@ -50,7 +50,6 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.buildCreateProductFamilyForm();
-    this.buildUpdateProductFamilyForm();
   }
 
   ngAfterViewInit() {
@@ -60,8 +59,10 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
   toggleSelected(element) {
     if (this.selected && this.selected === element) {
       this.selected = null;
+      this.buildCreateProductFamilyForm();
     } else {
       this.selected = element;
+      this.buildUpdateProductFamilyForm();
     }
   }
 
@@ -85,12 +86,15 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
   buildCreateProductFamilyForm() {
     this.createProductFamilyForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
+      catalogable: [false, [Validators.required]]
     });
   }
 
   buildUpdateProductFamilyForm() {
+    console.log(this.selected);
     this.updateProductFamilyForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
+      name: [this.selected.name, [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
+      catalogable: [this.selected.catalogable, [Validators.required]]
     });
   }
 
@@ -105,10 +109,12 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
     if (this.isValidForm(this.updateProductFamilyForm)) {
       this.loading = true;
       const name = this.updateProductFamilyForm.value['name'];
+      const catalogable = this.updateProductFamilyForm.value['catalogable'];
       setTimeout(() => {
         const productFamilyUpdateDto = {
-          'oldName' : this.selected,
-          'newName' : name
+          'id' : this.selected.id,
+          'name' : name,
+          'catalogable' : catalogable
         };
         this.productFamilyService
           .update(productFamilyUpdateDto)
@@ -131,9 +137,11 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
     if (this.isValidForm(this.createProductFamilyForm)) {
       this.loading = true;
       const name = this.createProductFamilyForm.value['name'];
+      const catalogable = this.createProductFamilyForm.value['catalogable'];
       setTimeout(() => {
         const productFamilyPostDto = {
-          'name' : name
+          'name' : name,
+          'catalogable' : catalogable
         };
         this.productFamilyService
           .create(productFamilyPostDto)

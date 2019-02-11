@@ -1,9 +1,4 @@
-<div 
-  infiniteScroll 
-  [scrollWindow]="false" 
-  [infiniteScrollDistance]="3" 
-  [infiniteScrollThrottle]="100" 
-  (scrolled)="onScroll()"
+<div infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="3" [infiniteScrollThrottle]="100" (scrolled)="onScroll()"
   class="order-container" fxLayout="column" fxLayoutGap="16px">
   <mat-card *ngIf="!creatingOrEditing()">
     <mat-card-title>Pedidos</mat-card-title>
@@ -53,27 +48,108 @@
       <button mat-raised-button color="primary" (click)="back()">Volver</button>
     </mat-card-title>
     <mat-card-content>
-      <mat-card-title>Zona</mat-card-title>
-      <mat-accordion *ngIf="zonesGrouped && zonesGrouped.length > 0">
+      <mat-card-title *ngIf="!zoneSelected">Zona</mat-card-title>
+      <mat-card-title *ngIf="zoneSelected">Zona: {{getViewValue(zoneSelected.zoneType)}} - {{zoneSelected.description}}</mat-card-title>
+      <mat-accordion [multi]="true" *ngIf="zonesGrouped && zonesGrouped.length > 0">
         <mat-expansion-panel *ngFor="let zone of zonesGrouped">
           <mat-expansion-panel-header *ngIf="zone.zones && zone.zones.length > 0">
             <mat-panel-title>
               {{ getViewValue(zone.zoneType) }}
             </mat-panel-title>
-            <mat-panel-description >
+            <mat-panel-description>
               {{zone.zones.length}} elemento/s encontrados
             </mat-panel-description>
           </mat-expansion-panel-header>
-          <div *ngFor="let z of zone.zones">
-            {{ z.description }}
+          <div fxLayoutGap="16px">
+            <div class="float-left" *ngFor="let z of zone.zones">
+              <button style="margin-bottom: 1em;" mat-raised-button color="accent" (click)="selectZone(z)">
+                {{ z.description }}
+              </button>
+            </div>
           </div>
         </mat-expansion-panel>
       </mat-accordion>
+
+      <mat-card-title class="mt-2">Total</mat-card-title>
+
+      <!-- Tabla Total -->
+      <mat-card-subtitle class="mh-240" *ngIf="!productLines || (productLines && productLines?.length == 0)">No hay productos
+        seleccionados</mat-card-subtitle>
+      <mat-card-content *ngIf="productLines && productLines.length > 0">
+        <!-- <div class="loading-indicator">
+          <mat-spinner *ngIf="isLoadingResults" class></mat-spinner>
+        </div> -->
+        <!-- <div *ngIf="!isLoadingResults"> -->
+          <div class="example-container">
+
+            <mat-table class="mh-240" *ngIf="datasource" #table [dataSource]="datasource">
+              <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef class="noPadding"> No. </mat-header-cell>
+                <mat-cell *matCellDef="let element; index as i" class="noPadding pointer"> {{i+1}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef class="noPadding pointer"></mat-footer-cell>
+              </ng-container>
+              <ng-container matColumnDef="product">
+                <mat-header-cell *matHeaderCellDef class="noPadding"> Producto </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="noPadding pointer"> {{element.products[0].name}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef fxLayoutAlign="end center" class="noPadding pointer"> Total </mat-footer-cell>
+              </ng-container>
+              <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef class="noPadding"> Cantidad </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="noPadding pointer"> {{element.amount}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef class="noPadding pointer"></mat-footer-cell>
+              </ng-container>
+              <ng-container matColumnDef="total">
+                <mat-header-cell *matHeaderCellDef class="noPadding"> Total </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="noPadding pointer"> {{element.products[0].price * element.amount}} € </mat-cell>
+                  <mat-footer-cell style="padding: 0; font-weight: bold" *matFooterCellDef fxLayoutAlign="end center" class="noPadding pointer">{{getTotal()}} €</mat-footer-cell>
+              </ng-container>
+              <ng-container matColumnDef="expandedDetail">
+                  <mat-cell *matCellDef="let detail"> 
+                    <table class="detail-table w-100">
+                      <tr>
+                        <th class="no">No.</th>
+                        <th class="product-name">Producto</th>
+                        <th>Comentario</th>
+                      </tr>
+                      <tr *ngFor="let product of detail.element.products; index as i">
+                        <td class="no">{{ i+1 }}</td>
+                        <td class="product-name">{{ product.name }}</td>
+                        <td>comentario</td>
+                      </tr>
+                    </table>
+                  </mat-cell>
+                  <mat-footer-cell *matFooterCellDef class="noPadding pointer"></mat-footer-cell>
+              </ng-container>
+    
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <!-- <mat-row (click)="removeProduct(row)" *matRowDef="let row; columns: displayedColumns"></mat-row> -->
+              <mat-row *matRowDef="let row; columns: displayedColumns;"
+                matRipple 
+                class="element-row" 
+                [class.expanded]="expandedElement == row"
+                (click)="expandedElement = row"></mat-row>
+                <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
+                [@detailExpand]="row.element == expandedElement ? 'expanded' : 'collapsed'"
+                style="overflow: hidden"> </mat-row>
+              <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
+            </mat-table>
+          </div>
+      </mat-card-content>
+      <!-- Fin Tabla Total -->
       <mat-card-title class="mt-2">Productos</mat-card-title>
       <div *ngFor="let group of productsGrouped">
         <h3>{{ group.name }}</h3>
-        <div *ngFor="let product of group.productList">
-          {{ product.name }}
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+          <mat-card (click)="addProduct(product)" class="order-card" fxFlex="240px" style="flex-grow: 1; flex-shrink: 0; padding: 5px; margin-bottom: 1em;"
+            *ngFor="let product of group.productList">
+            <mat-card-header fxLayoutAlign="space-between center">
+              <img mat-card-avatar [src]="product.image" />
+              <mat-card-subtitle fxLayoutAlign="space-between center" style="margin: 0">{{product.name}}</mat-card-subtitle>
+              <mat-card-content fxLayoutAlign="space-between center" style="margin: 0">
+                <p>{{product.price}} €</p>
+              </mat-card-content>
+            </mat-card-header>
+          </mat-card>
         </div>
       </div>
     </mat-card-content>
