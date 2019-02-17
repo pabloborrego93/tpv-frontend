@@ -104,17 +104,26 @@
                   <mat-footer-cell style="padding: 0; font-weight: bold" *matFooterCellDef fxLayoutAlign="end center" class="noPadding pointer">{{getTotal()}} €</mat-footer-cell>
               </ng-container>
               <ng-container matColumnDef="expandedDetail">
-                  <mat-cell *matCellDef="let detail"> 
-                    <table class="detail-table w-100">
+                  <mat-cell *matCellDef="let detail" class="p0"> 
+                    <table style="table-layout: fixed" class="detail-table w-100">
                       <tr>
-                        <th class="no">No.</th>
-                        <th class="product-name">Producto</th>
-                        <th>Comentario</th>
+                        <th width="10%" class="no">No.</th>
+                        <th width="40%" class="product-name">Producto</th>
+                        <th width="20%">Nota</th>
+                        <th width="20%"></th>
                       </tr>
                       <tr *ngFor="let product of detail.element.products; index as i">
-                        <td class="no">{{ i+1 }}</td>
-                        <td class="product-name">{{ product.name }}</td>
-                        <td>comentario</td>
+                        <td width="10%" class="no">{{ i+1 }}</td>
+                        <td width="40%" class="product-name">{{ product.name }}</td>
+                        <td width="20%" *ngIf="product.comment">{{ product.comment }}</td>
+                        <td width="20%" *ngIf="!product.comment">
+                            <button (click)="openDialog(product)" class="mat-small" mat-button color="primary"><mat-icon>add_comment</mat-icon></button>
+                          <!-- <span><mat-icon class="icon" [inline]="true">add_comment</mat-icon>&nbsp;Añadir</span> -->
+                        </td>
+                        <td width="20%">
+                            <button (click)="removeProduct(product, i)" class="mat-small" mat-button color="primary"><mat-icon>delete_forever</mat-icon></button>
+                            <!-- <span><mat-icon class="icon" [inline]="true">delete_forever</mat-icon>&nbsp;Eliminar</span> -->
+                        </td>
                       </tr>
                     </table>
                   </mat-cell>
@@ -127,7 +136,7 @@
                 matRipple 
                 class="element-row" 
                 [class.expanded]="expandedElement == row"
-                (click)="expandedElement = row"></mat-row>
+                (click)="toggleExpanded(row)"></mat-row>
                 <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
                 [@detailExpand]="row.element == expandedElement ? 'expanded' : 'collapsed'"
                 style="overflow: hidden"> </mat-row>
@@ -140,7 +149,7 @@
       <div *ngFor="let group of productsGrouped">
         <h3>{{ group.name }}</h3>
         <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-          <mat-card (click)="addProduct(product)" class="order-card" fxFlex="240px" style="flex-grow: 1; flex-shrink: 0; padding: 5px; margin-bottom: 1em;"
+          <mat-card (click)="addProduct(product)" class="order-card" style="flex: 0 0 100%; margin: 8px; width: 240px; flex-basis: 260px; flex-grow: 1; flex-shrink: 0; padding: 5px; margin-bottom: 1em;"
             *ngFor="let product of group.productList">
             <mat-card-header fxLayoutAlign="space-between center">
               <img mat-card-avatar [src]="product.image" />

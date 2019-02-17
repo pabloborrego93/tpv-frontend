@@ -8,8 +8,9 @@ import { RestaurantService } from '../restaurant/restaurant.service';
 import { zip } from 'rxjs';
 import { ProductService } from '../product/product.service';
 import * as _u from 'underscore';
-import { MatAccordion } from '@angular/material';
+import { MatAccordion, MatDialog } from '@angular/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { AddcommentComponent } from './addcomment/addcomment.component';
 
 @Component({
   selector: 'app-order',
@@ -72,6 +73,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     private activateRoute: ActivatedRoute,
     private restaurantService: RestaurantService,
     private productService: ProductService,
+    public dialog: MatDialog,
     private changeDetectorRefs: ChangeDetectorRef
   ) {
     this.activateRoute.params.
@@ -88,6 +90,16 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.orders.unsubscribe();
+  }
+
+  toggleExpanded(row) {
+    if (!row.products[0].forKitchen) {
+      this.removeProductNotForKitchen(row);
+    } else if (this.expandedElement == null || this.expandedElement !== row) {
+      this.expandedElement = row;
+    } else {
+      this.expandedElement = null;
+    }
   }
 
   isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
@@ -207,6 +219,19 @@ export class OrderComponent implements OnInit, OnDestroy {
     return total;
   }
 
+  createIterableArrayForProductLines(detail) {
+    const products = [];
+    for (let i = 0; i < detail.amount; ++i) {
+      const newProduct = {
+        'id': detail.product.id,
+        'name': detail.product.name,
+        'comment': detail.comments[i]
+      };
+      products.push(newProduct);
+    }
+    return products;
+  }
+
   selectZone(z) {
     this.accordion.closeAll();
     this.zoneSelected = z;
@@ -217,38 +242,79 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
   addProduct(product) {
-    const alreadyExists = _.find(this.productLines, { 'productId': product.id});
-    if (!alreadyExists) {
-      const productsArray = [];
-      productsArray.push(product);
-      const pl = {
-        'products': productsArray,
-        'amount': 1,
+    const productLine = _.find(this.productLines, { 'productId': product.id});
+    if (!productLine) {
+      const products = [];
+      const newProductLine = {
         productId: product.id,
+        'products': products,
+        'amount': 1
       };
-      this.productLines.push(pl);
-      const rows = [];
-      this.productLines.forEach(element => rows.push(element, { detailRow: true, element }));
-      this.datasource.next(rows);
+      newProductLine.products.push({
+        'id': product.id,
+        'name': product.name,
+        'price': product.price,
+        'forKitchen': product.forKitchen,
+        'comment': ''
+      });
+      this.productLines.push(newProductLine);
+      this.updateOrders();
     } else {
-      alreadyExists.amount += 1;
-      alreadyExists.products.push(product);
-      const rows = [];
-      this.productLines.forEach(element => rows.push(element, { detailRow: true, element }));
-      this.datasource.next(rows);
+      productLine.amount += 1;
+      productLine.products.push({
+        'id': product.id,
+        'name': product.name,
+        'price': product.price,
+        'forKitchen': product.forKitchen,
+        'comment': ''
+      });
+      this.updateOrders();
     }
   }
 
-  removeProduct(row) {
-    const product = _.find(this.productLines, { 'productId': row.productId});
-    if (product.amount === 1) {
-      _.remove(this.productLines, { 'productId': row.productId});
-      this.datasource.next(this.productLines);
+  updateOrders() {
+    const rows = [];
+    this.productLines.forEach(element => {
+      if (element.products[0].forKitchen) {
+        rows.push(element, { detailRow: true, element });
+      } else {
+        rows.push(element);
+      }
+    });
+    this.datasource.next(rows);
+  }
+
+  removeProductNotForKitchen(product) {
+    const productLine = _.find(this.productLines, { 'productId': product.productId});
+    if (productLine.amount > 1) {
+      productLine.amount -= 1;
+      productLine.products.pop();
+      this.updateOrders();
     } else {
-      const alreadyExists = _.find(this.productLines, { 'productId': row.productId});
-      alreadyExists.amount -= 1;
-      this.datasource.next(this.productLines);
+      _.remove(this.productLines, { 'productId': product.productId});
+      this.updateOrders();
     }
+  }
+
+  removeProduct(product, i) {
+    const productLine = _.find(this.productLines, { 'productId': product.id});
+    if (productLine.amount > 1) {
+      productLine.amount -= 1;
+      productLine.products.splice(i, 1);
+      this.updateOrders();
+    } else {
+      _.remove(this.productLines, { 'productId': product.id});
+      this.updateOrders();
+    }
+  }
+
+  openDialog(event) {
+    const dialogRef = this.dialog.open(AddcommentComponent, { data: event });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        event.comment = result;
+      }
+    });
   }
 
 }

@@ -94,6 +94,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       price: ['', [Validators.required]],
       iva: ['', [Validators.required]],
       catalogable: [false, [Validators.required]],
+      forKitchen: [false, [Validators.required]],
       productType: ['SIMPLE', [Validators.required]]
     });
   }
@@ -106,7 +107,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
       name: [element.name, [Validators.required, Validators.minLength(2), Validators.maxLength(16)]],
       price: [element.price, [Validators.required]],
       iva: [element.iva, [Validators.required]],
-      catalogable: [element.catalogable, [Validators.required]]
+      catalogable: [element.catalogable, [Validators.required]],
+      forKitchen: [element.forKitchen, [Validators.required]]
     });
   }
 
@@ -150,6 +152,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.loading = true;
       const name = this.createProductForm.value['name'];
       const catalogable = this.createProductForm.value['catalogable'];
+      const forKitchen = this.createProductForm.value['forKitchen'];
       const productType = this.createProductForm.value['productType'];
       const price = this.createProductForm.value['price'];
       const iva = this.createProductForm.value['iva'];
@@ -157,6 +160,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         const productPostDto = {
           'name': name,
           'catalogable': catalogable,
+          'forKitchen': forKitchen,
           'price': price,
           'iva': iva,
           'image': this.croppedImage,
@@ -200,6 +204,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.loading = true;
       const name = this.updateProductForm.value['name'];
       const catalogable = this.updateProductForm.value['catalogable'];
+      const forKitchen = this.updateProductForm.value['forKitchen'];
       const productType = this.selected.productType;
       const id = this.updateProductForm.value['id'];
       const price = this.updateProductForm.value['price'];
@@ -209,6 +214,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           'id': id,
           'name': name,
           'catalogable': catalogable,
+          'forKitchen': forKitchen,
           'price': price,
           'iva': iva,
           'image': this.selected.image,

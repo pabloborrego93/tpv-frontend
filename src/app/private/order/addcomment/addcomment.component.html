@@ -1,0 +1,10 @@
+<h3 mat-dialog-title>Añadir comentario</h3>
+<mat-dialog-content class="mat-typography" fxLayout="column" fxLayoutAlign="start center">
+  <mat-form-field class="w-100 mw-240">
+    <textarea [(ngModel)]="comentario" matInput placeholder="Añadir comentario a {{ product.name }}"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="space-between center">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button (click)="close()" mat-button [mat-dialog-close]="true">Confirmar</button>
+</mat-dialog-actions>

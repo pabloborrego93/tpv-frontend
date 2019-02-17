@@ -30,6 +30,7 @@ import { OrderService } from './order/order.service';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { TimeAgoPipe } from '../pipes/TimeAgoPipe.pipe';
+import { AddcommentComponent } from './order/addcomment/addcomment.component';
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { TimeAgoPipe } from '../pipes/TimeAgoPipe.pipe';
     ConfirmDeleteComponent,
     ConfirmDeleteZoneComponent,
     OrderComponent,
-    TimeAgoPipe
+    TimeAgoPipe,
+    AddcommentComponent
   ],
   providers: [
     MyProfileService,
@@ -73,7 +75,8 @@ import { TimeAgoPipe } from '../pipes/TimeAgoPipe.pipe';
   entryComponents: [
     ProductImageCropperComponent,
     ConfirmDeleteComponent,
-    ConfirmDeleteZoneComponent
+    ConfirmDeleteZoneComponent,
+    AddcommentComponent
   ]
 })
 export class PrivateModule { }
