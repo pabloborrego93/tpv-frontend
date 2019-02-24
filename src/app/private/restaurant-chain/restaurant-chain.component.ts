@@ -109,8 +109,8 @@ export class RestaurantChainComponent implements OnInit {
         };
         this.chainService
           .createChain(chainPostDto)
-          .then((res) => {
-            this.chain = res;
+          .then((res: any) => {
+            this.chain = res.body;
             this.navigationService.updateNavigation();
             this.buildCreateRestaurantForm();
           }).catch((err) => {

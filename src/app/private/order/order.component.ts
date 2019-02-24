@@ -243,6 +243,7 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   addProduct(product) {
     const productLine = _.find(this.productLines, { 'productId': product.id});
+    console.log(this.productLines);
     if (!productLine) {
       const products = [];
       const newProductLine = {

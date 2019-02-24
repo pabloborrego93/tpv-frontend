@@ -141,7 +141,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.selectedProducts = this.selected.products;
       this.notSelectedFamilies = this.difference(this.selectedFamilies);
       if (this.selected.productType === 'COMPOSITE') {
-        this.notSelectedProducts = this.differenceProduct(this.selectedProducts);
+        // this.notSelectedProducts = this.differenceProduct(this.selectedProducts);
       }
       this.buildUpdateProductForm(element);
     }
@@ -303,16 +303,26 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   addToSelectedProduct(selected: any) {
-    if (!this.selectedProducts.find((item) => item.id === selected.id)) {
-      this.selectedProducts.push(selected);
-      this.notSelectedProducts = this.notSelectedProducts.filter((item) => item.id !== selected.id);
+    const found = this.selectedProducts.find((item) => item.id === selected.id);
+    if (!found) {
+      const obj = {
+        'id': selected.id,
+        'name': selected.name,
+        'amount': 1
+      };
+      this.selectedProducts.push(obj);
+    } else {
+      found.amount += 1;
     }
   }
 
   removeFromSelectedProduct(selected: any) {
-    this.selectedProducts = this.selectedProducts.filter((item) => item.id !== selected.id);
-    if (!this.selectedProducts.find((item) => item.id === selected.id)) {
-      this.notSelectedProducts.push(selected);
+    const found = this.selectedProducts.find((item) => item.id === selected.id);
+    if (found.amount === 1) {
+      found.amount = 0;
+      this.selectedProducts = this.selectedProducts.filter((item) => item.id !== selected.id);
+    } else {
+      found.amount -= 1;
     }
   }
 

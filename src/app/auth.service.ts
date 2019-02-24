@@ -81,6 +81,7 @@ export class AuthService {
       this.router.navigate(['/home']);
     }
   }
+
   getAuthorizationToken() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     return currentUser.token;

@@ -4,7 +4,7 @@
     <mat-card-subtitle *ngIf="!chain && chainLoaded">A&uacute;n no has creado tu cadena, ¡Rellena el siguiente
       formulario para empezar
       la configuraci&oacute;n!</mat-card-subtitle>
-    <mat-card-subtitle *ngIf="chain && chainLoaded && chain?.restaurants.length == 0">A&uacute;n no has creado
+    <mat-card-subtitle *ngIf="chain && chainLoaded && chain?.restaurants?.length == 0">A&uacute;n no has creado
       ning&uacute;n restaurante, ¡Rellena el siguiente formulario para empezar
       la configuraci&oacute;n!</mat-card-subtitle>
     <!-- Formulario de creacion de cadena -->

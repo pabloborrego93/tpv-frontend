@@ -21,7 +21,7 @@ export class ChainService {
 
   createChain(chainPostDto) {
     return this.http
-    .post('/api/restaurantChain', chainPostDto)
+    .post('/api/restaurantChain', chainPostDto, { observe: 'response' })
     .toPromise()
     .then((res) => res)
     .catch((err) => throwError(err));

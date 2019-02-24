@@ -130,7 +130,9 @@
             </div>
             <div class="twin-column-list right">
               <mat-list class="selected" *ngFor="let selected of selectedProducts">
-                <mat-list-item class="pointer" (click)="removeFromSelectedProduct(selected)"><span>{{selected.name}}</span></mat-list-item>
+                <mat-list-item class="pointer" (click)="removeFromSelectedProduct(selected)">
+                    <span matBadge="{{selected.amount}}" matBadgeOverlap="false">{{selected.name}}</span>
+                </mat-list-item>
               </mat-list>
             </div>
           </div>
@@ -236,13 +238,15 @@
           <app-form-header [icon]="'arrow_right_alt'" [text]="'¿De qu&eacute; productos se compone?'"></app-form-header>
           <div fxLayout="row">
             <div class="twin-column-list left">
-              <mat-list class="notSelected" *ngFor="let notSelected of notSelectedProductsUpdateFilter()">
+              <mat-list class="notSelected" *ngFor="let notSelected of notSelectedProducts">
                 <mat-list-item class="pointer" (click)="addToSelectedProduct(notSelected)"><span>{{notSelected.name}}</span></mat-list-item>
               </mat-list>
             </div>
             <div class="twin-column-list right">
               <mat-list class="selected" *ngFor="let selected of selectedProducts">
-                <mat-list-item class="pointer" (click)="removeFromSelectedProduct(selected)"><span>{{selected.name}}</span></mat-list-item>
+                <mat-list-item class="pointer" (click)="removeFromSelectedProduct(selected)">
+                  <span matBadge="{{selected.amount}}" matBadgeOverlap="false">{{selected.name}}</span>
+                </mat-list-item>
               </mat-list>
             </div>
           </div>
