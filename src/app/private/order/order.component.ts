@@ -310,12 +310,32 @@ export class OrderComponent implements OnInit, OnDestroy {
         'id': pl.productId,
         'comment': pl.comment,
         'amount': pl.amount,
-        'products': pl.products
+        'kitchenProducts': this.searchKitchenProducts(new Array(), pl.products)
       };
       orderPostDtoArray.push(orderDtoDto);
     });
     console.log('orderPostDtoArray');
     console.log(orderPostDtoArray);
+  }
+
+  searchKitchenProducts(kitchenProducts, products) {
+    if (!products || products.length === 0) {
+      return new Array();
+    } else {
+      for (let i = 0; i < products.length; ++i) {
+        if (products[i].forKitchen) {
+          kitchenProducts.push({
+            'id': products[i].id,
+            'name': products[i].name,
+            'forKitchen': products[i].forKitchen
+          });
+        }
+        if (products[i].products && products[i].products.length > 0) {
+          kitchenProducts.concat(this.searchKitchenProducts(kitchenProducts, products[i].products));
+        }
+      }
+      return kitchenProducts;
+    }
   }
 
   updateOrders() {
