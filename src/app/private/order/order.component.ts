@@ -93,9 +93,14 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
   toggleExpanded(row) {
-    if (!row.products[0].forKitchen) {
+    /*if (!row.products[0].forKitchen) {
       this.removeProductNotForKitchen(row);
     } else if (this.expandedElement == null || this.expandedElement !== row) {
+      this.expandedElement = row;
+    } else {
+      this.expandedElement = null;
+    }*/
+    if (this.expandedElement == null || this.expandedElement !== row) {
       this.expandedElement = row;
     } else {
       this.expandedElement = null;
@@ -219,19 +224,6 @@ export class OrderComponent implements OnInit, OnDestroy {
     return total;
   }
 
-  createIterableArrayForProductLines(detail) {
-    const products = [];
-    for (let i = 0; i < detail.amount; ++i) {
-      const newProduct = {
-        'id': detail.product.id,
-        'name': detail.product.name,
-        'comment': detail.comments[i]
-      };
-      products.push(newProduct);
-    }
-    return products;
-  }
-
   selectZone(z) {
     this.accordion.closeAll();
     this.zoneSelected = z;
@@ -249,38 +241,87 @@ export class OrderComponent implements OnInit, OnDestroy {
       const newProductLine = {
         productId: product.id,
         'products': products,
+        'type': product.productType,
+        'forKitchen': product.forKitchen,
         'amount': 1
       };
+      let productCompositeProducts = [];
+      if (product.productType === 'COMPOSITE') {
+        productCompositeProducts = this.createProductCompositeLine(product.products);
+      }
       newProductLine.products.push({
         'id': product.id,
         'name': product.name,
         'price': product.price,
         'forKitchen': product.forKitchen,
+        'type': product.productType,
+        'catalogable': product.catalogable,
+        'products': productCompositeProducts,
         'comment': ''
       });
       this.productLines.push(newProductLine);
       this.updateOrders();
     } else {
       productLine.amount += 1;
+      let productCompositeProducts = [];
+      if (product.productType === 'COMPOSITE') {
+        productCompositeProducts = this.createProductCompositeLine(product.products);
+      }
       productLine.products.push({
         'id': product.id,
         'name': product.name,
         'price': product.price,
         'forKitchen': product.forKitchen,
+        'type': product.productType,
+        'catalogable': product.catalogable,
+        'products': productCompositeProducts,
         'comment': ''
       });
       this.updateOrders();
     }
   }
 
+  createProductCompositeLine(products) {
+    const productCompositeProducts = [];
+        for (let i = 0; i < products.length; ++i) {
+          for (let j = 0; j < products[i].amount; ++j) {
+            const pl = {
+              'id': products[i].id,
+              'name': products[i].name,
+              'price': products[i].price,
+              'forKitchen': products[i].forKitchen,
+              'type': products[i].productType,
+              'catalogable': products[i].catalogable,
+              'products':
+                (products[i].products && products[i].products.length > 0) ?
+                  this.createProductCompositeLine(products[i].products) : null,
+              'comment': ''
+            };
+            productCompositeProducts.push(pl);
+          }
+      }
+    return productCompositeProducts;
+  }
+
+  realizarPedido() {
+    const orderPostDtoArray = [];
+    this.productLines.forEach((pl) => {
+      const orderDtoDto = {
+        'id': pl.productId,
+        'comment': pl.comment,
+        'amount': pl.amount,
+        'products': pl.products
+      };
+      orderPostDtoArray.push(orderDtoDto);
+    });
+    console.log('orderPostDtoArray');
+    console.log(orderPostDtoArray);
+  }
+
   updateOrders() {
     const rows = [];
     this.productLines.forEach(element => {
-      if (element.products[0].forKitchen) {
         rows.push(element, { detailRow: true, element });
-      } else {
-        rows.push(element);
-      }
     });
     this.datasource.next(rows);
   }

@@ -228,6 +228,14 @@ mat-card {
     margin-bottom: 1em !important;
 }
 
+.mt-0-5 {
+    margin-top: 0.5em !important;
+}
+
+.mb-0-5 {
+    margin-bottom: 0.5em !important;
+}
+
 *:focus {
     outline: 0;
 }
@@ -462,4 +470,82 @@ table.info-table {
 
 .w-100 {
     width: 100% !important;
+}
+
+.bg-light-gray {
+    background-color: #f4f4f4;
+}
+
+mat-cell.extendedRow {
+    &:hover {
+        background-color: unset;
+    }
+}
+
+.no-overflow {
+    overflow: unset !important;
+    max-height: unset !important;
+}
+
+.composite-comment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    // border: 1px #6e6e6e solid;
+    min-height: 32px;
+}
+
+.w-60 {
+    width: 60% !important;
+}
+
+.pl-1 {
+    padding-left: 1em;
+}
+
+.border-grey {
+    border: 1px grey solid
+}
+
+.product-composite-div {
+    p {
+        margin: 0 !important;
+        padding: 0 !important;
+        margin-block-start: 4px !important;
+        margin-block-end: 4px !important;
+    }
+}
+
+td {
+    .mat-button {
+        padding: 0;
+    }
+}
+
+.pcomposite {
+    font-size: 1.1em !important;
+    p {
+        text-decoration: underline;
+    }
+}
+
+.psimple {
+    font-size: 0.9em;
+}
+
+.no-underline {
+    text-decoration: unset !important;
+}
+
+.order-chip {
+    transition: box-shadow 280ms cubic-bezier(.4,0,.2,1);
+    display: inline-flex;
+    padding: 8px 12px !important;
+    border-radius: 16px !important;
+    align-items: center;
+    cursor: default;
+    min-height: 18px !important;
+    height: 1px;
+    font-size: 0.6em;
 }

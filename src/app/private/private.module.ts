@@ -31,6 +31,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { TimeAgoPipe } from '../pipes/TimeAgoPipe.pipe';
 import { AddcommentComponent } from './order/addcomment/addcomment.component';
+import { ProductCompositeViewComponent } from './order/product-composite-view/product-composite-view.component';
 
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ import { AddcommentComponent } from './order/addcomment/addcomment.component';
     ConfirmDeleteZoneComponent,
     OrderComponent,
     TimeAgoPipe,
-    AddcommentComponent
+    AddcommentComponent,
+    ProductCompositeViewComponent
   ],
   providers: [
     MyProfileService,

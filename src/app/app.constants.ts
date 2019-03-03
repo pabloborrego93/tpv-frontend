@@ -6,3 +6,6 @@ export const endpointsSinJWT = [
     { path: '/api/user', method: 'POST'},
     { path: '/api/restaurantChain/getById', method: 'GET'}
 ];
+export const endpointsWithRefreshToken = [
+    { path: '/api/restaurantChain', method: 'POST'}
+];

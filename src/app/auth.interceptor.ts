@@ -24,22 +24,6 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     return next.handle(req)
-      .do(event => {
-        if (event instanceof HttpResponse && !this.isEndpointWithOutJWTAuth(req)) {
-        //   console.log(event);
-        //   const currentUser: any = JSON.parse(localStorage.getItem('currentUser'));
-        //   console.log(currentUser);
-        //   if (currentUser) {
-        //     const username = currentUser.username;
-        //     console.log(username);
-        //     const token = JSON.stringify({ username, token: req.headers.get('authorization') });
-        //     console.log(token);
-        //     if (token) {
-        //       localStorage.setItem('currentUser', token.substring(7, token.length));
-        //     }
-        //   }
-        }
-      })
       .catch((error: HttpErrorResponse) => {
         if (error.status === 401) {
           this.auth.doLogOut(ERR_TOKEN_EXPIRED);

@@ -1,0 +1,41 @@
+<div fxLayout="column" class="w-100 pl-1" *ngIf="product">
+  <div class="w-100 product-composite-div" *ngFor="let product of product.products">
+    <div *ngIf="product.type==='SIMPLE'">
+      <p [ngClass]="{'pcomposite': product.type==='SIMPLE' && product.catalogable}" class="psimple">{{product.name}}
+        <button *ngIf="!product.comment && product.forKitchen" (click)="openDialog(product)" class="mat-small"
+          mat-button color="primary">
+          <mat-icon>add_comment</mat-icon>&nbsp;Añadir nota
+        </button>
+        <mat-chip-list>
+          <mat-chip *ngIf="product.forKitchen" class="order-chip">COCINA</mat-chip>
+          <mat-chip *ngIf="product.comment && product.forKitchen" class="order-chip">{{ product.comment }}</mat-chip>
+        </mat-chip-list>
+        <!-- <span class="no-underline" *ngIf="product.comment && product.forKitchen">&nbsp;- {{ product.comment }}</span> -->
+      </p>
+    </div>
+    <div *ngIf="product.type==='COMPOSITE'">
+      <p class="pcomposite">{{product.name}}
+        <button *ngIf="!product.comment && product.forKitchen" (click)="openDialog(product)" class="mat-small"
+          mat-button color="primary">
+          <mat-icon>add_comment</mat-icon>&nbsp;Añadir nota
+        </button>
+        <mat-chip-list>
+          <mat-chip *ngIf="product.forKitchen" class="order-chip">COCINA</mat-chip>
+          <mat-chip *ngIf="product.comment && product.forKitchen" class="order-chip">{{ product.comment }}</mat-chip>
+        </mat-chip-list>
+        <!-- <span class="no-underline" *ngIf="product.comment && product.forKitchen">&nbsp;- {{ product.comment }}</span> -->
+      </p>
+    </div>
+    <div class="w-100" *ngIf="product.products">
+      <app-product-composite-view [product]="product"></app-product-composite-view>
+    </div>
+    <!-- <div class="w-100">
+      <div class="composite-comment" *ngIf="product.comment && product.forKitchen">{{ product.comment }}</div>
+      <div class="composite-comment" *ngIf="!product.comment && product.forKitchen">
+        <button ngIf="!product.comment && product.forKitchen" (click)="openDialog(product)" class="mat-small" mat-button color="primary">
+          <mat-icon>add_comment</mat-icon>&nbsp;Añadir nota
+        </button>
+      </div>
+    </div> -->
+  </div>
+</div>

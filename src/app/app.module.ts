@@ -14,6 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RestorePasswordComponent } from './restore-password/restore-password.component';
 import { SignupComponent } from './signup/signup.component';
 import { AuthInterceptor } from './auth.interceptor';
+import { RefreshTokenInterceptor } from './refresh-token.interceptor';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { AuthInterceptor } from './auth.interceptor';
     AuthService,
     AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: RefreshTokenInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
