@@ -48,10 +48,11 @@ export class OrderComponent implements OnInit, OnDestroy {
   };
 
   displayedColumns: string[] = ['id', 'product', 'amount', 'total'];
+  displayedColumnsAlreadyOrdered: string[] = ['id', 'name', 'amount', 'total'];
 
   public selected: any;
   public editing: Boolean = false;
-  public creating; Boolean = false;
+  public creating: Boolean = false;
 
   public zonesGrouped: any[];
   public productsGrouped: any[];
@@ -115,6 +116,18 @@ export class OrderComponent implements OnInit, OnDestroy {
     });
   }
 
+  orderLinesGetTotal() {
+    let total = 0;
+    _.map(this.selected.orderLines, (pl) => {
+      total += pl.total;
+    });
+    return total;
+  }
+
+  cerrarPedido() {
+    this.orderService.close(this.selected.id).subscribe((res) => this.back());
+  }
+
   getAllProducts() {
     this.productService.catalogablesProductFamilies().then((res: any) => {
       const products = res;
@@ -176,6 +189,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     this.creating = false;
     this.editing = false;
     this.zoneSelected = null;
+    this.selected = null;
     this.restartScroll();
     this.getNextOrders();
     this.productLines = [];
@@ -316,6 +330,19 @@ export class OrderComponent implements OnInit, OnDestroy {
     });
     console.log('orderPostDtoArray');
     console.log(orderPostDtoArray);
+    if (!this.selected) {
+      this.orderService.create(this.zoneSelected.id, orderPostDtoArray).subscribe((res) => this.back());
+    } else {
+      this.orderService.update(this.selected.id, orderPostDtoArray).subscribe((res) => this.back());
+    }
+  }
+
+  enableRealizarPedido() {
+    if (this.creating) {
+      return this.zoneSelected;
+    } else {
+      return true;
+    }
   }
 
   searchKitchenProducts(kitchenProducts, products) {
@@ -327,6 +354,7 @@ export class OrderComponent implements OnInit, OnDestroy {
           kitchenProducts.push({
             'id': products[i].id,
             'name': products[i].name,
+            'comment': products[i].comment,
             'forKitchen': products[i].forKitchen
           });
         }

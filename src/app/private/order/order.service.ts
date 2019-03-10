@@ -13,4 +13,25 @@ export class OrderService {
       .map((res) => res, (err) => err);
   }
 
+  create(idZone, products: any[]) {
+    const url = `/api/order/create/${idZone}`;
+    return this.http
+      .post(url, products)
+      .map((res) => res, (err) => err);
+  }
+
+  update(idOrder, products: any[]) {
+    const url = `/api/order/update/${idOrder}`;
+    return this.http
+      .post(url, products)
+      .map((res) => res, (err) => err);
+  }
+
+  close(idOrder) {
+    const url = `/api/order/close/${idOrder}`;
+    return this.http
+      .get(url)
+      .map((res) => res, (err) => err);
+  }
+
 }

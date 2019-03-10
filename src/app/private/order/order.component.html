@@ -36,9 +36,203 @@
       <span>Editar pedido</span>
       <button mat-raised-button color="primary" (click)="back()">Volver</button>
     </mat-card-title>
+    <!-- Zona -->
     <mat-card-content>
-      {{selected.id}}
+      <mat-card-title *ngIf="!selected">Zona</mat-card-title>
+      <mat-card-title *ngIf="selected">Zona: {{getViewValue(selected.zone.zoneType)}} - {{selected.zone.description}}</mat-card-title>
     </mat-card-content>
+    <!-- Fin Zona -->
+
+    <!-- Productos pedidos -->
+    <!-- Fin Productos pedidos -->
+
+    <!-- Total -->
+    <mat-tab-group animationDuration="200ms">
+      <mat-tab label="Pedidos anteriores">
+        <h2>Productos anteriores</h2>
+        <!-- Tabla Productos Pedidos -->
+        <mat-table *ngIf="selected?.orderLines" #table [dataSource]="selected.orderLines">
+          <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef class="noPadding"> No. </mat-header-cell>
+            <mat-cell *matCellDef="let element; index as i" class="noPadding pointer"> {{(i+1)}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef class="noPadding pointer"></mat-footer-cell>
+            <mat-footer-cell *matFooterCellDef class="noPadding pointer"></mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef class="noPadding"> Nombre </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="noPadding pointer"> {{element.product.name}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef class="noPadding pointer"></mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="amount">
+            <mat-header-cell *matHeaderCellDef class="noPadding"> Cantidad </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="noPadding pointer"> {{element.amount}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef class="noPadding pointer">Total</mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="total">
+            <mat-header-cell *matHeaderCellDef class="noPadding"> Total </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="noPadding pointer"> {{element.total | number:'1.2-2'}} €</mat-cell>
+            <mat-footer-cell style="padding: 0; font-weight: bold" *matFooterCellDef fxLayoutAlign="end center" class="noPadding pointer">{{orderLinesGetTotal()
+              | number:'1.2-2'}} €</mat-footer-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumnsAlreadyOrdered"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumnsAlreadyOrdered; let i = index"></mat-row>
+          <mat-footer-row *matFooterRowDef="displayedColumnsAlreadyOrdered"></mat-footer-row>
+        </mat-table>
+        <!-- Fin Tabla Productos Pedidos -->
+        <!-- Datos Pedido -->
+        <h2>Datos del pedido</h2>
+        <table>
+          <tr>
+            <th class="text-left">Zona:</th>
+            <td>{{getViewValue(selected.zone.zoneType)}} - {{selected.zone.description}}</td>
+          </tr>
+          <tr>
+            <th class="text-left">Estado:</th>
+            <td>{{selected.status}}</td>
+          </tr>
+          <tr>
+            <th class="text-left">Fecha creaci&oacute;n:</th>
+            <td>{{selected.createdAt | date: 'dd-MMM-yyyy HH:mm:ss'}}</td>
+          </tr>
+          <tr>
+            <th class="text-left">Fecha cerrado:</th>
+            <td>{{selected.closedAt | date: 'dd-MMM-yyyy HH:mm:ss'}}</td>
+          </tr>
+        </table>
+        <button *ngIf="selected.status !== 'CLOSED'" class="mt-2" mat-raised-button color="primary" (click)="cerrarPedido()">Cerrar pedido</button>
+        <!-- Fin Datos Pedido -->
+      </mat-tab>
+      <mat-tab *ngIf="selected.status !== 'CLOSED'" label="Añadir pedidos">
+        <h2>Añadir productos</h2>
+        <mat-card-subtitle class="mh-240" *ngIf="!productLines || (productLines && productLines?.length == 0)">No hay
+          productos
+          seleccionados</mat-card-subtitle>
+        <mat-card-content *ngIf="productLines && productLines.length > 0">
+          <!-- <div class="loading-indicator">
+      <mat-spinner *ngIf="isLoadingResults" class></mat-spinner>
+    </div> -->
+          <!-- <div *ngIf="!isLoadingResults"> -->
+
+          <mat-table class="mh-240 no-overflow" *ngIf="datasource" #table [dataSource]="datasource">
+            <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef class="noPadding"> No. </mat-header-cell>
+              <mat-cell *matCellDef="let element; index as i" class="noPadding pointer"> {{(i/2)+1}} </mat-cell>
+              <mat-footer-cell *matFooterCellDef class="noPadding pointer"></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="product">
+              <mat-header-cell *matHeaderCellDef class="noPadding"> Producto </mat-header-cell>
+              <mat-cell fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="center start" *matCellDef="let element"
+                class="noPadding pointer">
+                <span class="mt-0-5">{{element.products[0].name}}</span>
+                <span class="mb-0-5">
+                  <mat-chip-list>
+                    <!-- <mat-chip class="order-chip">{{element.products[0].type}}</mat-chip> -->
+                    <mat-chip *ngIf="element.products[0].forKitchen" class="order-chip">COCINA</mat-chip>
+                  </mat-chip-list>
+                </span>
+              </mat-cell>
+              <mat-footer-cell *matFooterCellDef fxLayoutAlign="end center" class="noPadding pointer"> Total
+              </mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+              <mat-header-cell *matHeaderCellDef class="noPadding"> Cantidad </mat-header-cell>
+              <mat-cell *matCellDef="let element" class="noPadding pointer"> {{element.amount}} </mat-cell>
+              <mat-footer-cell *matFooterCellDef class="noPadding pointer"></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="total">
+              <mat-header-cell *matHeaderCellDef class="noPadding"> Total </mat-header-cell>
+              <mat-cell *matCellDef="let element" class="noPadding pointer"> {{element.products[0].price *
+                element.amount}} € </mat-cell>
+              <mat-footer-cell style="padding: 0; font-weight: bold" *matFooterCellDef fxLayoutAlign="end center" class="noPadding pointer">{{getTotal()}}
+                €</mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="expandedDetail">
+              <mat-cell *matCellDef="let detail" class="p0 extendedRow">
+                <table *ngIf="detail.element.type === 'SIMPLE'" style="table-layout: fixed" class="detail-table w-100">
+                  <tr>
+                    <th width="10%" class="no">No.</th>
+                    <th [ngClass]="{'w-60':detail.element.forKitchen}" width="40%" class="product-name">Producto</th>
+                    <th *ngIf="detail.element.forKitchen" width="20%">Nota</th>
+                    <th width="10%"></th>
+                  </tr>
+                  <tr [ngClass]="{'bg-light-gray':even}" *ngFor="let product of detail.element.products; index as i; let even = even">
+                    <td width="10%" class="no">{{ i+1 }}</td>
+                    <td [ngClass]="{'w-60':detail.element.forKitchen}" width="40%" class="product-name">{{ product.name
+                      }}</td>
+                    <td width="20%" *ngIf="product.comment && product.forKitchen">{{ product.comment }}</td>
+                    <td width="20%" *ngIf="!product.comment && product.forKitchen">
+                      <button (click)="openDialog(product)" class="mat-small" mat-button color="primary">
+                        <mat-icon>add_comment</mat-icon>
+                      </button>
+                    </td>
+                    <td width="10%">
+                      <button (click)="removeProduct(product, i)" class="mat-small" mat-button color="primary">
+                        <mat-icon>delete_forever</mat-icon>
+                      </button>
+                    </td>
+                  </tr>
+                </table>
+                <table *ngIf="detail.element.type === 'COMPOSITE'" style="table-layout: fixed" class="detail-table w-100">
+                  <tr>
+                    <th width="10%" class="no">No.</th>
+                    <th width="50%" class="product-name">Producto</th>
+                    <th *ngIf="detail.element.forKitchen" width="20%">Nota</th>
+                    <th width="10%"></th>
+                  </tr>
+                  <tr [ngClass]="{'bg-light-gray':even}" *ngFor="let product of detail.element.products; index as i; let even = even">
+                    <td width="10%" class="no">{{ i+1 }}</td>
+                    <td [ngClass]="{'w-70':detail.element.forKitchen}" width="50%" class="product-name" style="text-align: left;">
+                      <app-product-composite-view class="w-100" [product]="product"></app-product-composite-view>
+                    </td>
+                    <td width="20%" *ngIf="product.comment && product.forKitchen">{{ product.comment }}</td>
+                    <td width="20%" *ngIf="!product.comment && product.forKitchen">
+                      <button (click)="openDialog(product)" class="mat-small" mat-button color="primary">
+                        <mat-icon>add_comment</mat-icon>
+                      </button>
+                    </td>
+                    <td width="10%">
+                      <button (click)="removeProduct(product, i)" class="mat-small" mat-button color="primary">
+                        <mat-icon>delete_forever</mat-icon>
+                      </button>
+                    </td>
+                  </tr>
+                </table>
+              </mat-cell>
+              <mat-footer-cell *matFooterCellDef class="noPadding pointer"></mat-footer-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <!-- <mat-row (click)="removeProduct(row)" *matRowDef="let row; columns: displayedColumns"></mat-row> -->
+            <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple class="element-row" [class.expanded]="expandedElement == row"
+              (click)="toggleExpanded(row)"></mat-row>
+            <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow" [@detailExpand]="row.element == expandedElement ? 'expanded' : 'collapsed'"
+              style="overflow: hidden"> </mat-row>
+            <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
+          </mat-table>
+          <button class="mt-2" [disabled]="!enableRealizarPedido()" mat-raised-button color="primary" (click)="realizarPedido()">Realizar pedido</button>
+        </mat-card-content>
+        <!-- Productos -->
+        <mat-card-title class="mt-2">Productos</mat-card-title>
+        <div *ngFor="let group of productsGrouped">
+          <h3>{{ group.name }}</h3>
+          <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+            <mat-card (click)="addProduct(product)" class="order-card" style="flex: 0 0 100%; margin: 8px; width: 240px; flex-basis: 260px; flex-grow: 1; flex-shrink: 0; padding: 5px; margin-bottom: 1em;"
+              *ngFor="let product of group.productList">
+              <mat-card-header fxLayoutAlign="space-between center">
+                <img mat-card-avatar [src]="product.image" />
+                <mat-card-subtitle fxLayoutAlign="space-between center" style="margin: 0">{{product.name}}</mat-card-subtitle>
+                <mat-card-content fxLayoutAlign="space-between center" style="margin: 0">
+                  <p>{{product.price}} €</p>
+                </mat-card-content>
+              </mat-card-header>
+            </mat-card>
+          </div>
+        </div>
+        <!-- Fin Productos -->
+      </mat-tab>
+    </mat-tab-group>
+    <!-- Fin Total -->
+
   </mat-card>
   <!-- Fin Editar Pedido -->
   <!-- Nuevo Pedido -->
@@ -125,7 +319,8 @@
                 </tr>
                 <tr [ngClass]="{'bg-light-gray':even}" *ngFor="let product of detail.element.products; index as i; let even = even">
                   <td width="10%" class="no">{{ i+1 }}</td>
-                  <td [ngClass]="{'w-60':detail.element.forKitchen}" width="40%" class="product-name">{{ product.name }}</td>
+                  <td [ngClass]="{'w-60':detail.element.forKitchen}" width="40%" class="product-name">{{ product.name
+                    }}</td>
                   <td width="20%" *ngIf="product.comment && product.forKitchen">{{ product.comment }}</td>
                   <td width="20%" *ngIf="!product.comment && product.forKitchen">
                     <button (click)="openDialog(product)" class="mat-small" mat-button color="primary">
@@ -176,7 +371,7 @@
             style="overflow: hidden"> </mat-row>
           <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
         </mat-table>
-        <button class="mt-2" mat-raised-button color="primary" (click)="realizarPedido()">Realizar pedido</button>
+        <button class="mt-2" [disabled]="!enableRealizarPedido()" mat-raised-button color="primary" (click)="realizarPedido()">Realizar pedido</button>
       </mat-card-content>
       <!-- Fin Tabla Total -->
       <mat-card-title class="mt-2">Productos</mat-card-title>

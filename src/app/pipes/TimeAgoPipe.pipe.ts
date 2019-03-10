@@ -36,7 +36,7 @@ export class TimeAgoPipe implements PipeTransform, OnDestroy {
         } else if (minutes <= 90) {
             return `hace una hora`;
         } else if (hours <= 22) {
-            return `hace ${hours}`;
+            return `hace ${hours} horas`;
         } else if (hours <= 36) {
             return `hace un día`;
         } else if (days <= 25) {
