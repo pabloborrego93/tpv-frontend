@@ -1,0 +1,34 @@
+<div class="kitchen-container" fxLayout="column">
+  <mat-card>
+    <mat-card-title>Cocina</mat-card-title>
+    <mat-card-content fxLayoutGap="8px" *ngIf="kitchenProducts">
+      <!-- QUEUED -->
+      <div fxFlex="33%">
+        <mat-card-subtitle>En cola</mat-card-subtitle>
+        <div (click)="nextStatus(kP.id)" class="kitchen-card" *ngFor="let kP of getKitchenProductsFiltered('QUEUED')">
+          <p>{{kP.product.name}}</p>
+          <small>{{kP.comment}}</small>
+        </div>
+      </div>
+      <!-- Fin QUEUED -->
+      <!-- PREPARING -->
+      <div fxFlex="33%">
+        <mat-card-subtitle>Preparando</mat-card-subtitle>
+        <div (click)="nextStatus(kP.id)" class="kitchen-card" *ngFor="let kP of getKitchenProductsFiltered('PREPARING')">
+          <p>{{kP.product.name}}</p>
+          <small>{{kP.comment}}</small>
+        </div>
+      </div>
+      <!-- Fin PREPARING -->
+      <!-- PREPARED -->
+      <div fxFlex="33%">
+        <mat-card-subtitle>Preparado</mat-card-subtitle>
+        <div (click)="nextStatus(kP.id)" class="kitchen-card" *ngFor="let kP of getKitchenProductsFiltered('PREPARED')">
+          <p>{{kP.product.name}}</p>
+          <small>{{kP.comment}}</small>
+        </div>
+      </div>
+      <!-- Fin PREPARED -->
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -9,6 +9,7 @@ import { RestaurantChainComponent } from './restaurant-chain/restaurant-chain.co
 import { RestaurantComponent } from './restaurant/restaurant.component';
 import { UserComponent } from './user/user.component';
 import { OrderComponent } from './order/order.component';
+import { KitchenComponent } from './kitchen/kitchen.component';
 
 const routes: Routes = [
   {
@@ -61,6 +62,12 @@ const routes: Routes = [
         component: OrderComponent,
         data: {
           roles: ['ROLE_WAITER']
+        }
+      }, {
+        path: 'kitchen/:id',
+        component: KitchenComponent,
+        data: {
+          roles: ['ROLE_ORDER_SCREEN']
         }
       }
     ]

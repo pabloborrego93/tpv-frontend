@@ -34,6 +34,15 @@ export class RestaurantService {
       .catch((err) => Promise.reject(err.error));
   }
 
+  getAllScreens(idRestaurant) {
+    const url = `/api/restaurant/${idRestaurant}/screens`;
+    return this.http
+      .get(url)
+      .toPromise()
+      .then((res) => res)
+      .catch((err) => Promise.reject(err.error));
+  }
+
   updateZone(idRestaurant, zoneUpdateDto) {
     const url = `/api/restaurant/${idRestaurant}/zone`;
     return this.http
@@ -74,6 +83,15 @@ export class RestaurantService {
     const url = `/api/restaurant/${idRestaurant}/workers`;
     return this.http
       .post(url, workers)
+      .toPromise()
+      .then((res) => res)
+      .catch((err) => Promise.reject(err.error));
+  }
+
+  setAllScreens(idRestaurant, screens) {
+    const url = `/api/restaurant/${idRestaurant}/screens`;
+    return this.http
+      .post(url, screens)
       .toPromise()
       .then((res) => res)
       .catch((err) => Promise.reject(err.error));

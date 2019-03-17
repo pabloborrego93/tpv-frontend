@@ -16,6 +16,20 @@
         </div>
       </form>
     </mat-card-content>
+    <mat-card-title>Pantallas</mat-card-title>
+    <mat-card-content *ngIf="screensForm">
+      <form [formGroup]="screensForm" (ngSubmit)="submitScreens(screensForm.value)">
+        <mat-form-field class="display-block">
+          <mat-select formControlName="screens" placeholder="Pantallas" [compareWith]="compareFn" multiple>
+            <mat-option *ngFor="let user of users" [(value)]="user">{{user.username}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="16px">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(screensForm)">Actualizar
+            <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
+        </div>
+      </form>
+    </mat-card-content>
     <mat-card-title>Zonas</mat-card-title>
     <!-- Tabla Zonas -->
     <mat-card-content *ngIf="dataSource && dataSource?.data?.length > 0">

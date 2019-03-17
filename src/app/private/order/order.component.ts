@@ -95,13 +95,6 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
   toggleExpanded(row) {
-    /*if (!row.products[0].forKitchen) {
-      this.removeProductNotForKitchen(row);
-    } else if (this.expandedElement == null || this.expandedElement !== row) {
-      this.expandedElement = row;
-    } else {
-      this.expandedElement = null;
-    }*/
     if (this.expandedElement == null || this.expandedElement !== row) {
       this.expandedElement = row;
     } else {

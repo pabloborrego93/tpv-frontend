@@ -18,6 +18,8 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
   public users: any;
   public workers: any;
   public workersForm: FormGroup;
+  public screens: any;
+  public screensForm: FormGroup;
   public loading: Boolean = false;
 
   pageSizeOptions: number[] = [5, 10, 25, 100];
@@ -60,7 +62,7 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
           .getRestaurant(name)
           .then((res) => {
             this.restaurant = res;
-            this.getUsersAndWorkers();
+            this.getUsersAndWorkersAndScreens();
             this.loadData(this.pageNumber, this.pageSize);
             this.buildZoneForm();
           })
@@ -103,6 +105,12 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
     });
   }
 
+  buildScreensForm() {
+    this.screensForm = this.formBuilder.group({
+      screens: [this.screens]
+    });
+  }
+
   openDialog(event, zoneForm) {
     const dialogRef = this.dialog.open(ConfirmDeleteZoneComponent, { data: event });
     dialogRef.afterClosed().subscribe((result) => {
@@ -137,12 +145,16 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getUsersAndWorkers() {
+  getUsersAndWorkersAndScreens() {
     this.restaurantService.getAllUsers().then((res) => {
       this.users = res;
       this.restaurantService.getAllWorkers(this.restaurant.id).then((result) => {
         this.workers = result;
         this.buildWorkersForm();
+      });
+      this.restaurantService.getAllScreens(this.restaurant.id).then((result) => {
+        this.screens = result;
+        this.buildScreensForm();
       });
     });
   }
@@ -202,6 +214,20 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
     this.loading = true;
     setTimeout(() => {
       this.restaurantService.setAllWorkers(this.restaurant.id, value.workers)
+        .then((res) => {
+          this.navigationService.updateNavigation();
+          this.loading = false;
+        }).catch((err) => {
+
+          this.loading = false;
+        });
+    }, 500);
+  }
+
+  submitScreens(value) {
+    this.loading = true;
+    setTimeout(() => {
+      this.restaurantService.setAllScreens(this.restaurant.id, value.screens)
         .then((res) => {
           this.navigationService.updateNavigation();
           this.loading = false;
