@@ -30,6 +30,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   idRestaurant;
 
   orders;
+  orderFilter = OrderStatus.OPENED;
   finished: Boolean = false;
   errorLoadingOrders: Boolean = false;
   errorMessage;
@@ -195,6 +196,20 @@ export class OrderComponent implements OnInit, OnDestroy {
     this.productLines = [];
   }
 
+  toggleFilter() {
+    if (this.orderFilter === OrderStatus.OPENED) {
+      this.orderFilter = OrderStatus.CLOSED;
+      this.restartScroll();
+      this.getNextOrders();
+      this.productLines = [];
+    } else {
+      this.orderFilter = OrderStatus.OPENED;
+      this.restartScroll();
+      this.getNextOrders();
+      this.productLines = [];
+    }
+  }
+
   onScroll() {
     if (!this.creatingOrEditing()) {
       console.log('scrolled!!');
@@ -205,7 +220,7 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   getNextOrders() {
     if (!this.finished) {
-      this.orderService.list(this.idRestaurant, this.page, this.pageSize)
+      this.orderService.list(this.orderFilter, this.idRestaurant, this.page, this.pageSize)
         .do((orders: any) => {
           if (this.errorLoadingOrders) {
             this.errorLoadingOrders = false;
@@ -324,7 +339,7 @@ export class OrderComponent implements OnInit, OnDestroy {
         'id': pl.productId,
         'comment': pl.comment,
         'amount': pl.amount,
-        'kitchenProducts': this.searchKitchenProducts(new Array(), pl.products)
+        'kitchenProductPostDto': this.searchKitchenProducts(new Array(), pl.products)
       };
       orderPostDtoArray.push(orderDtoDto);
     });
@@ -407,4 +422,9 @@ export class OrderComponent implements OnInit, OnDestroy {
     });
   }
 
+}
+
+enum OrderStatus {
+  OPENED = 'OPENED',
+  CLOSED = 'CLOSED'
 }

@@ -4,9 +4,10 @@
     <mat-card-title>Pedidos</mat-card-title>
     <mat-card-content *ngIf="!errorLoadingOrders">
       <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="space-between center">
-        <button mat-raised-button color="primary">Actualizar</button>
+        <button mat-raised-button color="primary" (click)="toggleFilter()">{{orderFilter==='CLOSED' ? 'Abiertos':'Cerrados'}}</button>
         <button mat-raised-button color="primary" (click)="create()">Nuevo Pedido</button>
       </div>
+      
       <mat-card (click)="edit(order)" class="mt-2 card-hover" *ngFor="let order of orders | async">
         <mat-card-title fxLayout="row" fxLayoutAlign="space-between center">
           <span>{{ getViewValue(order?.zone?.zoneType) }} - {{ order?.zone?.description }}</span>
