@@ -34,4 +34,18 @@ export class OrderService {
       .map((res) => res, (err) => err);
   }
 
+  ticket(idOrder) {
+    const url = `/api/pdf/ticket?idOrder=${idOrder}`;
+    return this.http
+      .get(url, { responseType: 'blob' })
+      .map((res) => res, (err) => err);
+  }
+
+  imprimir(idOrder) {
+    const url = `/api/pdf/ticket/print?idOrder=${idOrder}`;
+    return this.http
+      .get(url)
+      .map((res) => res, (err) => err);
+  }
+
 }

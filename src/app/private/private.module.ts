@@ -29,6 +29,7 @@ import { ProductService } from './product/product.service';
 import { ChainService } from './restaurant-chain/chain.service';
 import { RestaurantChainComponent } from './restaurant-chain/restaurant-chain.component';
 import { ConfirmDeleteZoneComponent } from './restaurant/confirm-delete-zone/confirm-delete-zone.component';
+import { ConfirmDeletePrinterComponent } from './restaurant/confirm-delete-printer/confirm-delete-printer.component';
 import { RestaurantComponent } from './restaurant/restaurant.component';
 import { RestaurantService } from './restaurant/restaurant.service';
 import { ConfirmDeleteComponent } from './user/confirm-delete/confirm-delete.component';
@@ -62,6 +63,7 @@ import { UserService } from './user/user.service';
     UserComponent,
     ConfirmDeleteComponent,
     ConfirmDeleteZoneComponent,
+    ConfirmDeletePrinterComponent,
     OrderComponent,
     TimeAgoPipe,
     AddcommentComponent,
@@ -82,6 +84,7 @@ import { UserService } from './user/user.service';
     ProductImageCropperComponent,
     ConfirmDeleteComponent,
     ConfirmDeleteZoneComponent,
+    ConfirmDeletePrinterComponent,
     AddcommentComponent
   ]
 })

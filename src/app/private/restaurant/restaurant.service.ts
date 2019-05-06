@@ -97,4 +97,40 @@ export class RestaurantService {
       .catch((err) => Promise.reject(err.error));
   }
 
+  updatePrinter(idRestaurant, printerUpdateDto) {
+    const url = `/api/restaurant/${idRestaurant}/printer`;
+    return this.http
+      .put(url, printerUpdateDto)
+      .toPromise()
+      .then((res) => res)
+      .catch((err) => Promise.reject(err.error));
+  }
+
+  deletePrinter(idRestaurant, printerDto) {
+    const url = `/api/restaurant/${idRestaurant}/printer/${printerDto.id}`;
+    return this.http
+      .delete(url)
+      .toPromise()
+      .then((res) => res)
+      .catch((err) => Promise.reject(err.error));
+  }
+
+  postPrinter(idRestaurant, printerDto) {
+    const url = `/api/restaurant/${idRestaurant}/printer`;
+    return this.http
+      .post(url, printerDto)
+      .toPromise()
+      .then((res) => res)
+      .catch((err) => Promise.reject(err.error));
+  }
+
+  getAllPrinters(idRestaurant, pageIndex?, pageSize?) {
+    const url = `/api/restaurant/${idRestaurant}/printers?page=${pageIndex}&max_per_page=${pageSize}`;
+    return this.http
+      .get(url)
+      .toPromise()
+      .then((res) => res)
+      .catch((err) => Promise.reject(err.error));
+  }
+
 }

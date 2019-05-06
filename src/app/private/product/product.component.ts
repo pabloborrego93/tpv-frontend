@@ -22,8 +22,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
   listLength = 0;
   pageNumber = 0;
   @ViewChild('paginator') paginator: MatPaginator;
-  private createProductForm: FormGroup;
-  private updateProductForm: FormGroup;
+  public createProductForm: FormGroup;
+  public updateProductForm: FormGroup;
   public selected: any;
   public formNameRepeated: Boolean = false;
   public loading: Boolean = false;

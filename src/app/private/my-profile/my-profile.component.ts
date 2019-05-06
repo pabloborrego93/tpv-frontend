@@ -9,10 +9,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class MyProfileComponent implements OnInit {
 
-  private updateUserForm: FormGroup;
-  private loading: Boolean = false;
-  private formError: String;
-  private myInfo;
+  public updateUserForm: FormGroup;
+  public loading: Boolean = false;
+  public formError: String;
+  public myInfo;
 
   validationMessages: Object = {
     firstname: {

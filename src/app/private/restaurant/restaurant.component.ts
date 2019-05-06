@@ -3,9 +3,10 @@ import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialog, MatPaginator, MatTableDataSource, PageEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../shared/toast.service';
-import { RestaurantService } from './restaurant.service';
-import { ConfirmDeleteZoneComponent } from './confirm-delete-zone/confirm-delete-zone.component';
 import { NavigationService } from '../navigation/navigation.service';
+import { ConfirmDeleteZoneComponent } from './confirm-delete-zone/confirm-delete-zone.component';
+import { RestaurantService } from './restaurant.service';
+import { ConfirmDeletePrinterComponent } from './confirm-delete-printer/confirm-delete-printer.component';
 
 @Component({
   selector: 'app-restaurant',
@@ -22,6 +23,7 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
   public screensForm: FormGroup;
   public loading: Boolean = false;
 
+  // Zone
   pageSizeOptions: number[] = [5, 10, 25, 100];
   pageEvent: PageEvent;
   dataSource = new MatTableDataSource<Element>();
@@ -33,7 +35,19 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
   public selected: any;
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild('zoneFormRef') formValues: NgForm;
-  private zoneForm: FormGroup;
+  public zoneForm: FormGroup;
+
+  //  Printer
+  pageEventPrinter: PageEvent;
+  dataSourcePrinter = new MatTableDataSource<Element>();
+  displayedColumnsPrinter: string[] = ['name', 'printerid', 'defaultPrinter'];
+  pageSizePrinter = 10;
+  listLengthPrinter = 0;
+  pageNumberPrinter = 0;
+  public selectedPrinter: any;
+  @ViewChild('paginatorPrinter') paginatorPrinter: MatPaginator;
+  @ViewChild('printerFormRef') formValuesPrinter: NgForm;
+  public printerForm: FormGroup;
 
   public zoneType: any[] = [{
     'value': 'TERRACE',
@@ -64,7 +78,9 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
             this.restaurant = res;
             this.getUsersAndWorkersAndScreens();
             this.loadData(this.pageNumber, this.pageSize);
+            this.loadDataPrinter(this.pageNumberPrinter, this.pageSizePrinter);
             this.buildZoneForm();
+            this.buildPrinterForm();
           })
           .catch((err) => {
             console.log('error' + err);
@@ -123,11 +139,32 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
     });
   }
 
+  openDialogPrinter(event, printerForm) {
+    const dialogRef = this.dialog.open(ConfirmDeletePrinterComponent, { data: event });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.restaurantService.deletePrinter(this.restaurant.id, this.selectedPrinter).then((res) => {
+          this.resetPrinter(printerForm);
+          this.loadDataPrinter(this.pageNumberPrinter, this.pageSizePrinter);
+        });
+      }
+    });
+  }
+
   reset(zoneFormRef: NgForm) {
     this.toggleSelected(null);
     zoneFormRef.reset({
       'zoneType': '',
       'description': ''
+    });
+  }
+
+  resetPrinter(printerFormRef: NgForm) {
+    this.toggleSelectedPrinter(null);
+    printerFormRef.reset({
+      'name': '',
+      'printerid': '',
+      'defaultPrinter': false
     });
   }
 
@@ -141,6 +178,22 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
       this.zoneForm = this.formBuilder.group({
         zoneType: ['', [Validators.required]],
         description: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(16)]]
+      });
+    }
+  }
+
+  buildPrinterForm() {
+    if (this.selectedPrinter) {
+      this.printerForm = this.formBuilder.group({
+        name: [this.selectedPrinter.name, [Validators.required]],
+        printerid: [this.selectedPrinter.printerid, [Validators.required, Validators.minLength(2), Validators.maxLength(36)]],
+        defaultPrinter: [this.selectedPrinter.defaultPrinter, [Validators.required]]
+      });
+    } else {
+      this.printerForm = this.formBuilder.group({
+        name: ['', [Validators.required]],
+        printerid: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(36)]],
+        defaultPrinter: [false, [Validators.required]]
       });
     }
   }
@@ -210,6 +263,61 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
     }
   }
 
+  submitPrinter(printerFormRef: NgForm) {
+    if (this.selectedPrinter) {
+      // updating
+      if (this.isValidForm(this.printerForm)) {
+        this.loading = true;
+        const id = this.selectedPrinter.id;
+        const name = this.printerForm.value['name'];
+        const printerid = this.printerForm.value['printerid'];
+        const defaultPrinter = this.printerForm.value['defaultPrinter'];
+        setTimeout(() => {
+          const printerUpdateDto = {
+            'id': id,
+            'name': name,
+            'printerid': printerid,
+            'defaultPrinter': defaultPrinter
+          };
+          this.restaurantService
+            .updatePrinter(this.restaurant.id, printerUpdateDto)
+            .then((res) => {
+              this.loadDataPrinter(this.pageNumberPrinter, this.pageSizePrinter);
+            }).catch((err) => {
+              if (err.code === 409) {
+              }
+            });
+          this.loading = false;
+        }, 500);
+      }
+    } else {
+      // creating
+      if (this.isValidForm(this.printerForm)) {
+        this.loading = true;
+        const name = this.printerForm.value['name'];
+        const printerid = this.printerForm.value['printerid'];
+        const defaultPrinter = this.printerForm.value['defaultPrinter'];
+        setTimeout(() => {
+          const printerPostDto = {
+            'name': name,
+            'printerid': printerid,
+            'defaultPrinter': defaultPrinter
+          };
+          this.restaurantService
+            .postPrinter(this.restaurant.id, printerPostDto)
+            .then((res) => {
+              this.loadDataPrinter(this.pageNumber, this.pageSize);
+              this.resetPrinter(printerFormRef);
+            }).catch((err) => {
+              if (err.code === 409) {
+              }
+            });
+          this.loading = false;
+        }, 500);
+      }
+    }
+  }
+
   submitWorkers(value) {
     this.loading = true;
     setTimeout(() => {
@@ -249,6 +357,13 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
     this.loadData(page, max_per_page);
   }
 
+  changePagePrinter($event) {
+    this.isLoadingResults = true;
+    const page = $event.pageIndex || 0;
+    const max_per_page = $event.pageSize || 5;
+    this.loadDataPrinter(page, max_per_page);
+  }
+
   toggleSelected(element) {
     if (this.selected && this.selected === element) {
       this.selected = null;
@@ -256,6 +371,16 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
     } else {
       this.selected = element;
       this.buildZoneForm();
+    }
+  }
+
+  toggleSelectedPrinter(element) {
+    if (this.selectedPrinter && this.selectedPrinter === element) {
+      this.selectedPrinter = null;
+      this.buildPrinterForm();
+    } else {
+      this.selectedPrinter = element;
+      this.buildPrinterForm();
     }
   }
 
@@ -269,6 +394,23 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
         this.pageSize = res.size;
         this.listLength = res.totalElements;
         this.pageNumber = res.number;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    this.isLoadingResults = false;
+  }
+
+  loadDataPrinter(page, max_per_page) {
+    this.isLoadingResults = true;
+    this.restaurantService
+      .getAllPrinters(this.restaurant.id, page, max_per_page)
+      .then((res: any) => {
+        const ELEMENT_DATA = res.content;
+        this.dataSourcePrinter = new MatTableDataSource<Element>(ELEMENT_DATA);
+        this.pageSizePrinter = res.size;
+        this.listLengthPrinter = res.totalElements;
+        this.pageNumberPrinter = res.number;
       })
       .catch((err) => {
         console.log(err);

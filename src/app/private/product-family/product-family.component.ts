@@ -27,8 +27,8 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
   public formNameRepeated: Boolean = false;
   public loading: Boolean = false;
   public loadingBorrar: Boolean = false;
-  private createProductFamilyForm: FormGroup;
-  private updateProductFamilyForm: FormGroup;
+  public createProductFamilyForm: FormGroup;
+  public updateProductFamilyForm: FormGroup;
 
   ProductFamilyValidationMessages: Object = {
     name: {

@@ -1,0 +1,17 @@
+runtime: nodejs8
+env: standard
+service: frontend
+
+env_variables:
+   API_KEY: AIzaSyCzzs55nv6sZwnb9ctVY-ofbWPiq-7EfcQ
+
+manual_scaling:
+   instances: 1
+
+handlers:
+- url: /(.+)
+  static_files: dist/\1
+  upload: dist/(.*)
+- url: /
+  static_files: dist/index.html
+  upload: dist/index.html

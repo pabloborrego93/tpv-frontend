@@ -1,6 +1,6 @@
 <div infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="3" [infiniteScrollThrottle]="100" (scrolled)="onScroll()"
   class="order-container" fxLayout="column" fxLayoutGap="16px">
-  <mat-card *ngIf="!creatingOrEditing()">
+  <mat-card class="h-100" *ngIf="!creatingOrEditing()">
     <mat-card-title>Pedidos</mat-card-title>
     <mat-card-content *ngIf="!errorLoadingOrders">
       <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="space-between center">
@@ -32,7 +32,7 @@
     </mat-card-content>
   </mat-card>
   <!-- Editar Pedido -->
-  <mat-card *ngIf="creatingOrEditing() && editing">
+  <mat-card class="h-100" *ngIf="creatingOrEditing() && editing">
     <mat-card-title fxLayout="row" fxLayoutAlign="space-between center">
       <span>Editar pedido</span>
       <button mat-raised-button color="primary" (click)="back()">Volver</button>
@@ -50,7 +50,11 @@
     <!-- Total -->
     <mat-tab-group animationDuration="200ms">
       <mat-tab label="Pedidos anteriores">
-        <h2>Productos anteriores</h2>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <h2>Productos anteriores</h2>
+          <button mat-raised-button color="primary" (click)="ticket()">Generar Ticket</button>
+          <button mat-raised-button color="primary" (click)="imprimir()">Imprimir Ticket</button>
+        </div>
         <!-- Tabla Productos Pedidos -->
         <mat-table *ngIf="selected?.orderLines" #table [dataSource]="selected.orderLines">
           <ng-container matColumnDef="id">
@@ -237,7 +241,7 @@
   </mat-card>
   <!-- Fin Editar Pedido -->
   <!-- Nuevo Pedido -->
-  <mat-card *ngIf="creatingOrEditing() && creating">
+  <mat-card class="h-100" *ngIf="creatingOrEditing() && creating">
     <mat-card-title fxLayout="row" fxLayoutAlign="space-between center">
       <span>Nuevo pedido</span>
       <button mat-raised-button color="primary" (click)="back()">Volver</button>

@@ -26,7 +26,7 @@ export class UserComponent implements OnInit, AfterViewInit {
   public selected: any;
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild('userFormRef') formValues: NgForm;
-  private userForm: FormGroup;
+  public userForm: FormGroup;
 
   public formNameRepeated: Boolean = false;
   public loading: Boolean = false;

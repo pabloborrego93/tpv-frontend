@@ -13,9 +13,9 @@ export class LoginComponent implements OnInit {
   public loginId;
   public chainName;
 
-  private loginForm: FormGroup;
-  private loading: Boolean = false;
-  private loginError: String;
+  public loginForm: FormGroup;
+  public loading: Boolean = false;
+  public loginError: String;
 
   validationMessages: Object = {
     username: {

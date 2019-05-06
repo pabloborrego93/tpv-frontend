@@ -10,9 +10,9 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 })
 export class SignupComponent implements OnInit {
 
-  private registerForm: FormGroup;
-  private loading: Boolean = false;
-  private registerErrors: String;
+  public registerForm: FormGroup;
+  public loading: Boolean = false;
+  public registerErrors: String;
 
   validationMessages: Object = {
     username: {

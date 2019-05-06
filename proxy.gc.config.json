@@ -1,0 +1,14 @@
+{
+    "/api/**": {
+        "target": "https://seraphic-cocoa-239316.appspot.com",
+        "secure": false,
+        "changeOrigin": true,
+        "pathRewrite": {"^/api" : "api"}
+    },
+    "/auth/**": {
+        "target": "https://seraphic-cocoa-239316.appspot.com",
+        "secure": false,
+        "changeOrigin": true,
+        "pathRewrite": {"^/auth" : "auth"}
+    }
+}

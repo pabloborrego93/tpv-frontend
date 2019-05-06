@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { KitchenService } from './kitchen.service';
 import * as _ from 'lodash';
@@ -8,10 +8,11 @@ import * as _ from 'lodash';
   templateUrl: './kitchen.component.html',
   styleUrls: ['./kitchen.component.scss']
 })
-export class KitchenComponent implements OnInit {
+export class KitchenComponent implements OnInit, OnDestroy {
 
   idRestaurant;
   kitchenProducts;
+  keepFetching = true;
 
   constructor(
     private activateRoute: ActivatedRoute,
@@ -26,12 +27,18 @@ export class KitchenComponent implements OnInit {
       });
   }
 
+  ngOnDestroy() {
+    this.keepFetching = false;
+  }
+
   getKitchenProducts() {
     this.kitchenService.list(this.idRestaurant)
       .subscribe((res) => {
         this.kitchenProducts = res;
         setTimeout(() => {
-          this.getKitchenProducts();
+          if (this.keepFetching) {
+            this.getKitchenProducts();
+          }
         }, 10000);
       });
   }

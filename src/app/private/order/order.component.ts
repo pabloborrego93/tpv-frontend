@@ -110,6 +110,20 @@ export class OrderComponent implements OnInit, OnDestroy {
     });
   }
 
+  ticket() {
+    this.orderService.ticket(this.selected.id).subscribe((data) => {
+      const downloadURL = window.URL.createObjectURL(data);
+      const link = document.createElement('a');
+      link.href = downloadURL;
+      link.download = 'ticket.pdf';
+      link.click();
+    });
+  }
+
+  imprimir() {
+    this.orderService.imprimir(this.selected.id).subscribe((data) => {});
+  }
+
   orderLinesGetTotal() {
     let total = 0;
     _.map(this.selected.orderLines, (pl) => {

@@ -24,12 +24,6 @@ export class ProductImageCropperComponent implements OnInit {
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
   }
-  imageLoaded() {
-
-  }
-  loadImageFailed() {
-    // show message
-  }
   crop() {
     this.dialogRef.close(this.croppedImage);
   }
