@@ -22,6 +22,7 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
   public screens: any;
   public screensForm: FormGroup;
   public loading: Boolean = false;
+  public loadingSC: Boolean = false;
 
   // Zone
   pageSizeOptions: number[] = [5, 10, 25, 100];
@@ -111,6 +112,14 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
     }
   }
 
+  isValidFormSC(form) {
+    if (this.loadingSC) {
+      return false;
+    } else {
+      return form.valid;
+    }
+  }
+
   compareZoneFn(a, b) {
     return a && b && a.value === b;
   }
@@ -132,8 +141,8 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.restaurantService.deleteZone(this.restaurant.id, this.selected).then((res) => {
-          this.reset(zoneForm);
           this.loadData(this.pageNumber, this.pageSize);
+          this.reset(zoneForm);
         });
       }
     });
@@ -230,6 +239,8 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
             .updateZone(this.restaurant.id, zoneUpdateDto)
             .then((res) => {
               this.loadData(this.pageNumber, this.pageSize);
+              this.reset(zoneFormRef);
+              this.toastService.openSnackBar('Actualización correcta', 5000, 'Cerrar');
             }).catch((err) => {
               if (err.code === 409) {
               }
@@ -253,6 +264,7 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
             .then((res) => {
               this.loadData(this.pageNumber, this.pageSize);
               this.reset(zoneFormRef);
+              this.toastService.openSnackBar('Creación correcta', 5000, 'Cerrar');
             }).catch((err) => {
               if (err.code === 409) {
               }
@@ -283,6 +295,8 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
             .updatePrinter(this.restaurant.id, printerUpdateDto)
             .then((res) => {
               this.loadDataPrinter(this.pageNumberPrinter, this.pageSizePrinter);
+              this.resetPrinter(printerFormRef);
+              this.toastService.openSnackBar('Actualización correcta', 5000, 'Cerrar');
             }).catch((err) => {
               if (err.code === 409) {
               }
@@ -308,6 +322,7 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
             .then((res) => {
               this.loadDataPrinter(this.pageNumber, this.pageSize);
               this.resetPrinter(printerFormRef);
+              this.toastService.openSnackBar('Creación correcta', 5000, 'Cerrar');
             }).catch((err) => {
               if (err.code === 409) {
               }
@@ -323,25 +338,27 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.restaurantService.setAllWorkers(this.restaurant.id, value.workers)
         .then((res) => {
+          this.toastService.openSnackBar('Actualización correcta', 5000, 'Cerrar');
           this.navigationService.updateNavigation();
           this.loading = false;
         }).catch((err) => {
-
+          this.toastService.openSnackBar('Se ha producido un error al actualizar', 5000, 'Cerrar');
           this.loading = false;
         });
     }, 500);
   }
 
   submitScreens(value) {
-    this.loading = true;
+    this.loadingSC = true;
     setTimeout(() => {
       this.restaurantService.setAllScreens(this.restaurant.id, value.screens)
         .then((res) => {
+          this.toastService.openSnackBar('Actualización correcta', 5000, 'Cerrar');
           this.navigationService.updateNavigation();
-          this.loading = false;
+          this.loadingSC = false;
         }).catch((err) => {
-
-          this.loading = false;
+          this.toastService.openSnackBar('Se ha producido un error al actualizar', 5000, 'Cerrar');
+          this.loadingSC = false;
         });
     }, 500);
   }
@@ -390,10 +407,19 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
       .getAllZones(this.restaurant.id, page, max_per_page)
       .then((res: any) => {
         const ELEMENT_DATA = res.content;
-        this.dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
-        this.pageSize = res.size;
-        this.listLength = res.totalElements;
-        this.pageNumber = res.number;
+        if (ELEMENT_DATA.length > 0) {
+          this.dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
+          this.pageSize = res.size;
+          this.listLength = res.totalElements;
+          this.pageNumber = res.number;
+        } else if (page > 0) {
+          this.loadData(page - 1, max_per_page);
+        } else {
+          this.dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
+          this.pageSize = res.size;
+          this.listLength = res.totalElements;
+          this.pageNumber = res.number;
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -407,10 +433,19 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
       .getAllPrinters(this.restaurant.id, page, max_per_page)
       .then((res: any) => {
         const ELEMENT_DATA = res.content;
-        this.dataSourcePrinter = new MatTableDataSource<Element>(ELEMENT_DATA);
-        this.pageSizePrinter = res.size;
-        this.listLengthPrinter = res.totalElements;
-        this.pageNumberPrinter = res.number;
+        if (ELEMENT_DATA.length > 0) {
+          this.dataSourcePrinter = new MatTableDataSource<Element>(ELEMENT_DATA);
+          this.pageSizePrinter = res.size;
+          this.listLengthPrinter = res.totalElements;
+          this.pageNumberPrinter = res.number;
+        } else if (page > 0) {
+          this.loadDataPrinter(page - 1, max_per_page);
+        } else {
+          this.dataSourcePrinter = new MatTableDataSource<Element>(ELEMENT_DATA);
+          this.pageSizePrinter = res.size;
+          this.listLengthPrinter = res.totalElements;
+          this.pageNumberPrinter = res.number;
+        }
       })
       .catch((err) => {
         console.log(err);

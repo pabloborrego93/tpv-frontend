@@ -10,15 +10,15 @@
     <!-- Formulario de creacion de cadena -->
     <mat-card-content *ngIf="!chain && chainLoaded">
       <form *ngIf="createChainForm" [formGroup]="createChainForm" (ngSubmit)="createChain()">
-        <mat-form-field class="display-block">
+        <mat-form-field color="accent" class="display-block">
           <input matInput placeholder="Nombre de cadena:" formControlName="name">
           <mat-error *ngIf="createChainForm?.get('name')?.errors?.required">{{chainValidationMessages.name.required}}</mat-error>
           <mat-error *ngIf="createChainForm?.get('name')?.errors?.minlength">{{chainValidationMessages.name.minlength}}</mat-error>
           <mat-error *ngIf="createChainForm?.get('name')?.errors?.maxlength">{{chainValidationMessages.name.maxlength}}</mat-error>
           <mat-error *ngIf="formNameRepeated">{{chainValidationMessages.name.nameInUse}}</mat-error>
         </mat-form-field>
-        <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="space-between center center">
-          <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(createChainForm)">Crear
+        <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="end center">
+          <button mat-raised-button color="accent" type="submit" [disabled]="!isValidForm(createChainForm)">Crear
             <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
         </div>
       </form>
@@ -29,21 +29,21 @@
     <mat-card-content *ngIf="chain && chainLoaded">
       <mat-card-title class="mt-1">Crear nuevo restaurante</mat-card-title>
       <form *ngIf="createRestaurantForm" [formGroup]="createRestaurantForm" (ngSubmit)="createRestaurant()">
-        <mat-form-field class="display-block">
+        <mat-form-field color="accent" class="display-block">
           <input matInput placeholder="Nombre de restaurante:" formControlName="name">
           <mat-error *ngIf="createRestaurantForm?.get('name')?.errors?.required">{{restaurantValidationMessages.name.required}}</mat-error>
           <mat-error *ngIf="createRestaurantForm?.get('name')?.errors?.minlength">{{restaurantValidationMessages.name.minlength}}</mat-error>
           <mat-error *ngIf="createRestaurantForm?.get('name')?.errors?.maxlength">{{restaurantValidationMessages.name.maxlength}}</mat-error>
         </mat-form-field>
-        <mat-form-field class="display-block">
+        <mat-form-field color="accent" class="display-block">
           <input matInput placeholder="Direcci&oacute;n:" formControlName="address">
           <mat-error *ngIf="createRestaurantForm?.get('address')?.errors?.required">{{restaurantValidationMessages.address.required}}</mat-error>
           <mat-error *ngIf="createRestaurantForm?.get('address')?.errors?.minlength">{{restaurantValidationMessages.address.minlength}}</mat-error>
           <mat-error *ngIf="createRestaurantForm?.get('address')?.errors?.maxlength">{{restaurantValidationMessages.address.maxlength}}</mat-error>
-          <mat-error *ngIf="formNameRepeated">{{restaurantValidationMessages.name.nameInUse}}</mat-error>
         </mat-form-field>
-        <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="space-between center center">
-          <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(createRestaurantForm)">Crear
+        <div class="mb-2 mt-1" fxLayout="column" fxLayoutAlign="end end">
+            <mat-error class="mb-2" *ngIf="formNameRepeated">{{restaurantValidationMessages.name.nameInUse}}</mat-error>
+          <button mat-raised-button color="accent" type="submit" [disabled]="!isValidForm(createRestaurantForm)">Crear
             <mat-icon class="spin" *ngIf="loadingCR">autorenew</mat-icon></button>
         </div>
       </form>

@@ -29,9 +29,7 @@ export class AuthService {
             this.getCurrentUserInfo();
           }
         },
-        (error) => {
-          console.log('No se pudo hacer login');
-        }
+        (error) => error
       ));
   }
 
@@ -60,10 +58,11 @@ export class AuthService {
     return this.http
       .post('/api/user', registerDto)
       .pipe(map(
-        (response: any) => response,
-        (error) => {
-          console.log('No se pudo hacer login');
-        }
+        (response: any) => {
+          this.openSnackBar(`Usuario ${registerDto.username} registrado correctamente`, 'Cerrar');
+          return response;
+        },
+        (error) => error
       ));
   }
 
@@ -99,7 +98,7 @@ export class AuthService {
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
-      duration: 3000
+      duration: 5000
     });
   }
 

@@ -27,7 +27,7 @@ export class ProductFamilyService {
   }
 
   delete(name) {
-    const url = `/api/productFamily?name=${name.name}`;
+    const url = `/api/productFamily?name=${name}`;
     return this.http
       .delete(url)
       .toPromise()

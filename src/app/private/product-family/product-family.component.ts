@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatPaginator, MatTableDataSource, PageEvent } from '@angular/material';
-import { ProductFamilyService } from './product-family.service';
-import { NavigationService } from '../navigation/navigation.service';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { MatDialog, MatPaginator, MatTableDataSource, PageEvent } from '@angular/material';
 import { ToastService } from '../../shared/toast.service';
+import { NavigationService } from '../navigation/navigation.service';
+import { ProductFamilyService } from './product-family.service';
+import { ConfirmDeleteProductFamilyComponent } from './confirm-delete-product-family/confirm-delete-product-family.component';
 
 @Component({
   selector: 'app-product-family',
@@ -21,6 +22,7 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
   listLength = 0;
   pageNumber = 0;
   @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild('pfFormRef') formValues: NgForm;
 
   public selected;
 
@@ -32,10 +34,10 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
 
   ProductFamilyValidationMessages: Object = {
     name: {
-      required: 'Name is required!',
-      minlength: 'Min length is 2',
-      maxlength: 'Max length is 32',
-      nameInUse: 'Name already in use'
+      required: 'El nombre es obligatorio',
+      minlength: 'La longuitud mínima son 2 caracteres',
+      maxlength: 'La longuitud máxima son 32 caracteres',
+      nameInUse: 'El nombre ya está en uso'
     }
   };
 
@@ -43,7 +45,8 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
     private productFamilyService: ProductFamilyService,
     private formBuilder: FormBuilder,
     private navigationService: NavigationService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    public dialog: MatDialog
   ) {
     this.loadData(this.pageNumber, this.pageSize);
   }
@@ -72,10 +75,19 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
       .list(page, max_per_page)
       .then((res: any) => {
         const ELEMENT_DATA = res.content;
-        this.dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
-        this.pageSize = res.size;
-        this.listLength = res.totalElements;
-        this.pageNumber = res.number;
+        if (ELEMENT_DATA.length > 0) {
+          this.dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
+          this.pageSize = res.size;
+          this.listLength = res.totalElements;
+          this.pageNumber = res.number;
+        } else if (page > 0) {
+          this.loadData(page - 1, max_per_page);
+        } else {
+          this.dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
+          this.pageSize = res.size;
+          this.listLength = res.totalElements;
+          this.pageNumber = res.number;
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -121,6 +133,7 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
           .then((res) => {
             this.navigationService.updateNavigation();
             this.loadData(this.pageNumber, this.pageSize);
+            this.toastService.openSnackBar('Actualización correcta', 5000, 'Cerrar');
             this.formNameRepeated = false;
             this.selected = null;
           }).catch((err) => {
@@ -133,7 +146,7 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
     }
   }
 
-  createProductFamily() {
+  createProductFamily(pfFormRef: NgForm) {
     if (this.isValidForm(this.createProductFamilyForm)) {
       this.loading = true;
       const name = this.createProductFamilyForm.value['name'];
@@ -147,8 +160,11 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
           .create(productFamilyPostDto)
           .then((res) => {
             this.navigationService.updateNavigation();
+            this.toastService.openSnackBar('Creación correcta', 5000, 'Cerrar');
             this.loadData(this.pageNumber, this.pageSize);
             this.formNameRepeated = false;
+            console.log(pfFormRef);
+            this.reset(pfFormRef);
           }).catch((err) => {
             if (err.code === 409) {
               this.formNameRepeated = true;
@@ -159,30 +175,58 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
       }
   }
 
-  deleteProductFamily() {
-    if (this.selected) {
-      const name = this.selected;
-      this.selected = null;
-      this.loadingBorrar = true;
-      setTimeout(() => {
+  // deleteProductFamily() {
+  //   if (this.selected) {
+  //     const name = this.selected;
+  //     this.selected = null;
+  //     this.loadingBorrar = true;
+  //     setTimeout(() => {
+  //       this.productFamilyService
+  //         .delete(name)
+  //         .then((res) => {
+  //           this.navigationService.updateNavigation();
+  //           this.loadData(this.pageNumber, this.pageSize);
+  //           this.formNameRepeated = false;
+  //           this.reset(zoneForm);
+  //           const mensaje = `${name.name} eliminado correctamente`;
+  //           this.toastService.openSnackBar(mensaje, 5000, 'Cerrar');
+  //         }).catch((err) => {
+  //           if (err.code === 409) {
+  //             this.formNameRepeated = true;
+  //           }
+  //           const mensaje = `${name.name} no se pudo eliminar correctamente`;
+  //           this.toastService.openSnackBar(mensaje, 3000, 'Cerrar');
+  //         });
+  //       this.loadingBorrar = false;
+  //     }, 500);
+  //   }
+  // }
+
+  openDialog(event, zoneForm) {
+    console.log(event);
+    const name = event.name;
+    console.log(name);
+    const dialogRef = this.dialog.open(ConfirmDeleteProductFamilyComponent, { data: event });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+      if (result) {
+        console.log(name);
+        console.log(this.selected.name);
         this.productFamilyService
-          .delete(name)
+          .delete(this.selected.name)
           .then((res) => {
             this.navigationService.updateNavigation();
             this.loadData(this.pageNumber, this.pageSize);
             this.formNameRepeated = false;
-            const mensaje = `${name} eliminado correctamente`;
-            this.toastService.openSnackBar(mensaje, 3000, 'Cerrar');
+            this.reset(zoneForm);
+            const mensaje = `Eliminado correctamente`;
+            this.toastService.openSnackBar(mensaje, 5000, 'Cerrar');
           }).catch((err) => {
-            if (err.code === 409) {
-              this.formNameRepeated = true;
-            }
-            const mensaje = `${name} no se pudo eliminar correctamente`;
-            this.toastService.openSnackBar(mensaje, 3000, 'Cerrar');
+            const mensaje = `No se pudo eliminado correctamente`;
+            this.toastService.openSnackBar(mensaje, 5000, 'Cerrar');
           });
-        this.loadingBorrar = false;
-      }, 500);
-    }
+        }
+    });
   }
 
   isValidForm(form) {
@@ -195,6 +239,16 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
 
   setPageSizeOptions(setPageSizeOptionsInput: string) {
     this.pageSizeOptions = setPageSizeOptionsInput.split(',').map((str) => + str);
+  }
+
+  reset(formRef: NgForm) {
+    this.selected = null;
+    // this.toggleSelected(null);
+    this.buildCreateProductFamilyForm();
+    formRef.reset({
+      'name': '',
+      'catalogable': false
+    });
   }
 
 }

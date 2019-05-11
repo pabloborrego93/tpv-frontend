@@ -4,19 +4,19 @@
     <mat-card-subtitle>{{restaurant?.address}}</mat-card-subtitle>
 
 
-    <mat-tab-group>
+    <mat-tab-group color="accent">
       <mat-tab label="Asociaciones">
 
         <mat-card-title class="mt-2">Trabajadores</mat-card-title>
         <mat-card-content *ngIf="workersForm">
           <form [formGroup]="workersForm" (ngSubmit)="submitWorkers(workersForm.value)">
-            <mat-form-field class="display-block">
+            <mat-form-field color="accent" class="display-block">
               <mat-select formControlName="workers" placeholder="Trabajadores" [compareWith]="compareFn" multiple>
                 <mat-option *ngFor="let user of users" [(value)]="user">{{user.username}}</mat-option>
               </mat-select>
             </mat-form-field>
             <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="16px">
-              <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(workersForm)">Actualizar
+              <button mat-raised-button color="accent" type="submit" [disabled]="!isValidForm(workersForm)">Actualizar
                 <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
             </div>
           </form>
@@ -25,14 +25,14 @@
         <mat-card-title>Pantallas</mat-card-title>
         <mat-card-content *ngIf="screensForm">
           <form [formGroup]="screensForm" (ngSubmit)="submitScreens(screensForm.value)">
-            <mat-form-field class="display-block">
+            <mat-form-field color="accent" class="display-block">
               <mat-select formControlName="screens" placeholder="Pantallas" [compareWith]="compareFn" multiple>
                 <mat-option *ngFor="let user of users" [(value)]="user">{{user.username}}</mat-option>
               </mat-select>
             </mat-form-field>
             <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="16px">
-              <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(screensForm)">Actualizar
-                <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
+              <button mat-raised-button color="accent" type="submit" [disabled]="!isValidFormSC(screensForm)">Actualizar
+                <mat-icon class="spin" *ngIf="loadingSC">autorenew</mat-icon></button>
             </div>
           </form>
         </mat-card-content>
@@ -63,7 +63,7 @@
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumns; let i = index"></mat-row>
             </mat-table>
-            <mat-paginator #paginator [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+            <mat-paginator color="accent" #paginator [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
               [showFirstLastButtons]="true" [length]="listLength" (page)="changePage($event)">
             </mat-paginator>
           </div>
@@ -74,17 +74,17 @@
         <mat-card-title *ngIf="selected">Actualizar zona</mat-card-title>
         <mat-card-content *ngIf="zoneForm">
           <form ngForm #zoneFormRef [formGroup]="zoneForm" (ngSubmit)="submitZone(zoneFormRef)">
-            <mat-form-field *ngIf="!selected" class="display-block">
+            <mat-form-field color="accent" *ngIf="!selected" class="display-block">
               <mat-select formControlName="zoneType" placeholder="Zona">
                 <mat-option *ngFor="let zone of zoneType" [value]="zone.value">{{zone.viewValue}}</mat-option>
               </mat-select>
             </mat-form-field>
-            <mat-form-field *ngIf="selected" class="display-block">
+            <mat-form-field color="accent" *ngIf="selected" class="display-block">
               <mat-select formControlName="zoneType" placeholder="Zona" [compareWith]="compareZoneFn">
                 <mat-option *ngFor="let zone of zoneType" [(value)]="zone">{{zone.viewValue}}</mat-option>
               </mat-select>
             </mat-form-field>
-            <mat-form-field class="display-block">
+            <mat-form-field color="accent" class="display-block">
               <input id="description" type="text" placeholder="Descripcion" formControlName="description" required
                 matInput>
               <!-- <mat-error *ngIf="zoneForm.get('username').errors?.required">{{validationMessages.username.required}}</mat-error> -->
@@ -92,14 +92,14 @@
               <!-- <mat-error *ngIf="zoneForm.get('username').errors?.maxlength">{{validationMessages.username.maxlength}}</mat-error> -->
             </mat-form-field>
             <div *ngIf="!selected" class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="16px">
-              <button mat-raised-button color="primary" type="button" (click)="reset(zoneFormRef)">Limpiar</button>
-              <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(zoneForm)">Crear
+              <button mat-raised-button color="accent" type="button" (click)="reset(zoneFormRef)">Limpiar</button>
+              <button mat-raised-button color="accent" type="submit" [disabled]="!isValidForm(zoneForm)">Crear
                 <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
             </div>
-            <div *ngIf="selected" class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="16px">
-              <button mat-raised-button color="primary" type="button"
+            <div *ngIf="selected" class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+              <button mat-raised-button color="warn" type="button"
                 (click)="openDialog(selected, zoneForm)">Eliminar</button>
-              <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(zoneForm)">Actualizar
+              <button mat-raised-button color="accent" type="submit" [disabled]="!isValidForm(zoneForm)">Actualizar
                 <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
             </div>
           </form>
@@ -141,7 +141,7 @@
               <mat-header-row *matHeaderRowDef="displayedColumnsPrinter"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumnsPrinter; let i = index"></mat-row>
             </mat-table>
-            <mat-paginator #paginatorPrinter [pageIndex]="pageNumberPrinter" [pageSize]="pageSizePrinter"
+            <mat-paginator color="accent" #paginatorPrinter [pageIndex]="pageNumberPrinter" [pageSize]="pageSizePrinter"
               [pageSizeOptions]="pageSizeOptions" [showFirstLastButtons]="true" [length]="listLengthPrinter"
               (page)="changePagePrinter($event)">
             </mat-paginator>
@@ -155,26 +155,26 @@
         <mat-card-title *ngIf="selectedPrinter">Actualizar impresora</mat-card-title>
         <mat-card-content *ngIf="printerForm">
           <form ngForm #printerFormRef [formGroup]="printerForm" (ngSubmit)="submitPrinter(printerFormRef)">
-            <mat-form-field class="display-block">
+            <mat-form-field color="accent" class="display-block">
               <input id="name" type="text" placeholder="Nombre" formControlName="name" required matInput>
             </mat-form-field>
-            <mat-form-field class="display-block">
+            <mat-form-field color="accent" class="display-block">
               <input id="printerid" type="text" placeholder="ID Impresora" formControlName="printerid" required
                 matInput>
             </mat-form-field>
             <mat-slide-toggle formControlName="defaultPrinter">Impresora por defecto</mat-slide-toggle>
             <div *ngIf="!selectedPrinter" class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center"
               fxLayoutGap="16px">
-              <button mat-raised-button color="primary" type="button"
+              <button mat-raised-button color="accent" type="button"
                 (click)="resetPrinter(printerFormRef)">Limpiar</button>
-              <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(printerForm)">Crear
+              <button mat-raised-button color="accent" type="submit" [disabled]="!isValidForm(printerForm)">Crear
                 <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
             </div>
-            <div *ngIf="selectedPrinter" class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center"
+            <div *ngIf="selectedPrinter" class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="space-between center"
               fxLayoutGap="16px">
-              <button mat-raised-button color="primary" type="button"
+              <button mat-raised-button color="warn" type="button"
                 (click)="openDialogPrinter(selectedPrinter, printerForm)">Eliminar</button>
-              <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(printerForm)">Actualizar
+              <button mat-raised-button color="accent" type="submit" [disabled]="!isValidForm(printerForm)">Actualizar
                 <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
             </div>
           </form>

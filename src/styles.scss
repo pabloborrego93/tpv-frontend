@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "~@angular/material/_theming.scss";
+
 @font-face {
     font-family: 'Charlie-sans-display-black';
     src: url('../src/assets/fonts/charlie-sans/charlie-display/Charlie_Display-Black.woff') format('woff');
@@ -31,7 +32,7 @@
     src: url('../src/assets/fonts/charlie-sans/charlie-text/Charlie_Text-Semibold.woff') format('woff');
 }
 
-$custom-typography: mat-typography-config( $font-family: 'Charlie-sans-text-regular, Roboto, monospace',
+$custom-typography: mat-typography-config($font-family: 'Charlie-sans-text-regular, Roboto, monospace',
 $headline: mat-typography-level(32px,
 48px,
 700),
@@ -39,19 +40,17 @@ $body-1: mat-typography-level(16px,
 24px,
 500));
 @include mat-core($custom-typography);
-$primary: mat-palette($mat-blue-grey);
-$accent: mat-palette($mat-amber,
-A200,
-A100,
-A400);
+// $primary: mat-palette($mat-blue-grey);
+// $accent: mat-palette($mat-amber, A200, A100, A400);
+// $primary: mat-palette($mat-grey, A200);
+// $accent: mat-palette($mat-light-blue, 900);
+$primary: mat-palette($mat-grey, A200);
+$accent: mat-palette($mat-light-blue, 900);
 $warn: mat-palette($mat-red);
-$theme: mat-light-theme($primary,
-$accent,
-$warn);
+$theme: mat-light-theme($primary, $accent, $warn);
 @include angular-material-theme($theme);
-$light-primary: mat-color($primary,
-200,
-0.1);
+$light-primary: mat-color($primary);
+
 html,
 body {
     min-height: 100%;
@@ -71,15 +70,41 @@ mat-sidenav-container {
     height: 100%;
 }
 
+.mat-error {
+    min-height: 16px;    
+}
+
+.mat-form-field-wrapper {
+    margin-bottom: 1em;
+}
+
 @media (min-width: 0px) {
+    .padding-right-0 {
+        padding-right: 0px !important;
+    }
     mat-card-title {
         font-size: 1.4em !important;
+    }
+
+    .main-title {
+        font-size: 1.2em !important;
+        margin-left: 1em;
+        margin-right: 1em;
     }
 }
 
 @media (min-width: 576px) {
+    .padding-right-0 {
+        padding-right: 16px !important;
+    }
     mat-card-title {
         font-size: 1.6em !important;
+    }
+
+    .main-title {
+        font-size: 1.4em !important;
+        margin-left: 2em;
+        margin-right: 2em;
     }
 }
 
@@ -87,11 +112,23 @@ mat-sidenav-container {
     mat-card-title {
         font-size: 1.6em !important;
     }
+
+    .main-title {
+        font-size: 1.6em !important;
+        margin-left: 4em;
+        margin-right: 4em;
+    }
 }
 
 @media (min-width: 992px) {
     mat-card-title {
         font-size: 1.6em !important;
+    }
+
+    .main-title {
+        font-size: 1.8em !important;
+        margin-left: 6em;
+        margin-right: 6em;
     }
 }
 
@@ -99,11 +136,41 @@ mat-sidenav-container {
     mat-card-title {
         font-size: 1.6em !important;
     }
+
+    .main-title {
+        font-size: 1.8em !important;
+        margin-left: 8em;
+        margin-right: 8em;
+    }
 }
 
 .spacer {
     flex: 1 1 auto;
 }
+
+.main-logo-resize {
+    max-width: 80%;
+    max-height: 80%;
+}
+
+// .mat-focused .mat-form-field-label {
+//     /*change color of label*/
+//     color: rgba(1, 87, 155, 1) !important;
+// }
+
+// .mat-form-field-underline {
+//     /*change color of underline*/
+//     background-color: rgba(1, 87, 155, 0.5) !important;
+// }
+
+// .mat-form-field-ripple {
+//     /*change color of underline when focused*/
+//     background-color: rgba(1, 87, 155, 1) !important;
+// }
+
+// .mat-form-field-label-wrapper .mat-form-field-label {
+//     color: rgba(1, 87, 155, 0.75) !important;
+// }
 
 @mixin background-color {
     background-color: mat-color($primary, 400, 0.4);
@@ -166,6 +233,7 @@ mat-sidenav.sidenav::-webkit-scrollbar-thumb,
         -webkit-transform: rotate(0deg);
         transform: rotate(0deg);
     }
+
     100% {
         -webkit-transform: rotate(359deg);
         transform: rotate(359deg);
@@ -177,6 +245,7 @@ mat-sidenav.sidenav::-webkit-scrollbar-thumb,
         -webkit-transform: rotate(0deg);
         transform: rotate(0deg);
     }
+
     100% {
         -webkit-transform: rotate(359deg);
         transform: rotate(359deg);
@@ -188,6 +257,7 @@ form {
         margin-top: 6px;
         margin-bottom: 6px;
     }
+
     .submitButtonDiv {
         margin-top: 24px;
     }
@@ -197,9 +267,11 @@ mat-card {
     &.with-margin {
         margin: 16px;
     }
+
     &.200W {
         width: 200px;
         max-width: 200px;
+
         .img {
             object-fit: cover;
             width: 200px;
@@ -299,10 +371,19 @@ mat-card {
 
 .toolbar-landing-page {
     font-family: 'Charlie-sans-display-black';
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.text-center {
+    text-align: center;
 }
 
 .font-red {
     color: red;
+}
+
+.fs-0-9em {
+    font-size: 0.9em;
 }
 
 mat-cell,
@@ -310,9 +391,11 @@ mat-header-cell {
     &.noPadding {
         padding-right: 8px;
         padding-left: 8px;
+
         &:first-of-type {
             padding-left: 0px;
         }
+
         &:last-of-type {
             padding-right: 0px;
         }
@@ -332,26 +415,33 @@ mat-header-cell {
 div.twin-column-list {
     overflow-y: scroll;
     border: 1px solid #f4f4f4;
+
     mat-list {
         padding: 0px;
+
         &.selected {
             // border: 3px solid green;
         }
+
         &.notSelected {
             // border: 3px solid red;
         }
+
         &.left {
             flex: 1;
         }
+
         &.right {
             flex: 1;
         }
+
         mat-list-item {
             &:hover {
                 background-color: #f4f4f4;
             }
         }
     }
+
     flex-grow: 1;
     overflow: auto;
     height: 16em;
@@ -378,18 +468,22 @@ div.img-with-button {
     display: flex;
     justify-content: space-around;
     align-items: flex-end;
+
     button.remove-photo {
         position: absolute;
         left: 4px;
         bottom: 4px;
+
         span.mat-button-wrapper {
             line-height: 22px !important;
         }
     }
+
     button.add-photo {
         position: absolute;
         right: 4px;
         bottom: 4px;
+
         span.mat-button-wrapper {
             line-height: 20px !important;
         }
@@ -427,11 +521,11 @@ h4.formHeader {
 }
 
 .table-responsive {
-  display: block;
-  width: 100%;
-  overflow-x: scroll;
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: -ms-autohiding-scrollbar;
+    display: block;
+    width: 100%;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
 .mat-dialog-content {
@@ -440,11 +534,13 @@ h4.formHeader {
 
 table.info-table {
     width: 100%;
+
     tr {
         th {
             text-align: left;
             font-size: 13px;
         }
+
         td {
             text-align: left;
         }
@@ -456,15 +552,16 @@ table.info-table {
 }
 
 .card-hover {
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
-  
+
 .card-hover:hover {
     cursor: pointer;
     box-shadow: 0 10px 14px rgba(0, 0, 0, 0.1), 0 4px 4px rgba(0, 0, 0, 0.1)
 }
 
-.mat-expansion-panel-header-description, .mat-expansion-panel-header-title {
+.mat-expansion-panel-header-description,
+.mat-expansion-panel-header-title {
     justify-content: flex-end;
 }
 
@@ -529,6 +626,7 @@ td {
 
 .pcomposite {
     font-size: 1.1em !important;
+
     p {
         text-decoration: underline;
     }
@@ -543,7 +641,7 @@ td {
 }
 
 .order-chip {
-    transition: box-shadow 280ms cubic-bezier(.4,0,.2,1);
+    transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1);
     display: inline-flex;
     padding: 8px 12px !important;
     border-radius: 16px !important;
@@ -552,4 +650,52 @@ td {
     min-height: 18px !important;
     height: 1px;
     font-size: 0.6em;
+}
+
+.ml-2 {
+    margin-left: 2em;
+}
+
+.mr-2 {
+    margin-right: 2em;
+}
+
+.pt-4 {
+    padding-top: 4em;
+}
+
+.pt-2 {
+    padding-top: 2em;
+}
+
+.pb-4 {
+    padding-bottom: 4em;
+}
+
+.btn-main-start {
+    height: 54px;
+    width: 200px;
+    font-size: 1.6em;
+}
+
+.mt-5 {
+    margin-top: 5em;
+}
+
+.mb-8 {
+    margin-bottom: 8em;
+}
+
+.m-0 {
+    margin: 0px;
+}
+
+.margin-0 {
+    margin: 0 !important;
+}
+
+.landscape-image {
+    height: 74px !important;
+    width: 54px !important;
+    font-size: 54px !important
 }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ChainService } from './chain.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NavigationService } from '../navigation/navigation.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ToastService } from '../../shared/toast.service';
 
 @Component({
   selector: 'app-restaurant-chain',
@@ -20,24 +22,24 @@ export class RestaurantChainComponent implements OnInit {
 
   chainValidationMessages: Object = {
     name: {
-      required: 'Name is required!',
-      minlength: 'Min length is 2',
-      maxlength: 'Max length is 16',
-      nameInUse: 'Name already in use'
+      required: 'El nombre es obligatorio',
+      minlength: 'La longuitud mínima son 2 caracteres',
+      maxlength: 'La longuitud máxima son 32 caracteres',
+      nameInUse: 'El nombre ya está en uso'
     }
   };
 
   restaurantValidationMessages: Object = {
     name: {
-      required: 'Name is required!',
-      minlength: 'Min length is 2',
-      maxlength: 'Max length is 16',
-      nameInUse: 'Name already in use'
+      required: 'El nombre es obligatorio',
+      minlength: 'La longuitud mínima son 2 caracteres',
+      maxlength: 'La longuitud máxima son 32 caracteres',
+      nameInUse: 'El nombre ya está en uso'
     },
     address: {
-      required: 'Address is required!',
-      minlength: 'Min length is 2',
-      maxlength: 'Max length is 16'
+      required: 'La dirección es obligatoria',
+      minlength: 'La longuitud mínima son 2 caracteres',
+      maxlength: 'La longuitud máxima son 32 caracteres',
     }
   };
 
@@ -45,6 +47,9 @@ export class RestaurantChainComponent implements OnInit {
     private chainService: ChainService,
     private formBuilder: FormBuilder,
     private formBuilder2: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private toast: ToastService,
     private navigationService: NavigationService) { }
 
   ngOnInit() {
@@ -64,14 +69,14 @@ export class RestaurantChainComponent implements OnInit {
 
   buildCreateChainForm() {
     this.createChainForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(16)]],
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
     });
   }
 
   buildCreateRestaurantForm() {
     this.createRestaurantForm = this.formBuilder2.group({
-      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(16)]],
-      address: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(16)]]
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
+      address: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]]
     });
   }
 
@@ -89,6 +94,8 @@ export class RestaurantChainComponent implements OnInit {
           .createRestaurant(restaurantPostDto)
           .then((res) => {
             this.navigationService.updateNavigation();
+            this.toast.openSnackBar(`Restaurante ${name} creado correctamente`, 5000, 'Cerrar');
+            this.router.navigate([`/admin/restaurant/${name}`]);
           }).catch((err) => {
             if (err.error.code === 409) {
               this.formNameRepeated = true;
@@ -134,7 +141,7 @@ export class RestaurantChainComponent implements OnInit {
   }
 
   isValidForm(form) {
-    if (this.loading) {
+    if (this.loading || this.loadingCR) {
       return false;
     } else {
       return form.valid;

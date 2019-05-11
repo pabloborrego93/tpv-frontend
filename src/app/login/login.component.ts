@@ -83,10 +83,7 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/admin']);
             },
             (error: any) => {
-              this.loginError = 'Username or password incorrect!';
-              setTimeout(() => {
-                this.loginError = '';
-              }, 4000);
+              this.loginError = 'Usuario o contraseña incorrectos';
               this.loading = false;
             }
           );

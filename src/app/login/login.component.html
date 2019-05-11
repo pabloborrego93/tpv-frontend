@@ -8,21 +8,21 @@
         {{chainName}}
       </mat-card-subtitle>
       <mat-card-content>
-        <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
-          <mat-form-field class="display-block">
+        <form [formGroup]="loginForm">
+          <mat-form-field color="accent" class="display-block">
             <input id="username" type="text" placeholder="Usuario" formControlName="username" required matInput>
             <mat-error *ngIf="loginForm.get('username').errors?.required">{{validationMessages.username.required}}</mat-error>
             <mat-error *ngIf="loginForm.get('username').errors?.minlength">{{validationMessages.username.minlength}}</mat-error>
             <mat-error *ngIf="loginForm.get('username').errors?.maxlength">{{validationMessages.username.maxlength}}</mat-error>
           </mat-form-field>
-          <mat-form-field class="display-block">
+          <mat-form-field color="accent" class="display-block">
             <input id="password" type="password" placeholder="Contraseña" formControlName="password" required matInput>
             <mat-error *ngIf="loginForm.get('password').errors?.required">{{validationMessages.password.required}}</mat-error>
             <mat-error *ngIf="loginForm.get('password').errors?.minlength">{{validationMessages.password.minlength}}</mat-error>
             <mat-error *ngIf="loginForm.get('password').errors?.maxlength">{{validationMessages.password.maxlength}}</mat-error>
           </mat-form-field>
-          <div class="submitButtonDiv" fxLayout="row" fxLayoutAlign="space-between center center">
-            <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm()">Entrar <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <!-- <button mat-raised-button color="accent" type="submit" [disabled]="!isValidForm()">Entrar <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button> -->
             <mat-error *ngIf="loginError">{{loginError}}</mat-error>
           </div>
         </form>
@@ -34,11 +34,12 @@
             <a class="redirect" [routerLink]="['/signup']">Registro</a>
           </mat-grid-tile>
           <mat-grid-tile>
-              <button mat-raised-button color="primary" (click)="puertaTrasera()">Puerta Trasera <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
+              <button mat-raised-button color="accent" type="submit" (click)="loginUser()" [disabled]="!isValidForm()">Entrar <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
+              <!-- <button mat-raised-button color="accent" (click)="puertaTrasera()">Puerta Trasera <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button> -->
             <!-- <a class="redirect" [routerLink]="['/restore-password']">Forgotten password?</a> -->
           </mat-grid-tile>
         </mat-grid-list>
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        <mat-progress-bar color="accent" mode="indeterminate"></mat-progress-bar>
       </mat-card-footer>
     </mat-card>
   </div>

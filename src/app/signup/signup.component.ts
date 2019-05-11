@@ -94,11 +94,7 @@ export class SignupComponent implements OnInit {
               this.router.navigate(['/login']);
             },
             (error: any) => {
-              console.log(error);
-              this.registerErrors = 'Couldnt complete the sign up!';
-              setTimeout(() => {
-                this.registerErrors = '';
-              }, 2000);
+              this.registerErrors = 'Se ha producido un error';
               this.loading = false;
             }
           );

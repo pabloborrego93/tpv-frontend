@@ -1,18 +1,12 @@
 <h3 mat-dialog-title>Confirmar eliminado</h3>
 <mat-dialog-content class="mat-typography" fxLayout="column" fxLayoutAlign="start center">
-  ¿Est&aacute; seguro que desea eliminar la siguiente zona?
+  ¿Est&aacute; seguro que desea eliminar la siguiente familia de producto?
   <table class="info-table">
     <tr>
-      <th>Zona</th>
+      <th>Nombre</th>
     </tr>
     <tr>
-      <td>{{getViewValue(zoneData?.zoneType)}}</td>
-    </tr>
-    <tr>
-      <th>Descripci&oacute;n</th>
-    </tr>
-    <tr>
-      <td>{{zoneData?.description}}</td>
+      <td>{{localData?.name}}</td>
     </tr>
   </table>
 </mat-dialog-content>

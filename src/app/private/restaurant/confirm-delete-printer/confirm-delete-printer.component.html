@@ -2,21 +2,27 @@
 <mat-dialog-content class="mat-typography" fxLayout="column" fxLayoutAlign="start center">
   ¿Est&aacute; seguro que desea eliminar la siguiente impresora?
   <table class="info-table">
-    <!-- <tr>
-      <th>Zona</th>
+    <tr>
+      <th>Impresora</th>
     </tr>
     <tr>
-      <td>{{getViewValue(zoneData?.zoneType)}}</td>
+      <td>{{printerData?.name}}</td>
     </tr>
     <tr>
-      <th>Descripci&oacute;n</th>
+      <th>ID Impresora</th>
     </tr>
     <tr>
-      <td>{{zoneData?.description}}</td>
-    </tr> -->
+      <td>{{printerData?.printerid}}</td>
+    </tr>
+    <tr>
+      <th>Por defecto</th>
+    </tr>
+    <tr>
+      <td>{{printerData?.defaultPrinter}}</td>
+    </tr>
   </table>
 </mat-dialog-content>
-<mat-dialog-actions fxLayoutAlign="space-between center">
-  <button mat-button mat-dialog-close>Cancelar</button>
-  <button mat-button [mat-dialog-close]="true">Confirmar</button>
+<mat-dialog-actions class="mt-2" fxLayoutAlign="space-between center">
+  <button color="accent" mat-button mat-dialog-close>Cancelar</button>
+  <button color="accent" mat-button [mat-dialog-close]="true">Confirmar</button>
 </mat-dialog-actions>

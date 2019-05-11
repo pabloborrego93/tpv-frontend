@@ -24,15 +24,15 @@ export class ChainService {
     .post('/api/restaurantChain', chainPostDto, { observe: 'response' })
     .toPromise()
     .then((res) => res)
-    .catch((err) => throwError(err));
+    .catch((err) => Promise.reject(err));
   }
 
   createRestaurant(restaurantPostDto) {
     return this.http
-    .post('/api/restaurant', restaurantPostDto)
+    .post('/api/restaurant', restaurantPostDto , { observe: 'response' })
     .toPromise()
     .then((res) => res)
-    .catch((err) => throwError(err));
+    .catch((err) => Promise.reject(err));
   }
 
 }

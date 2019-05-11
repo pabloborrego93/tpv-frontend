@@ -1,82 +1,100 @@
 <mat-toolbar color="primary" fxLayout="row" class="toolbar-landing-page">
   <mat-toolbar-row>
     <div fxFlexOffset.xs="0%" fxFlexOffset="10%"></div>
-    <span>Open TPV</span>
+    <img class="main-logo-resize" src="assets/images/main-logo-with-text.png" alt="Main logo">
+    <!-- <span>Open TPV</span> -->
     <span class="spacer"></span>
-    <button mat-raised-button [routerLink]="['/login']" color="accent">Acceder</button>
-    <button mat-button [routerLink]="['/signup']" color="accent">Registrarse</button>
+    <button mat-button [routerLink]="['/signup']" color="accent">Registro</button>
+    <button mat-raised-button [routerLink]="['/login']" color="accent">Acceso</button>
     <div fxFlexOffset.xs="0%" fxFlexOffset="10%"></div>
   </mat-toolbar-row>
 </mat-toolbar>
 
-<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutWrap class="h-em-4 p-em-1 background-primary">
-  <h4>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-  </h4>
-</div>
-<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutWrap class="h-em-16 p-em-1 background-light-primary">
-  <p>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-    standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
-    make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-    typesetting, remaining essentially unchanged.
+<!-- <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutWrap class="h-em-2 background-primary">
+  <p fxLayoutAlign="center center" class="fs-0-9em text-center">
+    ¡Ahora puedes probarlo de forma totalmente gratuita!
   </p>
+</div> -->
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutWrap class="h-em-16 p-em-1 mt-5 mb-8">
+  <div fxFlex="100">
+    <h1 class="main-title text-center">
+      Open TPV es una aplicación multiplataforma fácil de usar con la que podrás organizar y gestionar los distintos
+      restaurantes de tu comercio.
+    </h1>
+  </div>
+  <div>
+    <button class="btn-main-start" mat-raised-button [routerLink]="['/login']" color="accent">Comenzar</button>
+  </div>
 </div>
 
-<div style="height: 150px; overflow: hidden;"><svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;">
+<!-- <div style="height: 150px; overflow: hidden;"><svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%; margin-top: 1em; transform: rotate(180deg);">
     <path d="M0.00,49.98 C60.12,92.27 350.88,-49.98 519.31,69.56 L500.00,0.00 L0.00,0.00 Z" class="svg-landing-page"></path>
-  </svg></div>
-
-<div fxLayout.xs="column" fxLayout.sm="row" fxLayoutAlign="center center" fxLayoutGap="16px">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>M&oacute;vil</mat-card-title>
-    </mat-card-header>
-    <img mat-card-image src="https://via.placeholder.com/350x150" alt="placeholder">
-    <mat-card-content>
-      <p>
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
-        make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-        typesetting, remaining essentially unchanged.
-      </p>
-    </mat-card-content>
-  </mat-card>
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Tablet</mat-card-title>
-    </mat-card-header>
-    <img mat-card-image src="https://via.placeholder.com/350x150" alt="placeholder">
-    <mat-card-content>
-      <p>
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
-        make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-        typesetting, remaining essentially unchanged.
-      </p>
-    </mat-card-content>
-  </mat-card>
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Pc</mat-card-title>
-    </mat-card-header>
-    <img mat-card-image src="https://via.placeholder.com/350x150" alt="placeholder">
-    <mat-card-content>
-      <p>
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
-        make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-        typesetting, remaining essentially unchanged.
-      </p>
-    </mat-card-content>
-  </mat-card>
+  </svg></div> -->
+<div>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="80">
+      <h2 class="text-center">
+        Preparado para todo tipo de dispositivos
+      </h2>
+      <h3 class="text-center">Con un diseño 100% responsive, la pantalla se adaptar&aacute; al tamaño de tu dispositivo sin que afecte a la experiencia de uso</h3>
+    </div>
+  </div>
+  <div class="pt-2 background-light-primary margin-0" fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="16px grid">
+    <div class="padding-right-0" fxLayoutAlign="strech" fxFlex="30" fxFlex.sm="46" fxFlex.xs="94">
+      <mat-card>
+        <mat-card-header fxLayoutAlign="center center">
+          <mat-card-title>M&oacute;vil</mat-card-title>
+        </mat-card-header>
+        <!-- <img mat-card-image src="https://via.placeholder.com/350x150" alt="placeholder"> -->
+        <div fxLayoutAlign="center center"><mat-icon class="landscape-image">smartphone</mat-icon></div>
+        <mat-card-content>
+          <p>
+            Con un simple smartphone con conexi&oacute;n a internet podr&aacute; usar Open TPV. Ideal para gestionar los pedidos de un restaurante con perfiles de camareros.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="padding-right-0" fxLayoutAlign="strech" fxFlex="30" fxFlex.sm="46" fxFlex.xs="94">
+      <mat-card>
+        <mat-card-header fxLayoutAlign="center center">
+          <mat-card-title>Tablet</mat-card-title>
+        </mat-card-header>
+        <div fxLayoutAlign="center center"><mat-icon class="landscape-image">tablet</mat-icon></div>
+        <!-- <img mat-card-image src="https://via.placeholder.com/350x150" alt="placeholder"> -->
+        <mat-card-content>
+          <p>
+            Si por otro lado, necesitas un tamaño de pantalla m&aacute;s grande. Open TPV se adapatadr&aacute; al tamaño de una tablet para un uso m&aacute;s c&oacute;modo de la aplicaci&oacute;n.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="padding-right-0" fxLayoutAlign="strech" fxFlex="30" fxFlex.sm="46" fxFlex.xs="94">
+      <mat-card>
+        <mat-card-header fxLayoutAlign="center center">
+          <mat-card-title>Pc</mat-card-title>
+        </mat-card-header>
+        <div fxLayoutAlign="center center"><mat-icon class="landscape-image">personal_video</mat-icon></div>
+        <!-- <img mat-card-image src="https://via.placeholder.com/350x150" alt="placeholder"> -->
+        <mat-card-content>
+          <p>
+            Usa el PC para una configuraci&oacute;n general de tu negocio m&aacute;s c&oacute;moda. Crea productos, familia de productos, camareros y las zonas de tu restaurante de forma simple. Tambi&eacute;n podr&aacute;s crear pedidos desde caja con este tamaño.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
 </div>
+<!-- <div style="height: 150px; overflow: hidden;"><svg viewBox="0 0 500 150" preserveAspectRatio="none"
+    style="height: 100%; width: 100%; margin-top: 1em">
+    <path d="M0.00,49.98 C60.12,92.27 350.88,-49.98 519.31,69.56 L500.00,0.00 L0.00,0.00 Z" class="svg-landing-page">
+    </path>
+  </svg></div> -->
 
 <div fxLayout="row" fxLayout.xs="column" class="h-em-8">
 
 </div>
 
-<div fxLayout="row" fxLayout.xs="column" fxLayout.md="column" fxLayoutGap="20px" fxLayoutAlign="space-between center"
+<!-- <div fxLayout="row" fxLayout.xs="column" fxLayout.md="column" fxLayoutGap="20px" fxLayoutAlign="space-between center"
   class="h-em-16 p-em-1">
   <div fxFlexOffset.xs="0%" fxFlexOffset.md="0%" fxFlexOffset="10%"></div>
   <div fxFlex="50%" fxLayoutAlign="center">
@@ -90,19 +108,12 @@
     </p>
   </div>
   <div fxFlexOffset.xs="0%" fxFlexOffset.md="0%" fxFlexOffset="10%"></div>
-</div>
+</div> -->
 
 
-<div style="height: 150px; overflow: hidden;">
-  <svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;">
-    <path d="M0.00,49.98 C149.99,150.00 350.85,-49.98 500.00,49.98 L500.00,150.00 L0.00,150.00 Z" class="svg-landing-page"></path>
-  </svg>
-</div>
-<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutWrap class="h-em-6 p-em-1 background-light-primary">
-  <p>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-    standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
-    make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-    typesetting, remaining essentially unchanged.
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutWrap
+  class="h-em-6 p-em-1 background-light-primary">
+  <p class="text-center">
+    OpenTPV @ 2019 @ Pablo Borrego Guti&eacute;rrez @ Universidad de C&aacute;diz
   </p>
 </div>

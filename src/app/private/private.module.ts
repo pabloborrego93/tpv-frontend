@@ -35,6 +35,8 @@ import { RestaurantService } from './restaurant/restaurant.service';
 import { ConfirmDeleteComponent } from './user/confirm-delete/confirm-delete.component';
 import { UserComponent } from './user/user.component';
 import { UserService } from './user/user.service';
+// tslint:disable-next-line:max-line-length
+import { ConfirmDeleteProductFamilyComponent } from './product-family/confirm-delete-product-family/confirm-delete-product-family.component';
 
 @NgModule({
   imports: [
@@ -68,7 +70,8 @@ import { UserService } from './user/user.service';
     TimeAgoPipe,
     AddcommentComponent,
     ProductCompositeViewComponent,
-    KitchenComponent
+    KitchenComponent,
+    ConfirmDeleteProductFamilyComponent
   ],
   providers: [
     MyProfileService,
@@ -85,6 +88,7 @@ import { UserService } from './user/user.service';
     ConfirmDeleteComponent,
     ConfirmDeleteZoneComponent,
     ConfirmDeletePrinterComponent,
+    ConfirmDeleteProductFamilyComponent,
     AddcommentComponent
   ]
 })

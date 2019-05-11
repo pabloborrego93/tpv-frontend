@@ -16,19 +16,19 @@ export class MyProfileComponent implements OnInit {
 
   validationMessages: Object = {
     firstname: {
-      required: 'Firstname is required!',
-      minlength: 'Min length is 2',
-      maxlength: 'Max length is 16'
+      required: 'El nombre es obligatorio',
+      minlength: 'La longuitud mínima son 2 caracteres',
+      maxlength: 'La longuitud máxima son 16 caracteres'
     },
     lastname: {
-      required: 'Lastname is required!',
-      minlength: 'Minimum length is 2',
-      maxlength: 'Max length is 32'
+      required: 'Los apellidos son obligatorios',
+      minlength: 'La longuitud mínima son 2 caracteres',
+      maxlength: 'La longuitud máxima son 32 caracteres'
     },
     email: {
-      required: 'Email is required!',
-      minlength: 'Minimum length is 6',
-      maxlength: 'Max length is 32'
+      required: 'El email es obligatorio',
+      minlength: 'La longuitud mínima son 6 caracteres',
+      maxlength: 'La longuitud máxima son 32 caracteres'
     }
   };
 
