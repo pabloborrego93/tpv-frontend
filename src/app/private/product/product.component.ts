@@ -90,7 +90,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   buildCreateProductForm() {
     this.createProductForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(16)]],
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
       price: ['', [Validators.required]],
       iva: ['', [Validators.required]],
       catalogable: [false, [Validators.required]],
@@ -104,7 +104,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     console.log(element);
     this.updateProductForm = this.formBuilder.group({
       id: [element.id, [Validators.required]],
-      name: [element.name, [Validators.required, Validators.minLength(2), Validators.maxLength(16)]],
+      name: [element.name, [Validators.required, Validators.minLength(2), Validators.maxLength(32)]],
       price: [element.price, [Validators.required]],
       iva: [element.iva, [Validators.required]],
       catalogable: [element.catalogable, [Validators.required]],

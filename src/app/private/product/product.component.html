@@ -26,7 +26,7 @@
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns; let i = index"></mat-row>
         </mat-table>
-        <mat-paginator #paginator [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+        <mat-paginator color="accent" #paginator [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
           [showFirstLastButtons]="true" [length]="listLength" (page)="changePage($event)">
         </mat-paginator>
       </div>
@@ -56,7 +56,7 @@
             <!-- Product Name -->
             <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
               <div fxLayout="column" fxFlexFill>
-                <mat-form-field class="display-block">
+                <mat-form-field color="accent" class="display-block">
                   <input formControlName="name" matInput placeholder="Nombre:" required>
                 </mat-form-field>
               </div>
@@ -65,7 +65,7 @@
             <!-- Product Price -->
             <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
               <div fxLayout="column" fxFlexFill>
-                <mat-form-field class="display-block">
+                <mat-form-field color="accent" class="display-block">
                   <input type="number" formControlName="price" matInput placeholder="Precio:" required>
                 </mat-form-field>
               </div>
@@ -74,7 +74,7 @@
             <!-- Product IVA -->
             <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
               <div fxLayout="column" fxFlexFill>
-                <mat-form-field>
+                <mat-form-field color="accent">
                   <mat-select formControlName="iva" placeholder="IVA">
                     <mat-option *ngFor="let type of ivaType" [value]="type.value">{{type.viewValue}}</mat-option>
                   </mat-select>
@@ -113,7 +113,7 @@
         <!-- End Product Families -->
         <!-- Product Type Selector -->
         <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto b&aacute;sico o compuesto?'"></app-form-header>
-        <mat-form-field>
+        <mat-form-field color="accent" class="display-block">
           <mat-select formControlName="productType" placeholder="Tipo de producto">
             <mat-option *ngFor="let type of productTypes" [value]="type.value">{{type.viewValue}}</mat-option>
           </mat-select>
@@ -131,7 +131,7 @@
             <div class="twin-column-list right">
               <mat-list class="selected" *ngFor="let selected of selectedProducts">
                 <mat-list-item class="pointer" (click)="removeFromSelectedProduct(selected)">
-                    <span matBadge="{{selected.amount}}" matBadgeOverlap="false">{{selected.name}}</span>
+                    <span matBadgeColor="accent" matBadge="{{selected.amount}}" matBadgeOverlap="false">{{selected.name}}</span>
                 </mat-list-item>
               </mat-list>
             </div>
@@ -139,8 +139,8 @@
         </div>
         <!-- End Composite Product Extra -->
         <mat-error *ngIf="formNameRepeated">{{ProductValidationMessages?.name?.nameInUse}}</mat-error>
-        <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="space-between center center">
-          <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(createProductForm)">Crear
+        <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="end center">
+          <button mat-raised-button color="accent" type="submit" [disabled]="!isValidForm(createProductForm)">Crear
             <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
         </div>
       </form>
@@ -171,7 +171,7 @@
             <!-- Product Name -->
             <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
               <div fxLayout="column" fxFlexFill>
-                <mat-form-field class="display-block">
+                <mat-form-field color="accent" class="display-block">
                   <input formControlName="name" matInput placeholder="Nombre:" form required>
                 </mat-form-field>
               </div>
@@ -180,7 +180,7 @@
             <!-- Product Price -->
             <div fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
                 <div fxLayout="column" fxFlexFill>
-                  <mat-form-field class="display-block">
+                  <mat-form-field color="accent" class="display-block">
                     <input type="number" formControlName="price" matInput placeholder="Precio:" required>
                   </mat-form-field>
                 </div>
@@ -191,7 +191,7 @@
                 <div fxLayout="column" fxFlexFill>
                   <mat-form-field>
                     <mat-select [(value)]="selected.iva" formControlName="iva" placeholder="IVA">
-                      <mat-option *ngFor="let type of ivaType" [value]="type.value">{{type.viewValue}}</mat-option>
+                      <mat-option color="accent" *ngFor="let type of ivaType" [value]="type.value">{{type.viewValue}}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
@@ -227,7 +227,7 @@
         <!-- End Product Families -->
         <!-- Product Type Selector -->
         <app-form-header [icon]="'arrow_right_alt'" [text]="'¿Es un producto b&aacute;sico o compuesto?'"></app-form-header>
-        <mat-form-field>
+        <mat-form-field color="accent" class="display-block">
           <mat-select [(value)]="selected.productType" placeholder="Tipo de producto">
             <mat-option *ngFor="let type of productTypes" [value]="type.value">{{type.viewValue}}</mat-option>
           </mat-select>
@@ -245,7 +245,7 @@
             <div class="twin-column-list right">
               <mat-list class="selected" *ngFor="let selected of selectedProducts">
                 <mat-list-item class="pointer" (click)="removeFromSelectedProduct(selected)">
-                  <span matBadge="{{selected.amount}}" matBadgeOverlap="false">{{selected.name}}</span>
+                  <span matBadgeColor="accent" matBadge="{{selected.amount}}" matBadgeOverlap="false">{{selected.name}}</span>
                 </mat-list-item>
               </mat-list>
             </div>
@@ -253,8 +253,8 @@
         </div>
         <!-- End Composite Product Extra -->
         <mat-error *ngIf="formNameRepeated">{{ProductValidationMessages?.name?.nameInUse}}</mat-error>
-        <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="space-between center center">
-          <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(updateProductForm)">Actualizar
+        <div class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="end center">
+          <button mat-raised-button color="accent" type="submit" [disabled]="!isValidForm(updateProductForm)">Actualizar
             <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
         </div>
       </form>

@@ -1,11 +1,11 @@
 <div infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="3" [infiniteScrollThrottle]="100" (scrolled)="onScroll()"
   class="order-container" fxLayout="column" fxLayoutGap="16px">
-  <mat-card class="h-100" *ngIf="!creatingOrEditing()">
-    <mat-card-title>Pedidos</mat-card-title>
+  <mat-card class="min-h-auto" *ngIf="!creatingOrEditing()">
+    <mat-card-title>Pedidos {{orderFilter==='CLOSED' ? 'Cerrados':'Abiertos'}}</mat-card-title>
     <mat-card-content *ngIf="!errorLoadingOrders">
       <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="space-between center">
-        <button mat-raised-button color="primary" (click)="toggleFilter()">{{orderFilter==='CLOSED' ? 'Abiertos':'Cerrados'}}</button>
-        <button mat-raised-button color="primary" (click)="create()">Nuevo Pedido</button>
+        <button mat-raised-button color="accent" (click)="toggleFilter()">{{orderFilter==='CLOSED' ? 'Ver abiertos':'Ver cerrados'}}</button>
+        <button mat-raised-button color="accent" (click)="create()">Nuevo Pedido</button>
       </div>
       
       <mat-card (click)="edit(order)" class="mt-2 card-hover" *ngFor="let order of orders | async">
@@ -20,7 +20,7 @@
       </mat-card>
 
       <div *ngIf="!finished" fxLayoutAlign="center center">
-        <p>Cargando pedidos...</p>
+        <p fxLayoutAlign="center center"><mat-icon class="spin">autorenew</mat-icon>&nbsp;Cargando pedidos...</p>
       </div>
 
       <div *ngIf="finished" fxLayoutAlign="center center">
@@ -32,10 +32,10 @@
     </mat-card-content>
   </mat-card>
   <!-- Editar Pedido -->
-  <mat-card class="h-100" *ngIf="creatingOrEditing() && editing">
+  <mat-card class="min-h-auto" *ngIf="creatingOrEditing() && editing">
     <mat-card-title fxLayout="row" fxLayoutAlign="space-between center">
       <span>Editar pedido</span>
-      <button mat-raised-button color="primary" (click)="back()">Volver</button>
+      <button mat-raised-button color="accent" (click)="back()">Volver</button>
     </mat-card-title>
     <!-- Zona -->
     <mat-card-content>
@@ -48,12 +48,12 @@
     <!-- Fin Productos pedidos -->
 
     <!-- Total -->
-    <mat-tab-group animationDuration="200ms">
+    <mat-tab-group color="accent" animationDuration="200ms">
       <mat-tab label="Pedidos anteriores">
         <div fxLayout="row" fxLayoutAlign="space-between center">
           <h2>Productos anteriores</h2>
           <!-- <button mat-raised-button color="primary" (click)="ticket()">Generar Ticket</button> -->
-          <button mat-raised-button color="primary" (click)="imprimir()">Imprimir Ticket</button>
+          <button mat-raised-button color="accent" (click)="imprimir()">Imprimir Ticket</button>
         </div>
         <!-- Tabla Productos Pedidos -->
         <mat-table *ngIf="selected?.orderLines" #table [dataSource]="selected.orderLines">
@@ -104,7 +104,7 @@
             <td>{{selected.closedAt | date: 'dd-MMM-yyyy HH:mm:ss'}}</td>
           </tr>
         </table>
-        <button *ngIf="selected.status !== 'CLOSED'" class="mt-2" mat-raised-button color="primary" (click)="cerrarPedido()">Cerrar pedido</button>
+        <button *ngIf="selected.status !== 'CLOSED'" class="mt-2" mat-raised-button color="accent" (click)="cerrarPedido()">Cerrar pedido</button>
         <!-- Fin Datos Pedido -->
       </mat-tab>
       <mat-tab *ngIf="selected.status !== 'CLOSED'" label="Añadir pedidos">
@@ -166,12 +166,12 @@
                       }}</td>
                     <td width="20%" *ngIf="product.comment && product.forKitchen">{{ product.comment }}</td>
                     <td width="20%" *ngIf="!product.comment && product.forKitchen">
-                      <button (click)="openDialog(product)" class="mat-small" mat-button color="primary">
+                      <button (click)="openDialog(product)" class="mat-small" mat-button color="accent">
                         <mat-icon>add_comment</mat-icon>
                       </button>
                     </td>
                     <td width="10%">
-                      <button (click)="removeProduct(product, i)" class="mat-small" mat-button color="primary">
+                      <button (click)="removeProduct(product, i)" class="mat-small" mat-button color="accent">
                         <mat-icon>delete_forever</mat-icon>
                       </button>
                     </td>
@@ -191,12 +191,12 @@
                     </td>
                     <td width="20%" *ngIf="product.comment && product.forKitchen">{{ product.comment }}</td>
                     <td width="20%" *ngIf="!product.comment && product.forKitchen">
-                      <button (click)="openDialog(product)" class="mat-small" mat-button color="primary">
+                      <button (click)="openDialog(product)" class="mat-small" mat-button color="accent">
                         <mat-icon>add_comment</mat-icon>
                       </button>
                     </td>
                     <td width="10%">
-                      <button (click)="removeProduct(product, i)" class="mat-small" mat-button color="primary">
+                      <button (click)="removeProduct(product, i)" class="mat-small" mat-button color="accent">
                         <mat-icon>delete_forever</mat-icon>
                       </button>
                     </td>
@@ -214,7 +214,7 @@
               style="overflow: hidden"> </mat-row>
             <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
           </mat-table>
-          <button class="mt-2" [disabled]="!enableRealizarPedido()" mat-raised-button color="primary" (click)="realizarPedido()">Realizar pedido</button>
+          <button class="mt-2" [disabled]="!enableRealizarPedido()" mat-raised-button color="accent" (click)="realizarPedido()">Realizar pedido</button>
         </mat-card-content>
         <!-- Productos -->
         <mat-card-title class="mt-2">Productos</mat-card-title>
@@ -241,10 +241,10 @@
   </mat-card>
   <!-- Fin Editar Pedido -->
   <!-- Nuevo Pedido -->
-  <mat-card class="h-100" *ngIf="creatingOrEditing() && creating">
+  <mat-card class="min-h-auto" *ngIf="creatingOrEditing() && creating">
     <mat-card-title fxLayout="row" fxLayoutAlign="space-between center">
       <span>Nuevo pedido</span>
-      <button mat-raised-button color="primary" (click)="back()">Volver</button>
+      <button mat-raised-button color="accent" (click)="back()">Volver</button>
     </mat-card-title>
     <mat-card-content>
       <mat-card-title *ngIf="!zoneSelected">Zona</mat-card-title>
@@ -328,12 +328,12 @@
                     }}</td>
                   <td width="20%" *ngIf="product.comment && product.forKitchen">{{ product.comment }}</td>
                   <td width="20%" *ngIf="!product.comment && product.forKitchen">
-                    <button (click)="openDialog(product)" class="mat-small" mat-button color="primary">
+                    <button (click)="openDialog(product)" class="mat-small" mat-button color="accent">
                       <mat-icon>add_comment</mat-icon>
                     </button>
                   </td>
                   <td width="10%">
-                    <button (click)="removeProduct(product, i)" class="mat-small" mat-button color="primary">
+                    <button (click)="removeProduct(product, i)" class="mat-small" mat-button color="accent">
                       <mat-icon>delete_forever</mat-icon>
                     </button>
                   </td>
@@ -353,12 +353,12 @@
                   </td>
                   <td width="20%" *ngIf="product.comment && product.forKitchen">{{ product.comment }}</td>
                   <td width="20%" *ngIf="!product.comment && product.forKitchen">
-                    <button (click)="openDialog(product)" class="mat-small" mat-button color="primary">
+                    <button (click)="openDialog(product)" class="mat-small" mat-button color="accent">
                       <mat-icon>add_comment</mat-icon>
                     </button>
                   </td>
                   <td width="10%">
-                    <button (click)="removeProduct(product, i)" class="mat-small" mat-button color="primary">
+                    <button (click)="removeProduct(product, i)" class="mat-small" mat-button color="accent">
                       <mat-icon>delete_forever</mat-icon>
                     </button>
                   </td>
@@ -376,7 +376,7 @@
             style="overflow: hidden"> </mat-row>
           <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
         </mat-table>
-        <button class="mt-2" [disabled]="!enableRealizarPedido()" mat-raised-button color="primary" (click)="realizarPedido()">Realizar pedido</button>
+        <button class="mt-2" [disabled]="!enableRealizarPedido()" mat-raised-button color="accent" (click)="realizarPedido()">Realizar pedido</button>
       </mat-card-content>
       <!-- Fin Tabla Total -->
       <mat-card-title class="mt-2">Productos</mat-card-title>

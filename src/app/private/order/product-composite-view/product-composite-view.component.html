@@ -3,7 +3,7 @@
     <div *ngIf="product.type==='SIMPLE'">
       <p [ngClass]="{'pcomposite': product.type==='SIMPLE' && product.catalogable}" class="psimple">{{product.name}}
         <button *ngIf="!product.comment && product.forKitchen" (click)="openDialog(product)" class="mat-small"
-          mat-button color="primary">
+          mat-button color="accent">
           <mat-icon>add_comment</mat-icon>&nbsp;Añadir nota
         </button>
         <mat-chip-list>
@@ -16,7 +16,7 @@
     <div *ngIf="product.type==='COMPOSITE'">
       <p class="pcomposite">{{product.name}}
         <button *ngIf="!product.comment && product.forKitchen" (click)="openDialog(product)" class="mat-small"
-          mat-button color="primary">
+          mat-button color="accent">
           <mat-icon>add_comment</mat-icon>&nbsp;Añadir nota
         </button>
         <mat-chip-list>

@@ -61,6 +61,30 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
     'viewValue': 'Salón'
   }];
 
+  validationZoneMessages: Object = {
+    zoneType: {
+      required: 'El tipo de zona es obligatorio',
+    },
+    description: {
+      required: 'La descripción es obligatoria',
+      minlength: 'La longuitud mínima son 2 caracteres',
+      maxlength: 'La longuitud máxima son 16 caracteres'
+    }
+  };
+
+  validationPrinterMessages: Object = {
+    name: {
+      required: 'El nombre es obligatorio',
+      minlength: 'La longuitud mínima son 4 caracteres',
+      maxlength: 'La longuitud máxima son 16 caracteres',
+    },
+    printerid: {
+      required: 'El ID de Google Cloud Print es obligatorio',
+      minlength: 'La longuitud mínima son 4 caracteres',
+      maxlength: 'La longuitud máxima son 36 caracteres'
+    }
+  };
+
   constructor(
     private router: Router,
     private activateRoute: ActivatedRoute,
@@ -194,14 +218,14 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
   buildPrinterForm() {
     if (this.selectedPrinter) {
       this.printerForm = this.formBuilder.group({
-        name: [this.selectedPrinter.name, [Validators.required]],
-        printerid: [this.selectedPrinter.printerid, [Validators.required, Validators.minLength(2), Validators.maxLength(36)]],
+        name: [this.selectedPrinter.name, Validators.minLength(4), Validators.maxLength(16)],
+        printerid: [this.selectedPrinter.printerid, [Validators.required, Validators.minLength(4), Validators.maxLength(36)]],
         defaultPrinter: [this.selectedPrinter.defaultPrinter, [Validators.required]]
       });
     } else {
       this.printerForm = this.formBuilder.group({
-        name: ['', [Validators.required]],
-        printerid: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(36)]],
+        name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(16)]],
+        printerid: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(36)]],
         defaultPrinter: [false, [Validators.required]]
       });
     }

@@ -1,5 +1,5 @@
 <div class="user-container" fxLayout="column">
-  <mat-card class="h-100">
+  <mat-card class="min-h-auto">
     <mat-card-title>Usuarios</mat-card-title>
     <mat-card-subtitle>Administraci&oacute;n de usuarios</mat-card-subtitle>
     <mat-card-subtitle *ngIf="dataSource && dataSource?.data?.length == 0">A&uacute;n no has creado ning&uacute;n
@@ -42,38 +42,38 @@
     <mat-card-title *ngIf="selected">Actualizar usuario</mat-card-title>
     <mat-card-content *ngIf="userForm">
       <form ngForm #userFormRef [formGroup]="userForm" (ngSubmit)="submitUser(userFormRef)">
-        <mat-form-field class="display-block">
+        <mat-form-field color="accent" class="display-block">
           <input id="username" type="text" placeholder="Nombre de usuario" formControlName="username" required matInput>
           <mat-error *ngIf="userForm.get('username').errors?.required">{{validationMessages.username.required}}</mat-error>
           <mat-error *ngIf="userForm.get('username').errors?.minlength">{{validationMessages.username.minlength}}</mat-error>
           <mat-error *ngIf="userForm.get('username').errors?.maxlength">{{validationMessages.username.maxlength}}</mat-error>
         </mat-form-field>
-        <mat-form-field class="display-block">
+        <mat-form-field color="accent" class="display-block">
           <input id="email" type="text" placeholder="Email" formControlName="email" required matInput>
           <mat-error *ngIf="userForm.get('email').errors?.required">{{validationMessages.email.required}}</mat-error>
           <mat-error *ngIf="userForm.get('email').errors?.minlength">{{validationMessages.email.minlength}}</mat-error>
           <mat-error *ngIf="userForm.get('email').errors?.maxlength">{{validationMessages.email.maxlength}}</mat-error>
           <mat-error *ngIf="userForm.get('email').errors?.email">{{validationMessages.email.email}}</mat-error>
         </mat-form-field>
-        <mat-form-field class="display-block">
+        <mat-form-field color="accent" class="display-block">
           <input id="firstname" type="text" placeholder="Nombre" formControlName="firstname" required matInput>
           <mat-error *ngIf="userForm.get('firstname').errors?.required">{{validationMessages.firstname.required}}</mat-error>
           <mat-error *ngIf="userForm.get('firstname').errors?.minlength">{{validationMessages.firstname.minlength}}</mat-error>
           <mat-error *ngIf="userForm.get('firstname').errors?.maxlength">{{validationMessages.firstname.maxlength}}</mat-error>
         </mat-form-field>
-        <mat-form-field class="display-block">
+        <mat-form-field color="accent" class="display-block">
           <input id="lastname" type="text" placeholder="Apellidos" formControlName="lastname" required matInput>
           <mat-error *ngIf="userForm.get('lastname').errors?.required">{{validationMessages.lastname.required}}</mat-error>
           <mat-error *ngIf="userForm.get('lastname').errors?.minlength">{{validationMessages.lastname.minlength}}</mat-error>
           <mat-error *ngIf="userForm.get('lastname').errors?.maxlength">{{validationMessages.lastname.maxlength}}</mat-error>
         </mat-form-field>
-        <mat-form-field *ngIf="!selected" class="display-block">
+        <mat-form-field color="accent" *ngIf="!selected" class="display-block">
           <input id="password" type="password" placeholder="Contraseña" formControlName="password" required matInput>
           <mat-error *ngIf="userForm.get('password').errors?.required">{{validationMessages.password.required}}</mat-error>
           <mat-error *ngIf="userForm.get('password').errors?.minlength">{{validationMessages.password.minlength}}</mat-error>
           <mat-error *ngIf="userForm.get('password').errors?.maxlength">{{validationMessages.password.maxlength}}</mat-error>
         </mat-form-field>
-        <mat-form-field *ngIf="!selected" class="display-block">
+        <mat-form-field color="accent" *ngIf="!selected" class="display-block">
           <input id="confirmPassword" type="password" placeholder="Confirmar Contraseña" formControlName="confirmPassword"
             required matInput>
           <mat-error *ngIf="userForm.get('confirmPassword').errors?.required">{{validationMessages.confirmPassword.required}}</mat-error>
@@ -81,25 +81,25 @@
           <mat-error *ngIf="userForm.get('confirmPassword').errors?.maxlength">{{validationMessages.confirmPassword.maxlength}}</mat-error>
           <mat-error *ngIf="userForm.get('confirmPassword').errors?.notEquals">{{validationMessages.confirmPassword.notEquals}}</mat-error>
         </mat-form-field>
-        <mat-form-field *ngIf="!selected" class="display-block">
+        <mat-form-field color="accent" *ngIf="!selected" class="display-block">
           <mat-select formControlName="roles" placeholder="Roles" multiple>
             <mat-option *ngFor="let role of roleType" [value]="role.value">{{role.value}}</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field *ngIf="selected" class="display-block">
+        <mat-form-field color="accent" *ngIf="selected" class="display-block">
           <mat-select formControlName="roles" placeholder="Roles" [compareWith]="compareFn" multiple>
             <mat-option *ngFor="let role of roleUpdateType" [(value)]="role">{{role.name}}</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-error *ngIf="formNameRepeated">{{validationMessages.username.nameInUse}}</mat-error>
-        <div *ngIf="!selected" class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="16px">
-          <button mat-raised-button color="primary" type="button" (click)="reset(userFormRef)">Limpiar</button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(userForm)">Crear
+        <div *ngIf="!selected" class="pb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="16px">
+          <button mat-raised-button color="accent" type="button" (click)="reset(userFormRef)">Limpiar</button>
+          <button mat-raised-button color="accent" type="submit" [disabled]="!isValidForm(userForm)">Crear
             <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
         </div>
-        <div *ngIf="selected" class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="16px">
-          <button mat-raised-button color="primary" type="button" (click)="openDialog(selected, userForm)">Eliminar</button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="!isValidForm(userForm)">Actualizar
+        <div *ngIf="selected" class="pb-2 mt-1" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+          <button mat-raised-button color="warn" type="button" (click)="openDialog(selected, userForm)">Eliminar</button>
+          <button mat-raised-button color="accent" type="submit" [disabled]="!isValidForm(userForm)">Actualizar
             <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
         </div>
       </form>

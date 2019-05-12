@@ -1,5 +1,5 @@
 <div class="restaurant-container" fxLayout="column">
-  <mat-card class="h-100">
+  <mat-card class="min-h-auto">
     <mat-card-title>{{restaurant?.name}}</mat-card-title>
     <mat-card-subtitle>{{restaurant?.address}}</mat-card-subtitle>
 
@@ -41,6 +41,7 @@
       <mat-tab label="Zonas">
 
         <mat-card-title class="mt-2">Zonas</mat-card-title>
+        <mat-card-subtitle>Las zonas permiten organizar las mesas de tu restaurante. Se recomienda usar una nomenclatura sencilla que permita identificar r&aacute;pidamente la mesa. <p>Por ejemplo: Terraza - T1 o Terraza - Mesa 1</p></mat-card-subtitle>
         <!-- Tabla Zonas -->
         <mat-card-content *ngIf="dataSource && dataSource?.data?.length > 0">
           <div class="loading-indicator">
@@ -83,13 +84,14 @@
               <mat-select formControlName="zoneType" placeholder="Zona" [compareWith]="compareZoneFn">
                 <mat-option *ngFor="let zone of zoneType" [(value)]="zone">{{zone.viewValue}}</mat-option>
               </mat-select>
+              <mat-error *ngIf="zoneForm.get('zoneType').errors?.required">{{validationZoneMessages.zoneType.required}}</mat-error>
             </mat-form-field>
             <mat-form-field color="accent" class="display-block">
               <input id="description" type="text" placeholder="Descripcion" formControlName="description" required
                 matInput>
-              <!-- <mat-error *ngIf="zoneForm.get('username').errors?.required">{{validationMessages.username.required}}</mat-error> -->
-              <!-- <mat-error *ngIf="zoneForm.get('username').errors?.minlength">{{validationMessages.username.minlength}}</mat-error> -->
-              <!-- <mat-error *ngIf="zoneForm.get('username').errors?.maxlength">{{validationMessages.username.maxlength}}</mat-error> -->
+              <mat-error *ngIf="zoneForm.get('description').errors?.required">{{validationZoneMessages.description.required}}</mat-error>
+              <mat-error *ngIf="zoneForm.get('description').errors?.minlength">{{validationZoneMessages.description.minlength}}</mat-error>
+              <mat-error *ngIf="zoneForm.get('description').errors?.maxlength">{{validationZoneMessages.description.maxlength}}</mat-error>
             </mat-form-field>
             <div *ngIf="!selected" class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="16px">
               <button mat-raised-button color="accent" type="button" (click)="reset(zoneFormRef)">Limpiar</button>
@@ -109,7 +111,7 @@
       </mat-tab>
       <mat-tab label="Impresoras">
         <mat-card-title class="mt-2">Impresoras</mat-card-title>
-
+        <mat-card-subtitle>Para configurar una impresora habr&aacute; que compartirla a trav&eacute;s de Google Cloud Print al usuario <strong style="color: black">seraphic-cocoa-239316@appspot.gserviceaccount.com</strong>. Luego habrá que darla de alta con el siguiente formulario, copiando el UUID generado por Google para identificar a la impresora.</mat-card-subtitle>
 
         <!-- Tabla Impresoras -->
         <mat-card-content *ngIf="dataSourcePrinter && dataSourcePrinter?.data?.length > 0">
@@ -157,10 +159,16 @@
           <form ngForm #printerFormRef [formGroup]="printerForm" (ngSubmit)="submitPrinter(printerFormRef)">
             <mat-form-field color="accent" class="display-block">
               <input id="name" type="text" placeholder="Nombre" formControlName="name" required matInput>
+              <mat-error *ngIf="printerForm.get('name').errors?.required">{{validationPrinterMessages.name.required}}</mat-error>
+              <mat-error *ngIf="printerForm.get('name').errors?.minlength">{{validationPrinterMessages.name.minlength}}</mat-error>
+              <mat-error *ngIf="printerForm.get('name').errors?.maxlength">{{validationPrinterMessages.name.maxlength}}</mat-error>
             </mat-form-field>
             <mat-form-field color="accent" class="display-block">
               <input id="printerid" type="text" placeholder="ID Impresora" formControlName="printerid" required
                 matInput>
+              <mat-error *ngIf="printerForm.get('printerid').errors?.required">{{validationPrinterMessages.printerid.required}}</mat-error>
+              <mat-error *ngIf="printerForm.get('printerid').errors?.minlength">{{validationPrinterMessages.printerid.minlength}}</mat-error>
+              <mat-error *ngIf="printerForm.get('printerid').errors?.maxlength">{{validationPrinterMessages.printerid.maxlength}}</mat-error>
             </mat-form-field>
             <mat-slide-toggle formControlName="defaultPrinter">Impresora por defecto</mat-slide-toggle>
             <div *ngIf="!selectedPrinter" class="mb-2 mt-1" fxLayout="row" fxLayoutAlign="flex-end center"

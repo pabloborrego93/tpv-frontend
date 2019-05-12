@@ -222,7 +222,7 @@ export class ProductFamilyComponent implements OnInit, AfterViewInit {
             const mensaje = `Eliminado correctamente`;
             this.toastService.openSnackBar(mensaje, 5000, 'Cerrar');
           }).catch((err) => {
-            const mensaje = `No se pudo eliminado correctamente`;
+            const mensaje = `No se pudo eliminar correctamente`;
             this.toastService.openSnackBar(mensaje, 5000, 'Cerrar');
           });
         }
