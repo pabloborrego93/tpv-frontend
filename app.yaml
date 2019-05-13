@@ -9,10 +9,9 @@ manual_scaling:
    instances: 1
 
 handlers:
-- url: /(.*\.(gif|png|jpg|css|js|woff|txt|jpeg|)(|\.map))$
+- url: /(.*\.(gif|png|jpeg|jpg|css|js|ico|woff|woff2))$
   static_files: dist/\1
-  upload: dist/(.*)(|\.map)
-
+  upload: dist/(.*)
 - url: /(.*)
   static_files: dist/index.html
   upload: dist/index.html
