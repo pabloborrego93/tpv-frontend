@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { inRange } from '../shared/utils';
 
 @Component({
   selector: 'app-login',
@@ -83,7 +84,11 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/admin']);
             },
             (error: any) => {
-              this.loginError = 'Usuario o contraseña incorrectos';
+              if (inRange(error.status, 400, 499)) {
+                this.loginError = 'Usuario o contraseña incorrectos';
+              } else {
+                this.loginError = 'Se ha producido un error';
+              }
               this.loading = false;
             }
           );

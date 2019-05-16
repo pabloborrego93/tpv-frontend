@@ -14,6 +14,17 @@ export class KitchenComponent implements OnInit, OnDestroy {
   kitchenProducts;
   keepFetching = true;
 
+  public zoneType: any[] = [{
+    'value': 'TERRACE',
+    'viewValue': 'Terraza'
+  }, {
+    'value': 'BAR',
+    'viewValue': 'Bar'
+  }, {
+    'value': 'LOUNGE',
+    'viewValue': 'Salón'
+  }];
+
   constructor(
     private activateRoute: ActivatedRoute,
     private kitchenService: KitchenService
@@ -29,6 +40,11 @@ export class KitchenComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.keepFetching = false;
+  }
+
+  getViewValue(value) {
+    const val: any = this.zoneType.filter((v) => v.value === value);
+    return val[0].viewValue;
   }
 
   getKitchenProducts() {
