@@ -11,8 +11,11 @@
     color: currentColor;
     // border-top: #fff 1px solid;
     // border-bottom: rgba(255, 255, 255, 0.5) 1px solid;
-
-    &:hover {
+    &.no_link:hover {
+        cursor: unset; 
+    }
+    
+    &.link:hover {
         background-color: #282c36a9;
         color: rgba(255, 255, 255, 0.9);
         -webkit-transition: background-color 300ms linear;

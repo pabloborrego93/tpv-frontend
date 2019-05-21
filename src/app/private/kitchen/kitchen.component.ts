@@ -13,6 +13,7 @@ export class KitchenComponent implements OnInit, OnDestroy {
   idRestaurant;
   kitchenProducts;
   keepFetching = true;
+  productsLoaders = new Map();
 
   public zoneType: any[] = [{
     'value': 'TERRACE',
@@ -51,12 +52,21 @@ export class KitchenComponent implements OnInit, OnDestroy {
     this.kitchenService.list(this.idRestaurant)
       .subscribe((res) => {
         this.kitchenProducts = res;
+        this.kitchenProducts.forEach((kP) => {
+          this.productsLoaders.set(kP.id, false);
+        });
         setTimeout(() => {
           if (this.keepFetching) {
             this.getKitchenProducts();
           }
         }, 10000);
       });
+  }
+
+  anyLoading() {
+    for (let entry of this.productsLoaders.entries()) {
+      console.log(entry);
+    }
   }
 
   getKitchenProductsOne() {
@@ -71,9 +81,22 @@ export class KitchenComponent implements OnInit, OnDestroy {
   }
 
   nextStatus(idKitchenProduct) {
-    this.kitchenService.nextStatus(idKitchenProduct).subscribe((res) => {
-      this.getKitchenProductsOne();
-    });
+    this.productsLoaders.set(idKitchenProduct, true);
+    this.kitchenService.nextStatus(idKitchenProduct)
+      .subscribe((res) => {
+        this.productsLoaders.set(idKitchenProduct, false);
+        const product: any = _.filter(this.kitchenProducts, {'id': idKitchenProduct})[0];
+        if (product) {
+          if (product.status === 'QUEUED') {
+              product.status = 'PREPARING';
+          } else if (product.status === 'PREPARING') {
+            product.status = 'PREPARED';
+          } else {
+            product.status = 'DONE';
+          }
+        }
+        // this.getKitchenProductsOne();
+      }, (err) => this.productsLoaders.set(idKitchenProduct, false));
   }
 
 }

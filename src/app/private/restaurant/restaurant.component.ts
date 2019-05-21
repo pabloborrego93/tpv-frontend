@@ -75,7 +75,7 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
   validationPrinterMessages: Object = {
     name: {
       required: 'El nombre es obligatorio',
-      minlength: 'La longuitud mínima son 4 caracteres',
+      minlength: 'La longuitud mínima son 2 caracteres',
       maxlength: 'La longuitud máxima son 16 caracteres',
     },
     printerid: {
@@ -218,13 +218,13 @@ export class RestaurantComponent implements OnInit, AfterViewInit {
   buildPrinterForm() {
     if (this.selectedPrinter) {
       this.printerForm = this.formBuilder.group({
-        name: [this.selectedPrinter.name, Validators.minLength(4), Validators.maxLength(16)],
+        name: [this.selectedPrinter.name, [Validators.minLength(2), Validators.maxLength(16)]],
         printerid: [this.selectedPrinter.printerid, [Validators.required, Validators.minLength(4), Validators.maxLength(36)]],
         defaultPrinter: [this.selectedPrinter.defaultPrinter, [Validators.required]]
       });
     } else {
       this.printerForm = this.formBuilder.group({
-        name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(16)]],
+        name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(16)]],
         printerid: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(36)]],
         defaultPrinter: [false, [Validators.required]]
       });

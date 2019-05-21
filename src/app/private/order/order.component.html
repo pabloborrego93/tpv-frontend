@@ -53,7 +53,10 @@
         <div fxLayout="row" fxLayoutAlign="space-between center">
           <h2>Productos anteriores</h2>
           <!-- <button mat-raised-button color="primary" (click)="ticket()">Generar Ticket</button> -->
-          <button mat-raised-button color="accent" (click)="imprimir()">Imprimir Ticket</button>
+          <button [disabled]="loadingPrintTicker" mat-raised-button color="accent" (click)="imprimir()">Imprimir Ticket <mat-icon class="spin" *ngIf="loadingPrintTicker">autorenew</mat-icon></button>
+        </div>
+        <div fxLayoutAlign="end center">
+          <span *ngIf="printTicketError" class="cred">Error al imprimir, asegurese de tener una impresora por defecto configurada y operativa</span>
         </div>
         <!-- Tabla Productos Pedidos -->
         <mat-table *ngIf="selected?.orderLines" #table [dataSource]="selected.orderLines">
@@ -104,7 +107,7 @@
             <td>{{selected.closedAt | date: 'dd-MMM-yyyy HH:mm:ss'}}</td>
           </tr>
         </table>
-        <button *ngIf="selected.status !== 'CLOSED'" class="mt-2" mat-raised-button color="accent" (click)="cerrarPedido()">Cerrar pedido</button>
+        <button [disabled]="loadingCloseOrder" *ngIf="selected.status !== 'CLOSED'" class="mt-2" mat-raised-button color="accent" (click)="cerrarPedido()">Cerrar pedido <mat-icon class="spin" *ngIf="loadingCloseOrder">autorenew</mat-icon></button>
         <!-- Fin Datos Pedido -->
       </mat-tab>
       <mat-tab *ngIf="selected.status !== 'CLOSED'" label="Añadir pedidos">
@@ -214,7 +217,7 @@
               style="overflow: hidden"> </mat-row>
             <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
           </mat-table>
-          <button class="mt-2" [disabled]="!enableRealizarPedido()" mat-raised-button color="accent" (click)="realizarPedido()">Realizar pedido</button>
+          <button class="mt-2" [disabled]="!enableRealizarPedido()" mat-raised-button color="accent" (click)="realizarPedido()">Realizar pedido <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
         </mat-card-content>
         <!-- Productos -->
         <mat-card-title class="mt-2">Productos</mat-card-title>
@@ -376,7 +379,7 @@
             style="overflow: hidden"> </mat-row>
           <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
         </mat-table>
-        <button class="mt-2" [disabled]="!enableRealizarPedido()" mat-raised-button color="accent" (click)="realizarPedido()">Realizar pedido</button>
+        <button class="mt-2" [disabled]="!enableRealizarPedido()" mat-raised-button color="accent" (click)="realizarPedido()">Realizar pedido <mat-icon class="spin" *ngIf="loading">autorenew</mat-icon></button>
       </mat-card-content>
       <!-- Fin Tabla Total -->
       <mat-card-title class="mt-2">Productos</mat-card-title>

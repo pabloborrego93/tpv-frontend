@@ -161,6 +161,14 @@ mat-sidenav-container {
     min-height: auto;
 }
 
+.cred {
+    color: red;
+}
+
+.min-height-kitchen {
+    min-height: 50px;
+}
+
 // .mat-focused .mat-form-field-label {
 //     /*change color of label*/
 //     color: rgba(1, 87, 155, 1) !important;
@@ -509,6 +517,11 @@ div.img-with-button {
 .mat-column-image {
     flex: 0 0 48px;
     min-width: 64px;
+}
+
+.mat-column-total {
+    flex: 0 0 100px;
+    min-width: 100px;
 }
 
 mat-header-cell.mat-column-image {

@@ -1,34 +1,50 @@
 <div class="kitchen-container" fxLayout="column">
-  <mat-card class="h-100">
+  <mat-card class="min-h-auto">
     <mat-card-title>Cocina</mat-card-title>
     <mat-card-content fxLayout="row" fxLayout.xs="column" fxLayoutGap="8px" *ngIf="kitchenProducts">
       <!-- QUEUED -->
       <div fxFlex="33%" fxFlex.xs="100%">
         <mat-card-subtitle>En cola</mat-card-subtitle>
-        <div (click)="nextStatus(kP.id)" class="kitchen-card" *ngFor="let kP of getKitchenProductsFiltered('QUEUED')">
-          <p>{{getViewValue(kP.zone.zoneType)}} - {{kP.zone.description}}</p>
-          <p>{{kP.product.name}}</p>
-          <small>{{kP.comment}}</small>
+        <div class="kitchen-card" *ngFor="let kP of getKitchenProductsFiltered('QUEUED')">
+          <div *ngIf="!productsLoaders.get(kP.id)" (click)="nextStatus(kP.id)">
+            <p>{{getViewValue(kP.zone.zoneType)}} - {{kP.zone.description}}</p>
+            <p>{{kP.product.name}}</p>
+            <small>{{kP.comment}}</small>
+          </div>
+          <div *ngIf="productsLoaders.get(kP.id)" class="min-height-kitchen" fxLayoutAlign="center center">
+            <mat-icon class="spin">autorenew</mat-icon>
+          </div>
         </div>
       </div>
       <!-- Fin QUEUED -->
       <!-- PREPARING -->
       <div fxFlex="33%" fxFlex.xs="100%">
         <mat-card-subtitle>Preparando</mat-card-subtitle>
-        <div (click)="nextStatus(kP.id)" class="kitchen-card" *ngFor="let kP of getKitchenProductsFiltered('PREPARING')">
-          <p>{{getViewValue(kP.zone.zoneType)}} - {{kP.zone.description}}</p>
-          <p>{{kP.product.name}}</p>
-          <small>{{kP.comment}}</small>
+        <div class="kitchen-card"
+          *ngFor="let kP of getKitchenProductsFiltered('PREPARING')">
+          <div *ngIf="!productsLoaders.get(kP.id)" (click)="nextStatus(kP.id)">
+            <p>{{getViewValue(kP.zone.zoneType)}} - {{kP.zone.description}}</p>
+            <p>{{kP.product.name}}</p>
+            <small>{{kP.comment}}</small>
+          </div>
+          <div *ngIf="productsLoaders.get(kP.id)" class="min-height-kitchen" fxLayoutAlign="center center">
+            <mat-icon class="spin">autorenew</mat-icon>
+          </div>
         </div>
       </div>
       <!-- Fin PREPARING -->
       <!-- PREPARED -->
       <div fxFlex="33%" fxFlex.xs="100%">
         <mat-card-subtitle>Preparado</mat-card-subtitle>
-        <div (click)="nextStatus(kP.id)" class="kitchen-card" *ngFor="let kP of getKitchenProductsFiltered('PREPARED')">
-          <p>{{getViewValue(kP.zone.zoneType)}} - {{kP.zone.description}}</p>
-          <p>{{kP.product.name}}</p>
-          <small>{{kP.comment}}</small>
+        <div class="kitchen-card" *ngFor="let kP of getKitchenProductsFiltered('PREPARED')">
+          <div *ngIf="!productsLoaders.get(kP.id)" (click)="nextStatus(kP.id)">
+            <p>{{getViewValue(kP.zone.zoneType)}} - {{kP.zone.description}}</p>
+            <p>{{kP.product.name}}</p>
+            <small>{{kP.comment}}</small>
+          </div>
+          <div *ngIf="productsLoaders.get(kP.id)" class="min-height-kitchen" fxLayoutAlign="center center">
+            <mat-icon class="spin">autorenew</mat-icon>
+          </div>
         </div>
       </div>
       <!-- Fin PREPARED -->

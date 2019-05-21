@@ -51,6 +51,10 @@ export class OrderComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'product', 'amount', 'total'];
   displayedColumnsAlreadyOrdered: string[] = ['id', 'name', 'amount', 'total'];
 
+  public loading: Boolean = false;
+  public loadingCloseOrder: Boolean = false;
+  public loadingPrintTicker: Boolean = false;
+  public printTicketError: Boolean = false;
   public selected: any;
   public editing: Boolean = false;
   public creating: Boolean = false;
@@ -121,7 +125,15 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
   imprimir() {
-    this.orderService.imprimir(this.selected.id).subscribe((data) => {});
+    this.loadingPrintTicker = true;
+    this.printTicketError = false;
+    this.orderService.imprimir(this.selected.id)
+      .subscribe(
+        (data) => this.loadingPrintTicker = false,
+        (err) => {
+          this.loadingPrintTicker = false;
+          this.printTicketError = true;
+        });
   }
 
   orderLinesGetTotal() {
@@ -133,7 +145,12 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
   cerrarPedido() {
-    this.orderService.close(this.selected.id).subscribe((res) => this.back());
+    this.loadingCloseOrder = true;
+    this.orderService.close(this.selected.id)
+      .subscribe((res) => {
+        this.loadingCloseOrder = false;
+        this.back();
+      }, (err) => this.loadingCloseOrder = false);
   }
 
   getAllProducts() {
@@ -340,6 +357,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
   realizarPedido() {
+    this.loading = true;
     const orderPostDtoArray = [];
     this.productLines.forEach((pl) => {
       const orderDtoDto = {
@@ -353,17 +371,25 @@ export class OrderComponent implements OnInit, OnDestroy {
     console.log('orderPostDtoArray');
     console.log(orderPostDtoArray);
     if (!this.selected) {
-      this.orderService.create(this.zoneSelected.id, orderPostDtoArray).subscribe((res) => this.back());
+      this.orderService.create(this.zoneSelected.id, orderPostDtoArray)
+        .subscribe((res) => {
+          this.loading = false;
+          this.back();
+        }, (err) => this.loading = false);
     } else {
-      this.orderService.update(this.selected.id, orderPostDtoArray).subscribe((res) => this.back());
+      this.orderService.update(this.selected.id, orderPostDtoArray)
+      .subscribe((res) => {
+        this.loading = false;
+        this.back();
+      }, (err) => this.loading = false);
     }
   }
 
   enableRealizarPedido() {
     if (this.creating) {
-      return this.zoneSelected;
+      return this.zoneSelected && !this.loading;
     } else {
-      return true;
+      return !this.loading;
     }
   }
 

@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
       this.auth.doLogin(username, password)
         .subscribe(
           (response: any) => {
-            this.router.navigate(['/admin/chain']);
+            this.router.navigate(['/admin/myprofile']);
           },
           (error: any) => {
             this.loading = false;
@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
         this.auth.doLogin(username, password, this.loginId)
           .subscribe(
             (response: any) => {
-              this.router.navigate(['/admin']);
+              this.router.navigate(['/admin/myprofile']);
             },
             (error: any) => {
               if (inRange(error.status, 400, 499)) {
