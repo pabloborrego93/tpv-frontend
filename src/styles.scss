@@ -169,6 +169,10 @@ mat-sidenav-container {
     min-height: 50px;
 }
 
+.h-80 {
+    height: 80% !important;
+}
+
 // .mat-focused .mat-form-field-label {
 //     /*change color of label*/
 //     color: rgba(1, 87, 155, 1) !important;
@@ -570,6 +574,22 @@ table.info-table {
 
 .text-left {
     text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.fs14em {
+    font-size: 1.4em;
+}
+
+.min-width248 {
+    min-width: 248px;
 }
 
 .card-hover {

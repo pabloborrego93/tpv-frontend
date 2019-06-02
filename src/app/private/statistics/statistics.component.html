@@ -1,0 +1,36 @@
+<div class="statistics-container" fxLayout="column">
+  <mat-card class="min-h-auto">
+    <mat-card-title>Estad&iacute;sticas</mat-card-title>
+    <mat-card-subtitle>Aqu&iacute; encontrar&aacute;s estad&iacute;sticas sobre tu negocio.</mat-card-subtitle>
+    <mat-card-content>
+      <div *ngIf="!loadingOrdersData" class="totals-chart">
+        <mat-card-title>N&uacute;mero de pedidos por d&iacute;a</mat-card-title>
+        <ngx-charts-line-chart *ngIf="ordersData" [scheme]="colorScheme" [results]="ordersData" [gradient]="gradient"
+          [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [autoScale]="autoScale"
+          [timeline]="timeline">
+        </ngx-charts-line-chart>
+      </div>
+      <div *ngIf="loadingOrdersData" class="totals-chart">
+          <mat-card-title>N&uacute;mero de pedidos por d&iacute;a</mat-card-title>
+          <div class="h-80" fxLayoutAlign="center center">
+            Cargando...
+          </div>
+        </div>
+      <div *ngIf="!loadingEarningsData" class="totals-chart">
+        <mat-card-title>Recaudaci&oacute;n por d&iacute;a</mat-card-title>
+        <ngx-charts-line-chart *ngIf="earningsData" [scheme]="colorScheme" [results]="earningsData"
+          [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+          [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel" [autoScale]="autoScale" [timeline]="timeline">
+        </ngx-charts-line-chart>
+      </div>
+      <div *ngIf="loadingEarningsData" class="totals-chart">
+        <mat-card-title>Recaudaci&oacute;n por d&iacute;a</mat-card-title>
+        <div class="h-80" fxLayoutAlign="center center">
+          Cargando...
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -38,13 +38,13 @@ export class LoginComponent implements OnInit {
     private auth: AuthService) { }
 
   ngOnInit() {
-    this.route.queryParams.subscribe((res) => {
-      this.loginId = res['id'];
-      if (this.loginId) {
-        this.auth.getRestaurantChainName(this.loginId)
-        .subscribe((result: any) => this.chainName = result.name, (err) => this.loginId = null);
-      }
-    });
+    // this.route.queryParams.subscribe((res) => {
+    //   this.loginId = res['id'];
+    //   if (this.loginId) {
+    //     this.auth.getRestaurantChainName(this.loginId)
+    //     .subscribe((result: any) => this.chainName = result.name, (err) => this.loginId = null);
+    //   }
+    // });
     this.buildForm();
   }
 

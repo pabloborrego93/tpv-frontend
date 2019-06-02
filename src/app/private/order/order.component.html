@@ -15,7 +15,7 @@
         </mat-card-title>
         <mat-card-subtitle>{{ order?.id }} - {{ order?.status }}</mat-card-subtitle>
         <mat-card-content>
-          <p>{{ order?.status }}</p>
+          <!-- <p>{{ order?.status }}</p> -->
         </mat-card-content>
       </mat-card>
 
@@ -107,7 +107,7 @@
             <td>{{selected.closedAt | date: 'dd-MMM-yyyy HH:mm:ss'}}</td>
           </tr>
         </table>
-        <button [disabled]="loadingCloseOrder" *ngIf="selected.status !== 'CLOSED'" class="mt-2" mat-raised-button color="accent" (click)="cerrarPedido()">Cerrar pedido <mat-icon class="spin" *ngIf="loadingCloseOrder">autorenew</mat-icon></button>
+        <button [disabled]="loadingCloseOrder" *ngIf="selected.status !== 'CLOSED'" class="mt-2" mat-raised-button color="accent" (click)="openDialogCloseOrder(selected)">Cerrar pedido <mat-icon class="spin" *ngIf="loadingCloseOrder">autorenew</mat-icon></button>
         <!-- Fin Datos Pedido -->
       </mat-tab>
       <mat-tab *ngIf="selected.status !== 'CLOSED'" label="Añadir pedidos">

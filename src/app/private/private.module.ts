@@ -37,6 +37,9 @@ import { UserComponent } from './user/user.component';
 import { UserService } from './user/user.service';
 // tslint:disable-next-line:max-line-length
 import { ConfirmDeleteProductFamilyComponent } from './product-family/confirm-delete-product-family/confirm-delete-product-family.component';
+import { ConfirmCloseOrderComponent } from './order/confirm-close-order/confirm-close-order.component';
+import { StatisticsComponent } from './statistics/statistics.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   imports: [
@@ -48,7 +51,8 @@ import { ConfirmDeleteProductFamilyComponent } from './product-family/confirm-de
     NavigationModule,
     ImageCropperModule,
     InfiniteScrollModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    NgxChartsModule
   ],
   declarations: [
     AdminComponent,
@@ -71,7 +75,9 @@ import { ConfirmDeleteProductFamilyComponent } from './product-family/confirm-de
     AddcommentComponent,
     ProductCompositeViewComponent,
     KitchenComponent,
-    ConfirmDeleteProductFamilyComponent
+    ConfirmDeleteProductFamilyComponent,
+    ConfirmCloseOrderComponent,
+    StatisticsComponent
   ],
   providers: [
     MyProfileService,
@@ -89,7 +95,8 @@ import { ConfirmDeleteProductFamilyComponent } from './product-family/confirm-de
     ConfirmDeleteZoneComponent,
     ConfirmDeletePrinterComponent,
     ConfirmDeleteProductFamilyComponent,
-    AddcommentComponent
+    AddcommentComponent,
+    ConfirmCloseOrderComponent
   ]
 })
 export class PrivateModule { }

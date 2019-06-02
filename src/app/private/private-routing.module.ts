@@ -10,6 +10,7 @@ import { RestaurantComponent } from './restaurant/restaurant.component';
 import { UserComponent } from './user/user.component';
 import { OrderComponent } from './order/order.component';
 import { KitchenComponent } from './kitchen/kitchen.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 const routes: Routes = [
   {
@@ -68,6 +69,12 @@ const routes: Routes = [
         component: KitchenComponent,
         data: {
           roles: ['ROLE_ORDER_SCREEN']
+        }
+      }, {
+        path: 'statistics',
+        component: StatisticsComponent,
+        data: {
+          roles: ['ROLE_RESTAURANT_CHAIN_ADMIN']
         }
       }
     ]

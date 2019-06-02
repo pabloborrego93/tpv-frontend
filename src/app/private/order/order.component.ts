@@ -11,6 +11,7 @@ import * as _u from 'underscore';
 import { MatAccordion, MatDialog } from '@angular/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AddcommentComponent } from './addcomment/addcomment.component';
+import { ConfirmCloseOrderComponent } from './confirm-close-order/confirm-close-order.component';
 
 @Component({
   selector: 'app-order',
@@ -451,6 +452,16 @@ export class OrderComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         event.comment = result;
+      }
+    });
+  }
+
+  openDialogCloseOrder(selected) {
+    console.log(selected);
+    const dialogRef = this.dialog.open(ConfirmCloseOrderComponent, { data: selected });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.cerrarPedido();
       }
     });
   }
